@@ -1,0 +1,26 @@
+Version 1.0.0
+
+- Initial stable release
+- Open source software under GPLv3 license
+- Comics browser with thumbnails
+- Large screens optimizations (all Android tablets, not only limited to Honeycomb)
+- Compatible with all screens resolutions
+- Bookmarks manager to quickly access to directories or URLs
+- Remote file downloading using provided PHP script
+- Supports CBZ, CBR (using official unrar dll) and folders
+- Supports JPEG and PNG images
+- Fast pages switcher with pages previews
+- Several resize modes (screen width, screen height, both, 100%, 50%, 25%)
+- Double pages mode
+- Next and previous pages auto preloading if enough free memory
+- Supports 16 and 32 bits rendering
+- Fling gesture to change page with smooth transition
+- Fullscreen mode under Android 1.x and 2.x (impossible under Android 3.x)
+- Bidirectional scrolling if page larger than screen
+- Touchscreen, keyboard, DPad and mouse support
+- Android 1.6+ required
+- Remember last album and page
+- Support both portrait and landscape orientation
+- Can be used to open application/x-cbz, application/x-cbr, image/jpeg and image/png mime types from any file manager
+- Tested with huge images up to 1200x1600 
+- English and French translations (any translators are welcome to contribute)

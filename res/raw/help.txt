@@ -1,0 +1,57 @@
+BASIC USAGES
+
+1. Browser
+
+In browser, you should see two icons types: folders and albums.
+
+All folders have the same grey icon representing a folder and all recognized albums are identified by their cover thumbnail. Other not recognized files are not shown.
+
+If you want to open a folder with images and other recognized files, it will ask you if you want to open it as an album or a normal folder.
+
+Folders named ".." are parent folders.
+
+If you click on a folder icon, it will refresh all thumbnails with its new content.
+
+Just browse to the folder containing the album you want to open and click on it to open it.
+
+2. Viewer
+
+Once your album is open, you should see the first page.
+
+If you want to use your keyboard, you can use left and right arrows to go to previous or next page.
+If you want to use your touchscreen, you can touch the screen with a finger and move it to the right or the left to respectively go to next or previous image.
+
+The default zoom mode is to adapt the page size to the width of the screen. You can change this by going in "Settings".
+
+If your page is larger than screen you can scroll in both vertical or horizontal directions.
+
+You can navigate to specific pages using "Menu" button -> "Go to page" or "Search" button if available on your device.
+
+3. Bookmarks
+
+TODO
+
+4. Settings
+
+TODO
+
+LINKS
+
+The project is hosted on Google Code at http://code.google.com/p/android-comicsreader/
+
+If you want to report a bug or make a suggestion:
+http://code.google.com/p/android-comicsreader/issues/list
+
+If you want to browse the code:
+http://code.google.com/p/android-comicsreader/source/browse/
+
+If you want to download manually the last version:
+http://code.google.com/p/android-comicsreader/downloads/list
+
+A more complete wiki can be found on:
+http://code.google.com/p/android-comicsreader/w/list
+
+LICENSE
+
+It's published under the GNU GPLv3 open source license available at:
+http://www.gnu.org/licenses/gpl-3.0.txt

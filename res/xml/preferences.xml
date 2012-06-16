@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * ComicsReader is an Android application to read comics
+ * Copyright (C) 2011-2012 Cedric OCHS
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="preference_category_view"
+        android:title="@string/preference_category_view" >
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/items_zoom_labels"
+            android:entryValues="@array/items_zoom_values"
+            android:key="preference_zoom"
+            android:summary="@string/preference_zoom_summary"
+            android:title="@string/preference_zoom_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="preference_double_page"
+            android:summary="@string/preference_double_page_summary"
+            android:title="@string/preference_double_page_label" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="preference_full_screen"
+            android:summary="@string/preference_full_screen_summary"
+            android:title="@string/preference_full_screen_label" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="preference_fit_to_screen"
+            android:summary="@string/preference_fit_to_screen_summary"
+            android:title="@string/preference_fit_to_screen_label" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="preference_fast_scroll"
+            android:summary="@string/preference_fast_scroll_summary"
+            android:title="@string/preference_fast_scroll_label" />
+
+        <ListPreference
+            android:defaultValue="5000"
+            android:entries="@array/preference_overlay_duration_names"
+            android:entryValues="@array/preference_overlay_duration_values"
+            android:key="preference_overlay_duration"
+            android:summary="@string/preference_overlay_duration_summary"
+            android:title="@string/preference_overlay_duration_label" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="preference_category_advanced"
+        android:title="@string/preference_category_advanced" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="preference_high_quality"
+            android:summary="@string/preference_high_quality_summary"
+            android:title="@string/preference_high_quality_label" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/items_sample_labels"
+            android:entryValues="@array/items_sample_values"
+            android:key="preference_sample"
+            android:summary="@string/preference_sample_summary"
+            android:title="@string/preference_sample_label" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="preference_category_cache"
+        android:title="@string/preference_category_cache" >
+        <Preference
+            android:key="preference_clear_cache_thumbnails"
+            android:summary="@string/preference_clear_cache_thumbnails_summary"
+            android:title="@string/preference_clear_cache_thumbnails" />
+        <Preference
+            android:key="preference_clear_cache_albums"
+            android:summary="@string/preference_clear_cache_albums_summary"
+            android:title="@string/preference_clear_cache_albums" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="preference_category_misc"
+        android:title="@string/preference_category_misc" >
+        <Preference
+            android:key="preference_about"
+            android:summary="@string/preference_about_summary"
+            android:title="@string/preference_about" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,26 @@
+Version 1.0.0
+
+- Version initiale stable
+- Logiciel open source sous licence GPLv3
+- Navigateur de bandes dessinées avec miniatures
+- Optimisations pour les écrans larges (toutes les tablettes Android, pas seulement celles sous Honeycomb)
+- Compatible avec toutes les résolutions d'écran
+- Gestionnaire de favoris pour accéder rapidement à des répertoires ou URLs
+- Chargement de fichiers distants en utilisant le script PHP proposé
+- Supporte les fichiers CBZ, CBR (en utilisant la dll officielle d'unrar) et les répertoires
+- Supporte les images JPEG et PNG
+- Changement de page rapide avec aperçus
+- Plusieurs modes de redimentionnement (largeur d'écran, hauteur d'écran, les deux, 100%, 50%, 25%)
+- Mode double pages
+- Pré-chargement des images précédentes et suivantes s'il y a assez de mémoire disponible
+- Supporte les rendus 16 et 32 bits
+- Geste de type "fling" pour changer de page de façon totalement fluide
+- Mode plein écran sous Android 1.x et 2.x (impossible sous Android 3.x)
+- Défilement bidirectionnel si la page dépasse l'écran
+- Supporte les écrans tactiles, les claviers, DPad et souris
+- Nécessite Android 1.6+
+- Se souvient du dernier album et dernière page
+- Supporte les orientations portrait et paysage
+- Peut ouvrir les types mime application/x-cbz, application/x-cbr, image/jpeg et image/png à partir de n'importe quel gestionnaire de fichiers
+- Testé avec des grandes images jusqu'à 1200x1600 
+- Traductions anglaises et françaises (tous les traducteurs sont bienvenus pour y contribuer)
