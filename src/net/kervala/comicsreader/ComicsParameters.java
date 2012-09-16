@@ -60,6 +60,7 @@ public class ComicsParameters {
 	static BitmapDrawable sFolderChildDrawable;
 	static BitmapDrawable sFolderParentDrawable;
 
+	static File sRootDirectory;
 	static File sExternalDirectory;
 	static File sCacheDirectory;
 	static File sCoversDirectory;
@@ -174,6 +175,7 @@ public class ComicsParameters {
 	
 	static void initDirectories() {
 		sExternalDirectory = Environment.getExternalStorageDirectory();
+		sRootDirectory = new File("/");
 
 		sCacheDirectory = new File(sExternalDirectory, "/Android/data/" + sPackageName + "/cache");
 
@@ -262,7 +264,7 @@ public class ComicsParameters {
 
 		if (bitmap.getWidth() <= ComicsParameters.THUMBNAIL_HEIGHT && bitmap.getHeight() <= ComicsParameters.THUMBNAIL_HEIGHT) return bitmap;
 
-		final Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, ComicsParameters.THUMBNAIL_HEIGHT, ComicsParameters.THUMBNAIL_HEIGHT);
+		final Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getWidth()), Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getHeight()));
 		bitmap.recycle();
 
 		return croppedBitmap;

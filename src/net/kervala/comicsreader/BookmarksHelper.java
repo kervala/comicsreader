@@ -104,13 +104,6 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 	}
 
 	public boolean setBookmark(int id, String name, String url) {
-		final String rootFolder = ComicsParameters.sExternalDirectory.getAbsolutePath();
-
-		// fix local path
-		if (url.startsWith("/") && !url.startsWith(rootFolder)) {
-			url = rootFolder + url;
-		}
-
 		// fix remote path
 		if (!url.startsWith("/") && !url.startsWith("http://")) {
 			url = "http://" + url;

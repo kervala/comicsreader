@@ -153,9 +153,7 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch(keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			final String def = getDefaultDirectory();
-			
-			if (def != null && !def.equals(mLastUrl) && mAdapter != null) {
+			if (!ComicsParameters.sRootDirectory.getAbsolutePath().equals(mLastUrl) && mAdapter != null) {
 				final int pos = mAdapter.getItemPosition("..");
 				if (pos != -1) {
 					final BrowserItem item = (BrowserItem)mAdapter.getItem(pos);
@@ -355,8 +353,7 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 
 		// a SD card is mounted, use it
 		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-			final File f = Environment.getExternalStorageDirectory();
-			folder = f.getAbsolutePath();
+			folder = ComicsParameters.sExternalDirectory.getAbsolutePath();
 		}
 		
 		return folder;

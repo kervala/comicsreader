@@ -27,7 +27,6 @@ import java.util.List;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 
 public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 	private File mDirectory;
@@ -82,7 +81,7 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 			mItems.addAll(files);
 		}
 
-		if(!mDirectory.getAbsolutePath().equalsIgnoreCase(Environment.getExternalStorageDirectory().getAbsolutePath())) {
+		if(!mDirectory.getAbsolutePath().equalsIgnoreCase(ComicsParameters.sRootDirectory.getAbsolutePath())) {
 			BrowserItem item = new BrowserItem("..", BrowserItem.TYPE_DIRECTORY_PARENT, false);
 			item.setPath(mDirectory.getParent());
 			mItems.add(0, item);
