@@ -108,4 +108,6 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="remember_password">Remember password</string>
+    <string name="contributors_label">Contributors:</string>
+    <string name="contributors">- ultrapeer (Turkish translation and French typos)</string>
 </resources>

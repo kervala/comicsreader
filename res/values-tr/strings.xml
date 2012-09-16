@@ -104,4 +104,6 @@
     <string name="username">Kullanıcı</string>
     <string name="password">Parola</string>
     <string name="remember_password">Parolayı hatırla</string>
+    <string name="contributors_label">Contributors:</string>
+    <string name="contributors">- ultrapeer (Turkish translation and French typos)</string>
 </resources>

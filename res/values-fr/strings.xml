@@ -25,6 +25,9 @@
     <string name="about_text">Application Android de lecture de bandes dessinées numériques dans plusieurs formats. Elle propose des transitions fluides, une ergonomie intuitive, des chargements rapides et son code est libre.</string>
     <string name="about_unrar_version">Version d\'UnRAR : %s</string>
     <string name="about_version">Version : %s</string>
+    <string name="about_revision">Révision : %s</string>
+    <string name="about_build_date">Date de compilation : %s</string>
+    <string name="licenses_waiting">Veuillez patienter pendant l\'affichage des licences…</string>
     <string name="album_downloading">Téléchargement de « %s » en cours…</string>
     <string name="app_name">Lecteur de BD</string>
     <string name="bookmark_help">Vous pouvez saisir soit un chemin absolu commençant par un / (comme /Pictures or /Download), ou une URL comme domain.com/comics/index.xml). Si vous ne précisez pas le préfixe http://, il sera ajouté automatiquement si elle ne commence pas par un /. Voir l\'\"Aide\" pour plus de détails à propos des \"Albums distants\".</string>
@@ -92,10 +95,15 @@
     <string name="preference_sample_summary">Échelle à appliquer au moment du chargement d\'une image afin de gagner de la mémoire</string>
     <string name="preference_zoom_label">Redimensionnement</string>
     <string name="preference_zoom_summary">Mode de redimensionnement des pages</string>
+    <string name="preference_category_misc">Divers</string>
+    <string name="preference_about">À propos de Lecteur de BD</string>
+    <string name="preference_about_summary">Version et licences des bibliothèques externes</string>
     <string name="previous_page">Page précédente</string>
     <string name="settings">Préférences</string>
     <string name="yes">Oui</string>
     <string name="username">Utilisateur</string>
     <string name="password">Mot de passe</string>
     <string name="remember_password">Se souvenir du mot de passe</string>
+    <string name="contributors_label">Contributeurs :</string>
+    <string name="contributors">- ultrapeer (traduction Turque et fautes de Français)</string>
 </resources>
