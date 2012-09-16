@@ -19,6 +19,9 @@
 
 package net.kervala.comicsreader;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -38,7 +41,27 @@ public class CbrAlbum extends Album {
 	}
 	
 	public static boolean isValid(String filename) {
-		return cbrExtension.equals(Album.getExtension(filename));
+		File file = new File(filename);
+
+		boolean valid = false;
+
+		if (file.isFile() && file.canRead()) {
+			try {
+				FileInputStream ifs = new FileInputStream(file);
+
+				byte [] buffer = new byte[4];
+					
+				if (ifs.read(buffer, 0, 4) == 4 && buffer[0] == 'R' && buffer[1] == 'a' && buffer[2] == 'r' && buffer[3] == '!') {
+					valid = true;
+				}
+
+				ifs.close();
+			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
+			}
+		}
+
+		return valid;
 	}
 
 	public static boolean askConfirm(String filename) {
