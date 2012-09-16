@@ -40,8 +40,6 @@ public class ComicsAuthenticator extends Authenticator {
 	
 	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
-		Log.i(ComicsParameters.APP_TAG, "Password requested");
-
 		if (mLogin == null || mPassword == null) {
 			mHandler.sendEmptyMessage(CommonActivity.ACTION_ASK_LOGIN);
 
