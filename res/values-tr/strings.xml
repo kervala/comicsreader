@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ * ComicsReader is an Android application to read comics
+ * Copyright (C) 2011-2012 Cedric OCHS
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+-->
+<resources>
+    <string name="about">Hakkında</string>
+    <string name="about_author">© 2011–2012 Kervala</string>
+    <string name="about_license">Bu uygulama GPLv3 lisansı kapsamında yayınlanmıştır:</string>
+    <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
+    <string name="about_text">Çeşitli biçimlerde sayısal çizgi roman görüntüleyici uygulama. Sezgisel kullanım, akıcı geçişler, hızlı yüklemeler sunar ve kaynak kodu özgürdür.</string>
+    <string name="about_unrar_version">UnRAR sürümü: %s</string>
+    <string name="about_version">Sürüm: %s</string>
+    <string name="about_revision">Revision: %s</string>
+    <string name="about_build_date">Build date: %s</string>
+    <string name="licenses_waiting">Please wait while updating licenses…</string>
+    <string name="album_downloading">\"%s\" dosyası indiriliyor…</string>
+    <string name="app_name">Çizgi roman görüntüleyici</string>
+    <string name="bookmark_help">Bir / ile başlayan mutlak yol (/İndirmeler veya /Resimler gibi) ya da domain.com/comics/index.xml gibi bir URL girebilirsiniz. http:// ön ekini belirtmezseniz, / karakteriyle başlamıyorsa otomatik olarak eklenir. \"Uzaktaki albümler\" hakkında detaylar için \"Yardıma\" bakınız.</string>
+    <string name="bookmark_title">Başlık</string>
+    <string name="bookmark_url">Mutlak yerel yol veya URL</string>
+    <string name="bookmarks">Favoriler</string>
+    <string name="bookmarks_add">İlâve et</string>
+    <string name="bookmarks_edit">Düzenle</string>
+    <string name="bookmarks_help">Düzenlemek ya da silmek için favorilere uzunca dokununuz.</string>
+    <string name="bookmarks_load">Yükle</string>
+    <string name="bookmarks_remove">Sil</string>
+    <string name="bookmarks_title">Favori yöneticisi</string>
+    <string name="browse">Göz at</string>
+    <string name="browser_title">Tarayıcı</string>
+    <string name="bytes">bayt</string>
+    <string name="changelog">Sürüm notları</string>
+    <string name="close">Kapat</string>
+    <string name="confirm_delete_album">Bu albümü silmek istediğinizden emin misiniz?</string>
+    <string name="confirm_delete_bookmark">Bu favoriyi silmek istediğinizden emin misiniz?</string>
+    <string name="confirm_open_folder">Bu klasör resim olmayan dosyalar içeriyor. Albüm olarak açmak ister misiniz?</string>
+    <string name="cover">Kapak</string>
+    <string name="dialog_album_delete">Sil</string>
+    <string name="dialog_album_size">Boyut: %1$d %2$s</string>
+    <string name="dialog_album_title">Başlık</string>
+    <string name="dialog_confirm_title">Teyit</string>
+    <string name="dialog_error_title">Hata</string>
+    <string name="dialog_progress_browser_message">Yükleniyor, bekleyiniz…</string>
+    <string name="error_no_album_loaded">Hiçbir albüm seçili değil. Menü vasıtasıyla seçiniz.</string>
+    <string name="error_no_connection_available">İnternet bağlantısı bulunamadı.</string>
+    <string name="error_no_external_storage">Hiçbir harici depolama unsuru bulunamadı.</string>
+    <string name="error_no_room">Albümü indirmek için kâfi yer bulunmamaktadır.</string>
+    <string name="error_out_of_memory">Yetersiz bellek, resimlerin kalitesini ya da çözünürlüklerini \"Tercihlerde\" düşürün veya riski üstlenerek devam edin.</string>
+    <string name="error_unable_to_write">Harici depolamaya yazılamadı.</string>
+    <string name="external_storage">Harici depolama</string>
+    <string name="first_page">İlk sayfa</string>
+    <string name="help">Yardım</string>
+    <string name="kbytes">Kb</string>
+    <string name="last_page">Son sayfa</string>
+    <string name="mbytes">Mb</string>
+    <string name="next_page">Sonraki sayfa</string>
+    <string name="no">Hayır</string>
+    <string name="pages">Şu sayfaya git</string>
+    <string name="preference_category_advanced">Gelişmiş parametreler</string>
+    <string name="preference_category_cache">Arabellek</string>
+    <string name="preference_category_view">Görünüm</string>
+    <string name="preference_clear_cache_albums">Albümleri sil</string>
+    <string name="preference_clear_cache_albums_toast">İndirilen tüm albümler silindi</string>
+    <string name="preference_clear_cache_albums_summary">İndirilip arabelleğe alınan tüm albümleri sil</string>
+    <string name="preference_clear_cache_thumbnails">Minyatürleri sil</string>
+    <string name="preference_clear_cache_thumbnails_summary">İndirilen ya da oluşturulan tüm minyatürleri sil</string>
+    <string name="preference_clear_cache_thumbnails_toast">Tüm minyatürler silindi</string>
+    <string name="preference_double_page_label">Çift sayfa kipi</string>
+    <string name="preference_double_page_summary">İki sayfayı aynı anda ekranda gösterir</string>
+    <string name="preference_fast_scroll_label">Hızlı kaydırma</string>
+    <string name="preference_fast_scroll_summary">Listede hızlı gezinmek için işareti etkinleştirir</string>
+    <string name="preference_fit_to_screen_label">Ekrana uygula</string>
+    <string name="preference_fit_to_screen_summary">Ekranın çözünürlüğünden küçükse resmi genişletir</string>
+    <string name="preference_full_screen_label">Tam ekran</string>
+    <string name="preference_full_screen_summary">Mümkünse durum çubuğunu saklar</string>
+    <string name="preference_high_quality_label">32 bit renk</string>
+    <string name="preference_high_quality_summary">Uyarı: bu akıcılığı azaltabilir ve daha fazla bellek kullanabilir de mémoire</string>
+    <string name="preference_overlay_duration_label">Sayfa sayısı</string>
+    <string name="preference_overlay_duration_summary">Sayfa sayısının gösterilme süresi</string>
+    <string name="preference_sample_label">Zorlanan boyutlandırma ölçeği</string>
+    <string name="preference_sample_summary">Bellek tasarruf etmek için yüklendiğinde bir resme uygulanacak yeniden boyutlandırma ölçeği</string>
+    <string name="preference_zoom_label">Yeniden boyutlandırma</string>
+    <string name="preference_zoom_summary">Sayfaların yeniden boyutlandırma kipi</string>
+    <string name="preference_category_misc">Misc</string>
+    <string name="preference_about">About ComicsReader</string>
+    <string name="preference_about_summary">Version and 3rd party licenses</string>
+    <string name="previous_page">Evvelki sayfa</string>
+    <string name="settings">Tercihler</string>
+    <string name="yes">Evet</string>
+    <string name="username">Kullanıcı</string>
+    <string name="password">Parola</string>
+    <string name="remember_password">Parolayı hatırla</string>
+</resources>

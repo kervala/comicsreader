@@ -1,0 +1,57 @@
+KULLANIM KILAVUZU
+
+1. Tarayıcı
+
+Tarayıcıda iki tür ikon vardır: klasörler ve albümler.
+
+Tüm klasörler aynı gri ikonla simgelenirler ve tanınan albümler kapaklarının minyatürüyle gösterililer. Diğer tanınmayan dosyalar ise gösterilmezler.
+
+Resim ya da diğer tanınan dosyalar kapsayan bir klasörü açmak istediğinizde normal bir dosya olarak mı yoksa bir albüm olarak mı açmak istediğiniz sorulacaktır.
+
+İsimleri ".." olan klasörler üst klasörlerdir.
+
+Bir klasör ikonuna dokunduğunuzda minyatürü yeni içeriği ile tazelenecektir.
+
+Açmak istediğiniz albümü içeren klasöre ulaşıp albüme dokunmanız yeterlidir.
+
+2. Görüntüleyici
+
+Albüm açıldığında ilk sayfayı görürsünüz.
+
+Klavyeyi kullanmak istiyorsanız sağ ve sol imleç tuşlarıyla önceki ve sonraki sayfalara gidebilirsiniz.
+Ekranı kullanmak istiyorsanız ekrana dokunup sağa ya da sola kaydırarak sırasıyla önceki ve sonraki sayfalara gidebilirsiniz.
+
+Varsayılan yaklaştırma biçimi ekranın genişliğine uyarlar. Bunu "Tercihlerde" değiştirebilirsiniz.
+
+Sayfa ekrandan genişse hem yatay hem de dikey yönlerde kaydırma yapabilirsiniz..
+
+Herhangi bir sayfaya "Menü" düğmesi ve ardından "Şu sayfaya git" seçeneği ile ya da cihazınızda mevcutsa "Ara" düğmesiyle gidebilirsiniz.
+
+3. Favoriler
+
+TODO
+
+4. Ayarlar
+
+TODO
+
+BAĞLANTILAR
+
+Proje Google Code'da şu adreste barınmaktadır: http://code.google.com/p/android-comicsreader/
+
+Hata rapor etmek ya da öneride bulunmak için:
+http://code.google.com/p/android-comicsreader/issues/list
+
+Kaynak koda göz atmak istiyorsanız:
+http://code.google.com/p/android-comicsreader/source/browse/
+
+Son sürümü elle indirmek istiyorsanız:
+http://code.google.com/p/android-comicsreader/downloads/list
+
+Daha geniş içerikli bir viki şu adreste bulunabilir:
+http://code.google.com/p/android-comicsreader/w/list
+
+LİSANS
+
+GNU GPLv3 özgür yazılım kapsamnda yayınlanmıştır, lisansın metni şu adreste okunabilir:
+http://www.gnu.org/licenses/gpl-3.0.txt
