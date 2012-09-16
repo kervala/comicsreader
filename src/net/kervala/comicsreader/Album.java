@@ -32,8 +32,6 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.Bitmap.Config;
 import android.net.Uri;
 import android.util.Log;
 
@@ -206,7 +204,7 @@ public class Album {
 
 	public static boolean isValidJpegImage(String filename) {
 		String ext = Album.getExtension(filename);
-			
+
 		return "jpg".equals(ext) || "jpeg".equals(ext) || "jpe".equals(ext);
 	}
 
@@ -300,6 +298,9 @@ public class Album {
 	}
 	
 	public void checkMaxImagesInMemory() {
+		mMaxImagesInMemory = 3; 
+
+/*
 		System.gc();
 		
 		ArrayList<Size> sizes = new ArrayList<Size>();
@@ -308,7 +309,9 @@ public class Album {
 		for(int page = 0; page < mNumPages; ++page) {
 			final BitmapFactory.Options options = getPageOptions(page);
 
-			sizes.add(new Size(options.outWidth, options.outHeight));
+			if (options != null) {
+				sizes.add(new Size(options.outWidth, options.outHeight));
+			}
 		}
 
 		Collections.sort(sizes);
@@ -343,6 +346,7 @@ public class Album {
 		bitmaps.clear();
 		
 		System.gc();
+*/
 	}
 	
 	public boolean createPagesThumbnails() {
@@ -497,7 +501,8 @@ public class Album {
 				}
 			}
 		}
-
+/*
+		// TODO: check for Android version, 2.2 should need that
 		if (mHighQuality && bitmap != null) {
 			final int width = bitmap.getWidth();
 			final int height = bitmap.getHeight();
@@ -525,7 +530,7 @@ public class Album {
 
 			return newBitmap;
 		}
-		
+*/
 		return bitmap;
 	}
 	
@@ -646,6 +651,10 @@ public class Album {
 		final Bitmap bitmapRaw = getPageRaw(page, size.dstScale);
 
 		if (bitmapRaw == null) return null;
+
+		if (size.srcWidth == size.dstWidth && size.srcHeight == size.dstHeight) {
+			return bitmapRaw;
+		}
 
 		Bitmap bitmap = null;
 		

@@ -72,6 +72,14 @@ public class FullImageView extends View {
 		recycleCurrentBitmap();
 	}
 	
+	public int getBitmapWidth() {
+		return mBitmapWidth;
+	}
+
+	public int getBitmapHeight() {
+		return mBitmapHeight;
+	}
+
 	/**
 	 * Return the view's current bitmap, or null if no bitmap has been assigned.
 	 */
@@ -154,23 +162,31 @@ public class FullImageView extends View {
 	public synchronized int getOffset() {
 		return mOffset;
 	}
-	
-	public void swapNext() {
+
+	public boolean swapNext() {
+		if (mNextBitmap == null) return false;
+
 		recyclePreviousBitmap();
 
 		setPreviousBitmap(mCurrentBitmap);
 		setCurrentBitmap(mNextBitmap);
 		setNextBitmap(null);
+
+		return true;
 	}
 
-	public void swapPrevious() {
+	public boolean swapPrevious() {
+		if (mPreviousBitmap == null) return false;
+
 		recycleNextBitmap();
 
 		setNextBitmap(mCurrentBitmap);
 		setCurrentBitmap(mPreviousBitmap);
 		setPreviousBitmap(null);
+
+		return true;
 	}
-	
+
 	public synchronized void recycleCurrentBitmap() {
 		if (mCurrentBitmap != null) {
 			mCurrentBitmap.recycle();
