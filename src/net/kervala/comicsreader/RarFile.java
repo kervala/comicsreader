@@ -79,8 +79,12 @@ public class RarFile {
 
 	public List<String> entries() {
 		if (sLoaded && mEntries.isEmpty()) {
+			String [] entries = nativeGetEntries(mName);
+
 			// load all entries if not already processed
-			mEntries = Arrays.asList(nativeGetEntries(mName));
+			if (entries != null) {
+				mEntries = Arrays.asList(entries);
+			}
 		}
 		return mEntries;
 	}

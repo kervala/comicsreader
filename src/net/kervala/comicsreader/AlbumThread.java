@@ -359,6 +359,8 @@ public class AlbumThread extends Thread {
 	}
 
 	public int getLastPage() {
+		if (mAlbum == null) return 0;
+
 		int page = mAlbum.getNumPages() - 1;
 		
 		if (mDoublePage && (page % 2) == 0) --page;

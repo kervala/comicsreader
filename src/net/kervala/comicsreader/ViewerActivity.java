@@ -214,9 +214,11 @@ public class ViewerActivity extends CommonActivity implements Callback, OnTouchL
 			showDialog(DIALOG_PAGES);
 			return true;
 		case KeyEvent.KEYCODE_BACK:
-			Intent intent = getIntent();
-			intent.setDataAndType(mAlbumThread.getAlbumUri(), mAlbumThread.getAlbum().getMimeType());
-			setResult(RESULT_FILE, intent);
+			if (mAlbumThread != null) {
+				Intent intent = getIntent();
+				intent.setDataAndType(mAlbumThread.getAlbumUri(), mAlbumThread.getAlbum().getMimeType());
+				setResult(RESULT_FILE, intent);
+			}
 			finish();
 			return true;
 		}
@@ -438,9 +440,9 @@ public class ViewerActivity extends CommonActivity implements Callback, OnTouchL
 
 				dismissDialog(CommonActivity.DIALOG_WAIT);
 
-				mScrollView.scrollTo(0, 0);
-
 				if (changed) {
+					mScrollView.scrollTo(0, 0);
+
 					// preload next page
 					mAlbumThread.updateNextPage();
 
