@@ -19,7 +19,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.kervala.comicsreader"
-    android:versionCode="11"
+    android:versionCode="12"
     android:versionName="@string/version" >
 
     <uses-permission android:name="android.permission.INTERNET" />
