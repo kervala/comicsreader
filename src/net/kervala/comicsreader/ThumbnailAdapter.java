@@ -83,6 +83,13 @@ public class ThumbnailAdapter extends BaseAdapter {
 		});
 	}
 
+	public void stopThread() {
+		if (mLoaderThread != null) {
+			mLoaderThread.interrupt();
+			mLoaderThread = null;
+		}
+	}
+
 	public boolean optimize(int first, int last) {
 		// if memory used for bitmaps is greater than MAX_USED_MEMORY
 		if (ThumbnailItem.sUsedMemory < ThumbnailItem.MAX_USED_MEMORY) return false;
@@ -151,7 +158,7 @@ public class ThumbnailAdapter extends BaseAdapter {
 		// add item to the queue
 		synchronized (mQueue) {
 			mQueue.push(item);
-			mQueue.notifyAll();
+			mQueue.notify();
 		}
 
 		if (mLoaderThread == null) {
@@ -165,31 +172,23 @@ public class ThumbnailAdapter extends BaseAdapter {
 		}
 	}
 
-	private void stopThread() {
-		if (mLoaderThread != null) {
-			mLoaderThread.interrupt();
-			mLoaderThread = null;
-		}
-	}
-
 	private class ItemsLoader extends Thread {
 		@Override
 		public void run() {
 			try {
 				while (!Thread.interrupted()) {
+					ThumbnailItem item = null;
+
 					// thread waits until there are any images to load in the queue
-					if (mQueue.size() == 0) {
-						synchronized (mQueue) {
+					synchronized (mQueue) {
+						if (mQueue.size() == 0) {
 							mQueue.wait();
+						} else {
+							item = mQueue.pop();
 						}
 					}
 
-					if (mQueue.size() > 0) {
-						final ThumbnailItem item;
-						synchronized (mQueue) {
-							item = mQueue.pop();
-						}
-
+					if (item != null) {
 						// update icon
 						if (item.update() && item.getStatus() == ThumbnailItem.STATUS_UPDATED) {
 							if (Thread.interrupted()) break;
