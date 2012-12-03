@@ -109,5 +109,5 @@
     <string name="password">Password</string>
     <string name="remember_password">Remember password</string>
     <string name="contributors_label">Contributors:</string>
-    <string name="contributors">- ultrapeer (Turkish translation and French typos)</string>
+    <string name="contributors">- ultrapeer (Turkish translation and French typos)\n- Zufre (Spanish translation)</string>
 </resources>
