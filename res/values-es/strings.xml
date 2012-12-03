@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+ * ComicsReader is an Android application to read comics
+ * Copyright (C) 2011-2012 Cedric OCHS
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+-->
+<resources>
+    <string name="about">Avcerca de</string>
+    <string name="about_author">© 2011–2012 Kervala</string>
+    <string name="about_license">Esta aplicación se publica bajo licencia GPLv3:</string>
+    <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
+    <string name="about_text">Aplicación Android para leer cómics digitales en varios formatos. Usa transiciones suaves, un interfaz intuitivo, carga rápido y su código es abierto.</string>
+    <string name="about_unrar_version">Version UNRAR: %s</string>
+    <string name="about_version">Versión: %s</string>
+    <string name="about_revision">Revisión: %s</string>
+    <string name="about_build_date">Fecha de compilación: %s</string>
+    <string name="licenses_waiting">Por favor espere mientras se actualizan las licencias…</string>
+    <string name="album_downloading">Descargando \"%s\"…</string>
+    <string name="app_name">Comics Reader</string>
+    <string name="bookmark_help">Puedes indicar un directorio local empezando por un / (por ejemplo /Pictures o /Download), o una URL (ejemplo dominio.com/comics/index.xml). Si omites el prefijo http:// , se añadirá automáticamente si no empieza con un / . Ver \"Ayuda\" para más detalles sobre \"Álbumes remotos\".</string>
+    <string name="bookmark_title">Título</string>
+    <string name="bookmark_url">Directorio o URL</string>
+    <string name="bookmarks">Favoritos</string>
+    <string name="bookmarks_add">Añadir</string>
+    <string name="bookmarks_edit">Modificar</string>
+    <string name="bookmarks_help">Por favor, pulse un favorito unos segundos para modificarlo o borrarlo.</string>
+    <string name="bookmarks_load">Cargar</string>
+    <string name="bookmarks_remove">Eliminar</string>
+    <string name="bookmarks_title">Control de favoritos</string>
+    <string name="browse">Ojear</string>
+    <string name="browser_title">Buscador</string>
+    <string name="bytes">bytes</string>
+    <string name="changelog">Registro de cambios</string>
+    <string name="close">Cerrar</string>
+    <string name="confirm_delete_album">¿Quieres borrar este álbum?</string>
+    <string name="confirm_delete_bookmark">¿Quieres borrar este favorito?</string>
+    <string name="confirm_open_folder">Este fichero contiene archivos de imágenes. ¿Quieres abrirlo como un álbum?</string>
+    <string name="cover">Cubierta</string>
+    <string name="dialog_album_delete">Borrar</string>
+    <string name="dialog_album_size">Tamaño: %1$d %2$s</string>
+    <string name="dialog_album_title">Título</string>
+    <string name="dialog_confirm_title">Confirmar</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_progress_browser_message">Por favor espere mientras se carga…</string>
+    <string name="error_no_album_loaded">Ningún archivo seleccionado. Por favor, usa el menú para escoger uno.</string>
+    <string name="error_no_connection_available">No hay conexión de internet disponible.</string>
+    <string name="error_no_external_storage">No puedo encontrar ningún almacén externo</string>
+    <string name="error_no_room">No hay espacio para descargar ese álbum en el almacén externo.</string>
+    <string name="error_out_of_memory">Sin memoria, por favor disminuya la calidad o resolución de la imagen en \"Ajustes\" o ìede continuar con los ajustes actuales a su propio riesgo.</string>
+    <string name="error_unable_to_write">Incapaz de escribir en el almacén externo.</string>
+    <string name="external_storage">Almacén externo</string>
+    <string name="first_page">Primera página</string>
+    <string name="help">Ayuda</string>
+    <string name="kbytes">KB</string>
+    <string name="last_page">Última página</string>
+    <string name="mbytes">MB</string>
+    <string name="next_page">Próxima página</string>
+    <string name="no">No</string>
+    <string name="pages">Ir a página</string>
+    <string name="preference_category_advanced">Ajustes avanzados</string>
+    <string name="preference_category_cache">Caché</string>
+    <string name="preference_category_view">Vista</string>
+    <string name="preference_clear_cache_albums">Borrar álbumes</string>
+    <string name="preference_clear_cache_albums_summary">Borrar todos los álbumes remotos descargados en la caché</string>
+    <string name="preference_clear_cache_albums_toast">Todos los álbumes descargados se han borrado</string>
+    <string name="preference_clear_cache_thumbnails">Borrar miniaturas</string>
+    <string name="preference_clear_cache_thumbnails_summary">Borrar todas las miniaturas descargadas o generadas</string>
+    <string name="preference_clear_cache_thumbnails_toast">Todas las miniaturas se han borrado</string>
+    <string name="preference_double_page_label">Modo de doble página</string>
+    <string name="preference_double_page_summary">Mostrar dos páginas a la vez en pantalla</string>
+    <string name="preference_fast_scroll_label">Desplazamiento rápido/string>
+    <string name="preference_fast_scroll_summary">Permite deslizar el pulgar para desplazarse rápido en la lista</string>
+    <string name="preference_fit_to_screen_label">Ajustar a pantalla</string>
+    <string name="preference_fit_to_screen_summary">Agrandar la imagen si es menor que la resolución de la pantalla</string>
+    <string name="preference_full_screen_label">Pantalla completa</string>
+    <string name="preference_full_screen_summary">Ocultar la barra de estado si es posible</string>
+    <string name="preference_high_quality_label">Colores de 32 bits</string>
+    <string name="preference_high_quality_summary">¡Atención! Puede reducir la suavidad y usar más memoria</string>
+    <string name="preference_overlay_duration_label">Número de página</string>
+    <string name="preference_overlay_duration_summary">Tiempo a mostrar el número de página</string>
+    <string name="preference_sample_label">Escala de imagen forzada</string>
+    <string name="preference_sample_summary">Escala a aplicar al cargar una imagen para ahorrar memoria</string>
+    <string name="preference_zoom_label">Zoom</string>
+    <string name="preference_zoom_summary">Modo de escalar páginas</string>
+    <string name="preference_category_misc">Varios</string>
+    <string name="preference_about">Sobre ComicsReader</string>
+    <string name="preference_about_summary">Versión and licencias de terceros</string>
+    <string name="previous_page">Página anterior</string>
+    <string name="settings">Ajustes</string>
+    <string name="yes">Sí</string>
+    <string name="username">Usuario</string>
+    <string name="password">Clave</string>
+    <string name="remember_password">Recordar clave</string>
+    <string name="contributors_label">Colaboradores:</string>
+    <string name="contributors">- ultrapeer (Traducción turca y errores en francés)\n- Zufre (Traducción español)</string>
+</resources>

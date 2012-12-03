@@ -105,5 +105,5 @@
     <string name="password">Mot de passe</string>
     <string name="remember_password">Se souvenir du mot de passe</string>
     <string name="contributors_label">Contributeurs :</string>
-    <string name="contributors">- ultrapeer (traduction Turque et fautes de Français)</string>
+    <string name="contributors">- ultrapeer (traduction en turc et fautes de français)\n- Zufre (traduction en espagnol)</string>
 </resources>

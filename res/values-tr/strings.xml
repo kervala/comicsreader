@@ -105,5 +105,5 @@
     <string name="password">Parola</string>
     <string name="remember_password">Parolayı hatırla</string>
     <string name="contributors_label">İştirak edenler:</string>
-    <string name="contributors">- ultrapeer (Türkçe tercüme ve Fransızca imlâ düzeltmeleri)</string>
+    <string name="contributors">- ultrapeer (Türkçe tercüme ve Fransızca imlâ düzeltmeleri)\n- Zufre (İspanyolca tercüme)</string>
 </resources>
