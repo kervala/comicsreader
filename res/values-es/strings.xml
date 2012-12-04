@@ -22,7 +22,7 @@
     <string name="about_author">© 2011–2012 Kervala</string>
     <string name="about_license">Esta aplicación se publica bajo licencia GPLv3:</string>
     <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-    <string name="about_text">Aplicación Android para leer cómics digitales en varios formatos. Usa transiciones suaves, un interfaz intuitivo, carga rápido y su código es abierto.</string>
+    <string name="about_text">Aplicación Android para leer cómics digitales en varios formatos. Usa transiciones suaves, una interfaz intuitivo, carga rápido y su código es abierto.</string>
     <string name="about_unrar_version">Version UNRAR: %s</string>
     <string name="about_version">Versión: %s</string>
     <string name="about_revision">Revisión: %s</string>
@@ -81,7 +81,7 @@
     <string name="preference_clear_cache_thumbnails_toast">Todas las miniaturas se han borrado</string>
     <string name="preference_double_page_label">Modo de doble página</string>
     <string name="preference_double_page_summary">Mostrar dos páginas a la vez en pantalla</string>
-    <string name="preference_fast_scroll_label">Desplazamiento rápido/string>
+    <string name="preference_fast_scroll_label">Desplazamiento rápido</string>
     <string name="preference_fast_scroll_summary">Permite deslizar el pulgar para desplazarse rápido en la lista</string>
     <string name="preference_fit_to_screen_label">Ajustar a pantalla</string>
     <string name="preference_fit_to_screen_summary">Agrandar la imagen si es menor que la resolución de la pantalla</string>
