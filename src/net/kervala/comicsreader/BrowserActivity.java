@@ -96,8 +96,6 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 	protected void onPause() {
 		super.onPause();
 
-		mAdapter.stopThread();
-
 		if (mAdapter != null) {
 			mAdapter.reset();
 		}
