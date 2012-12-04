@@ -25,7 +25,7 @@
 ini_set("display_errors","1");
 error_reporting(E_ALL);
 
-function encodeURI($url)
+function encodeURI($url, $html)
 {
 	// http://php.net/manual/en/function.rawurlencode.php
 	// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/encodeURI
@@ -37,7 +37,12 @@ function encodeURI($url)
 
 	$score = array('%23'=>'#');
 
-	return strtr(rawurlencode($url), array_merge($reserved, $unescaped, $score));
+	return strtr(rawurlencode($url), $html ? array_merge($reserved, $unescaped):array_merge($reserved, $unescaped, $score));
+}
+
+function encodeTitle($title)
+{
+	return trim(strtr($title, array('_' => ' ')));
 }
 
 function cmpAlbums($a, $b)
@@ -67,7 +72,7 @@ class CbzArchive
 	{
 		// take local directory based on current script location
 		$local = dirname($_SERVER["SCRIPT_FILENAME"]);
-		$remote = $_SERVER["SCRIPT_URI"];
+		$remote = $_SERVER["HTTP_HOST"].$_SERVER['PHP_SELF'];
 
 		$pos = strrpos($remote, "/");
 		if ($pos) $remote = substr($remote, 0, $pos);
@@ -87,15 +92,6 @@ class CbzArchive
 		$this->files = $this->findFiles();
 	}
 	
-	function createIndex()
-	{
-		$this->createThumbnails();
-		$this->createXmlIndex();
-		$this->createHtmlIndex();
-		
-		print_r($this->files);
-	}
-
 	function findFiles($dir='')
 	{
 		$ret = array();
@@ -125,7 +121,7 @@ class CbzArchive
 					{
 						$tmp['fullpath'] = $this->albums_directory.'/'.$current;
 						$tmp['filename'] = $file;
-						$tmp['title'] = $file;
+						$tmp['title'] = encodeTitle($file);
 						$tmp['size'] = 0;
 						$tmp['files'] = $rr;
 					}
@@ -134,7 +130,7 @@ class CbzArchive
 				{
 					$tmp['fullpath'] = $this->albums_directory.'/'.$current;
 					$tmp['filename'] = $file;
-					$tmp['title'] = $regs[2];
+					$tmp['title'] = encodeTitle($regs[2]);
 					$tmp['size'] = filesize($this->albums_directory.'/'.$current);
 				}
 
@@ -248,7 +244,7 @@ class CbzArchive
 	function createHtmlIndex($filename, $files='', $parent='')
 	{
 		if (!$files) $files = $this->files;
-	
+
 		$f = fopen($filename, "w");
 		
 		if (!$f) return false;
@@ -266,7 +262,7 @@ class CbzArchive
 		{
 			fwrite($f, "\t<div class=\"album\">\n");
 			fwrite($f, "\t\t<div class=\"thumbnail\">\n");
-			fwrite($f, "\t\t\t<a href=\"$parent\">\n");
+			fwrite($f, "\t\t\t<a href=\"".encodeURI($parent, true)."\">\n");
 			fwrite($f, "\t\t\t\t<img src=\"folder.png\" alt=\"Parent\" />\n");
 			fwrite($f, "\t\t\t</a>\n");
 			fwrite($f, "\t\t</div>\n");
@@ -280,7 +276,7 @@ class CbzArchive
 			{
 				fwrite($f, "\t<div class=\"album\">\n");
 				fwrite($f, "\t\t<div class=\"thumbnail\">\n");
-				fwrite($f, "\t\t\t<a href=\"".$file['fullpath']."\">\n");
+				fwrite($f, "\t\t\t<a href=\"".encodeURI($file['fullpath'], true)."\">\n");
 				fwrite($f, "\t\t\t\t<img src=\"".$file['thumbnail']."\" alt=\"".$file['title']."\" />\n");
 				fwrite($f, "\t\t\t</a>\n");
 				fwrite($f, "\t\t</div>\n");
@@ -331,7 +327,7 @@ class CbzArchive
 		{
 			fwrite($f, "\t<folder>\n");
 			fwrite($f, "\t\t<title>..</title>\n");
-			fwrite($f, "\t\t<url>".encodeURI($this->remote.'/'.$parent)."</url>\n");
+			fwrite($f, "\t\t<url>".encodeURI($this->remote.'/'.$parent, false)."</url>\n");
 			fwrite($f, "\t</folder>\n");
 		}
 		
@@ -344,7 +340,7 @@ class CbzArchive
 				fwrite($f, "\t\t<filename>".xmlentities($file['filename'])."</filename>\n");
 				fwrite($f, "\t\t<size>".$file['size']."</size>\n");
 				fwrite($f, "\t\t<thumbnail>".$this->remote.'/'.$file['thumbnail']."</thumbnail>\n");
-				fwrite($f, "\t\t<url>".encodeURI($this->remote.'/'.$file['fullpath'])."</url>\n");
+				fwrite($f, "\t\t<url>".encodeURI($this->remote.'/'.$file['fullpath'], false)."</url>\n");
 				fwrite($f, "\t</album>\n");
 			}
 			else if (isset($file['files']) && count($file['files']))
@@ -358,7 +354,7 @@ class CbzArchive
 				{
 					fwrite($f, "\t<folder>\n");
 					fwrite($f, "\t\t<title>".xmlentities($file['title'])."</title>\n");
-					fwrite($f, "\t\t<url>".encodeURI($this->remote.'/'.$child)."</url>\n");
+					fwrite($f, "\t\t<url>".encodeURI($this->remote.'/'.$child, false)."</url>\n");
 					fwrite($f, "\t</folder>\n");
 				}
 			}
@@ -396,7 +392,7 @@ class CbzArchive
 			if ($parent)
 			{
 				++$i;
-				fwrite($f, "\n\t\t{\"title\": \"..\", \"url\": \"".encodeURI($this->remote.'/'.$parent)."\"}");
+				fwrite($f, "\n\t\t{\"title\": \"..\", \"url\": \"".encodeURI($this->remote.'/'.$parent, false)."\"}");
 			}
 
 			foreach($files as $file)
@@ -411,7 +407,7 @@ class CbzArchive
 					if ($this->createJsonIndex($child, $file['files'], $filename))
 					{
 						if ($i++) fwrite($f, ",");
-						fwrite($f, "\n\t\t{\"title\": \"".xmlentities($file['title'])."\", \"url\": \"".encodeURI($this->remote.'/'.$child)."\"}");
+						fwrite($f, "\n\t\t{\"title\": \"".xmlentities($file['title'])."\", \"url\": \"".encodeURI($this->remote.'/'.$child, false)."\"}");
 					}
 				}
 			}
@@ -441,7 +437,7 @@ class CbzArchive
 				if (isset($file['md5']) && $file['md5'])
 				{
 					if ($i++) fwrite($f, ",");
-					fwrite($f, "\n\t\t{\"title\": \"".xmlentities($file['title'])."\", \"filename\": \"".xmlentities($file['filename'])."\", \"size\": ".$file['size'].", \"thumbnail\": \"".$this->remote.'/'.$file['thumbnail']."\", \"url\": \"".encodeURI($this->remote.'/'.$file['fullpath'])."\"}");
+					fwrite($f, "\n\t\t{\"title\": \"".xmlentities($file['title'])."\", \"filename\": \"".xmlentities($file['filename'])."\", \"size\": ".$file['size'].", \"thumbnail\": \"".$this->remote.'/'.$file['thumbnail']."\", \"url\": \"".encodeURI($this->remote.'/'.$file['fullpath'], false)."\"}");
 				}
 			}
 
@@ -455,6 +451,57 @@ class CbzArchive
 		return true;
 	}
 };
+
+$cli = isset($argc) && ($argc > 0);
+
+if ($cli)
+{
+	print "ComicsReader remote albums index generator\n";
+	
+	if ($argc < 2)
+	{
+		print "$argv[0] [options] <url>\n";
+		print "\n";
+		print "\t-da <albums directory>\n";
+		print "\t-dt <thumbnails directory>\n";
+		print "\t-fx <xml filename>\n";
+		print "\t-fj <json filename>\n";
+		print "\t-fh <html filename>\n";
+		print "\t-x generate XML index\n";
+		print "\t-j generate JSON index\n";
+		print "\t-h generate HTML index\n";
+	}
+
+	for($i = 1; $i < $argc; ++$i)
+	{
+		$arg = $argv[$i];
+		$next = isset($argv[$i+1]) ? $argv[$i+1]:'';
+		
+		if ($arg[0] == '-')
+		{
+			$arg = substr($arg, 1);
+
+			switch($arg)
+			{
+				case 'da': $_POST['albums_directory'] = $next; ++$i; break;
+				case 'dt': $_POST['thumbnails_directory'] = $next; ++$i; break;
+				case 'fx': $_POST['xml_filename'] = $next; ++$i; break;
+				case 'fj': $_POST['json_filename'] = $next; ++$i; break;
+				case 'fh': $_POST['html_filename'] = $next; ++$i; break;
+				case 'x': $_POST['generate_xml'] = 1; break;
+				case 'j': $_POST['generate_json'] = 1; break;
+				case 'h': $_POST['generate_html'] = 1; break;
+				default: print "Unknown option -$arg\n";
+			}
+		}
+		else
+		{
+			$_SERVER["HTTP_HOST"] = $arg.'/';
+		}
+	}
+
+	$_POST['generate'] = isset($_POST['generate_xml']) || isset($_POST['generate_json']) || isset($_POST['generate_html']) ? 1:0;
+}
 
 function get($var)
 {
@@ -510,11 +557,18 @@ else
 	$generate_html = 1;
 }
 
+if ($cli)
+{
+	return 0;
+}
+else
+{
+
 ?>
 <html>
 <head><title>ComicsReader remote albums index generator</title></head>
 <body>
-<form action="<?=$_SERVER['SCRIPT_URI']?>" method="post">
+<form action="<?=$_SERVER['PHP_SELF']?>" method="post">
 <input name="generate" type="hidden" value="1" />
 <div>Directory where to search for CBZ files<br/><input name="albums_directory" type="text" value="<?=$albums_directory?>" /></div>
 <div>Directory for thumbnails<br/><input name="thumbnails_directory" type="text" value="<?=$thumbnails_directory?>" /></div>
@@ -529,5 +583,7 @@ else
 </body>
 </html>
 <?
+
+}
 
 ?>
