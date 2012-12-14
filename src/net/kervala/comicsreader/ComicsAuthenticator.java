@@ -23,7 +23,6 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
 import android.os.Handler;
-import android.util.Log;
 
 public class ComicsAuthenticator extends Authenticator {
 	private Handler mHandler;
