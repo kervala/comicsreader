@@ -23,4 +23,4 @@ Version 1.0.0
 - Support both portrait and landscape orientation
 - Can be used to open application/x-cbz, application/x-cbr, image/jpeg and image/png mime types from any file manager
 - Tested with huge images up to 1200x1600 
-- English and French translations (any translators are welcome to contribute)
+- English, French, Turkish and Spanish translations (a big thanks to Ultrapeer and Zufre!) (any translators are welcome to contribute)

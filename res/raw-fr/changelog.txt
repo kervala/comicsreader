@@ -23,4 +23,4 @@ Version 1.0.0
 - Supporte les orientations portrait et paysage
 - Peut ouvrir les types mime application/x-cbz, application/x-cbr, image/jpeg et image/png à partir de n'importe quel gestionnaire de fichiers
 - Testé avec des grandes images jusqu'à 1200x1600 
-- Traductions anglaises et françaises (tous les traducteurs sont bienvenus pour y contribuer)
+- Traductions anglaise, française, turque et espagnole (un grand merci à Ultrapeer et Zufre !, tous les traducteurs sont bienvenus pour y contribuer)
