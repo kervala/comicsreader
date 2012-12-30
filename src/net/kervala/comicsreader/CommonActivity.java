@@ -62,13 +62,7 @@ public class CommonActivity extends Activity implements OnCancelListener, OnDism
 	static final int ACTION_NONE = 0;
 	static final int ACTION_CONFIRM_YES = 1;
 	static final int ACTION_CONFIRM_NO = 2;
-	static final int ACTION_UPDATE_BITMAP = 3;
-	static final int ACTION_UPDATE_PAGE_NUMBER = 4;
 	static final int ACTION_BOOKMARK = 5;
-	static final int ACTION_SCROLL_PAGE = 6;
-	static final int ACTION_UPDATE_WINDOW = 7;
-	static final int ACTION_UPDATE_ALBUM = 8;
-	static final int ACTION_DISPLAY_ERROR = 9;
 	static final int ACTION_UPDATE_ITEM = 10;
 	static final int ACTION_ASK_LOGIN = 11;
 	static final int ACTION_LOGIN = 12;

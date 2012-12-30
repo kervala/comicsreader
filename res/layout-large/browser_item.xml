@@ -18,13 +18,13 @@
  *
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="150dp"
-  android:layout_width="128dp"
-  android:gravity="top|center_horizontal"
-  android:paddingTop="10dp"
-  android:ellipsize="marquee"
-  android:textSize="10dp"
-  android:lines="3"
-  android:text="Text"
-  android:drawablePadding="5dp"
-/>
+    android:layout_width="128dp"
+    android:layout_height="150dp"
+    android:drawablePadding="5dp"
+    android:ellipsize="marquee"
+    android:gravity="top|center_horizontal"
+    android:lines="3"
+    android:paddingTop="10dp"
+    android:text="@string/browser_album_title"
+    android:textSize="12sp" />
+

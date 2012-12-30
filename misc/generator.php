@@ -19,7 +19,11 @@
  *
  */
 
-// currently only supports CBZ files
+// currently supports CBZ, CBR and CBT files
+
+// for CBR/RAR under Debian/Ubuntu, install PECL extension with :
+// sudo apt-get install php5-dev php-pear g++
+// sudo pecl -v install rar
 
 // display all PHP errors
 ini_set("display_errors","1");
@@ -67,6 +71,9 @@ class CbzArchive
 	private $remote = '';
 	private $albums_directory = '';
 	private $thumbnails_directory = '';
+	private $use_zip = false;
+	private $use_rar = false;
+	private $use_tar = false;
 
 	function __construct($folder='', $thumbnails='thumbnails')
 	{
@@ -81,6 +88,15 @@ class CbzArchive
 		$this->remote = $remote;
 		$this->albums_directory = $folder;
 		$this->thumbnails_directory = $thumbnails;
+
+		// standard extension
+		$this->use_zip = extension_loaded("zip");
+
+		// PECL extension
+		$this->use_rar = extension_loaded("rar");
+
+		// PEAR extension
+		$this->use_tar = (include 'Archive/Tar.php') && class_exists('Archive_Tar', false);
 	}
 	
 	function __destruct()
@@ -126,7 +142,7 @@ class CbzArchive
 						$tmp['files'] = $rr;
 					}
 				}
-				else if (preg_match("#^((.+)\\.cb[rz])$#", $file, $regs))
+				else if (preg_match("#^((.+)\\.cb[rzt])$#", $file, $regs))
 				{
 					$tmp['fullpath'] = $this->albums_directory.'/'.$current;
 					$tmp['filename'] = $file;
@@ -178,32 +194,130 @@ class CbzArchive
 		return true;
 	}
 
-	function createThumbnail($file)
+	function getZipContent($file)
 	{
+		if (!preg_match("/\.(zip|cbz)$/", strtolower($file))) return "";
+
 		$zip = new ZipArchive();
 		
-		if ($zip->open($file) != TRUE)
-		{
-			return "";
-		}
+		if ($zip->open($file) != TRUE) return "";
 
+		$content = "";
 		$files = array();
 		
 		for ($i=0; $i < $zip->numFiles; ++$i)
 		{
 			$stat = $zip->statIndex($i);
-			$files[] = $stat['name'];
+			$name = $stat['name'];
+			if (preg_match("/\.(png|jpeg|jpg|jpe|gif)$/", strtolower($name))) $files[] = $name;
 		}
 		
-		if (!count($files)) return "";
+		if (count($files))
+		{
+			sort($files);
+		
+			$content = $zip->getFromName($files[0]);
 
-		sort($files);
+			$zip->close();
+		}
 		
-		$content = $zip->getFromName($files[0]);
+		unset($zip);
+
+		return $content;
+	}
+
+	function getRarContent($file)
+	{
+		if (!preg_match("/\.(rar|cbr)$/", strtolower($file))) return "";
+
+		$rar = RarArchive::open($file);
+
+		if (!$rar) return "";
+
+		$content = "";
+		$entries = $rar->getEntries();
+
+		if ($entries)
+		{
+			$files = array();
 		
+			foreach ($entries as $entry)
+			{
+				$name = $entry->getName();
+				
+				if (preg_match("/\.(png|jpeg|jpg|jpe|gif)$/", strtolower($name))) $files[] = $name;
+			}
+
+			if (count($files))
+			{
+				sort($files);
+		
+				$entry = $rar->getEntry($files[0]);
+				
+				if ($entry)
+				{
+					$stream = $entry->getStream();
+				
+					if ($stream) $content = stream_get_contents($stream);
+				}
+			}
+		}
+
+		$rar->close();
+		
+		unset($rar);
+		
+		return $content;
+	}
+
+	function getTarContent($file)
+	{
+		if (!preg_match("/\.(tar|cbt)$/", strtolower($file))) return "";
+
+		$tar = new Archive_Tar($file);
+
+		$content = "";
+		$entries = $tar->listContent();
+
+		if (count($entries))
+		{
+			$files = array();
+
+			foreach ($entries as $entry)
+			{
+				$name = $entry['filename'];
+
+				if (preg_match("/\.(png|jpeg|jpg|jpe|gif)$/", strtolower($name))) $files[] = $name;
+			}
+	
+			if (count($files))
+			{
+				sort($files);
+
+				$content = $tar->extractInString($files[0]);
+			}
+		}
+
+		unset($tar);
+
+		return $content;
+	}
+
+	function createThumbnail($file)
+	{
+		$content = "";
+	
+		if ($this->use_zip && !$content) $content = $this->getZipContent($file);
+		if ($this->use_rar && !$content) $content = $this->getRarContent($file);
+		if ($this->use_tar && !$content) $content = $this->getTarContent($file);
+
+		if (!$content)
+		{
+			print "Bad format for $file\n";
+			return "";
+		}
+
 		$md5 = md5($content);
-
-		$zip->close();
 		
 		$filename = $this->thumbnails_directory."/$md5.png";
 		
@@ -223,8 +337,16 @@ class CbzArchive
 		$height = imagesy($img);
 
 		// calculate thumbnail size
-		$new_height = 96;
-		$new_width = floor($width * $new_height / $height);
+		if ($height > $width)
+		{
+			$new_height = 96;
+			$new_width = floor($width * $new_height / $height);
+		}
+		else
+		{
+			$new_width = 96;
+			$new_height = floor($height * $new_width / $width);
+		}
 
 		// create a new temporary image
 		$tmp_img = imagecreatetruecolor($new_width, $new_height);
@@ -371,13 +493,9 @@ class CbzArchive
 	{
 		if (!$files) $files = $this->files;
 
-		$f = fopen($filename, "w");
-		
-		if (!$f) return false;
-		
-		fwrite($f, "{\"albums\": {\n");
+		$data = array();
+		$data["albums"] = array();
 
-		$i = 0;
 		$folders_count = $parent ? 1:0;
 
 		foreach($files as $file)
@@ -387,12 +505,11 @@ class CbzArchive
 		
 		if ($folders_count > 0)
 		{
-			fwrite($f, "\t\"folder\": [");
+			$data["albums"]["folder"] = array();
 		
 			if ($parent)
 			{
-				++$i;
-				fwrite($f, "\n\t\t{\"title\": \"..\", \"url\": \"".encodeURI($this->remote.'/'.$parent, false)."\"}");
+				$data["albums"]["folder"][] = array("title" => "..", "url" => encodeURI($this->remote.'/'.$parent, false));
 			}
 
 			foreach($files as $file)
@@ -406,13 +523,10 @@ class CbzArchive
 			
 					if ($this->createJsonIndex($child, $file['files'], $filename))
 					{
-						if ($i++) fwrite($f, ",");
-						fwrite($f, "\n\t\t{\"title\": \"".xmlentities($file['title'])."\", \"url\": \"".encodeURI($this->remote.'/'.$child, false)."\"}");
+						$data["albums"]["folder"][] = array("title" => $file['title'], "url" => encodeURI($this->remote.'/'.$child, false));
 					}
 				}
 			}
-
-			fwrite($f, "\n\t]");
 		}
 
 		$i = 0;
@@ -425,26 +539,22 @@ class CbzArchive
 
 		if ($files_count > 0)
 		{
-			if ($folders_count > 0)
-			{
-				fwrite($f, ",\n");
-			}
-		
-			fwrite($f, "\t\"album\": [");
+			$data["albums"]["album"] = array();
 
 			foreach($files as $file)
 			{
 				if (isset($file['md5']) && $file['md5'])
 				{
-					if ($i++) fwrite($f, ",");
-					fwrite($f, "\n\t\t{\"title\": \"".xmlentities($file['title'])."\", \"filename\": \"".xmlentities($file['filename'])."\", \"size\": ".$file['size'].", \"thumbnail\": \"".$this->remote.'/'.$file['thumbnail']."\", \"url\": \"".encodeURI($this->remote.'/'.$file['fullpath'], false)."\"}");
+					$data["albums"]["album"][] = array("title" => $file['title'], "filename" => $file['filename'], "size" => $file['size'], "thumbnail" => $this->remote.'/'.$file['thumbnail'], "url" => encodeURI($this->remote.'/'.$file['fullpath'], false));
 				}
 			}
-
-			fwrite($f, "\n\t]\n");
 		}
 
-		fwrite($f, "}}\n");
+		$f = fopen($filename, "w");
+		
+		if (!$f) return false;
+
+		fwrite($f, json_encode($data));
 
 		fclose($f);
 		

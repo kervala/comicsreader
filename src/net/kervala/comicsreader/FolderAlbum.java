@@ -135,15 +135,17 @@ public class FolderAlbum extends Album {
 
 		mFiles = Arrays.asList(mFolder.list(new ImageFilter()));
 
+		if (mFiles.isEmpty()) return false;
+
 		// generate a title from filename
 		int first = mFilename.lastIndexOf("/");
-			
+
 		if (first > 0) {
 			mTitle = mFilename.substring(first+1, mFilename.length());
 		} else {
 			mTitle = mFilename;
 		}
-		
+
 		return true;
 	}
 
@@ -153,8 +155,15 @@ public class FolderAlbum extends Album {
 		mFolder = null;
 	}
 	
-	protected InputStream getInputStream(int page) throws IOException {
-		// get a stream on a page
-		return new BufferedInputStream(new FileInputStream(new File(mFolder, mFiles.get(page))), ComicsParameters.BUFFER_SIZE);
+	protected byte [] getBytes(int page) throws IOException {
+		// get a buffer on a page
+		File file = new File(mFolder, mFiles.get(page));
+
+		if (!file.exists()) return null;
+
+		InputStream fis = new FileInputStream(file);
+		InputStream bis = new BufferedInputStream(fis, ComicsParameters.BUFFER_SIZE);
+
+		return Album.inputStreamToBytes(bis, (int)file.length());
 	}
 }

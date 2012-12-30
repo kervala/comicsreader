@@ -19,10 +19,8 @@
 
 package net.kervala.comicsreader;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +28,6 @@ import java.util.List;
 public class RarFile {
 	protected String mName;
 	protected List<String> mEntries = new ArrayList<String>();
-	protected String mLastEntry;
-	protected byte[] mLastBuffer;
 	protected static String mVersion;
 	static protected boolean sLoaded = false;
 
@@ -61,9 +57,6 @@ public class RarFile {
 		if (filename == null) {
 			throw new IOException();
 		}
-		
-		mLastBuffer = null;
-		mLastEntry = null;
 
 		mName = filename;
 
@@ -71,8 +64,6 @@ public class RarFile {
 	}
 
 	public void close() {
-		mLastBuffer = null;
-		mLastEntry = null;
 		mEntries = null;
 		mName = null;
 	}
@@ -89,14 +80,8 @@ public class RarFile {
 		return mEntries;
 	}
 
-	public InputStream getInputStream(String entry) {
-		if (sLoaded && (mLastEntry == null || mLastBuffer == null || !entry.equals(mLastEntry))) {
-			// remember last buffer
-			mLastBuffer = nativeGetData(mName, entry);
-			mLastEntry = entry;
-		}
-
-		return new ByteArrayInputStream(mLastBuffer);
+	public byte [] getBytes(String entry) {
+		return sLoaded ? nativeGetData(mName, entry):null;
 	}
 
 	public String getName() {

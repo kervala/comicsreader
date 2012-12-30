@@ -278,10 +278,10 @@ public class ComicsParameters {
 		if (album.open(filename, false)) {
 			// get a thumbnail for first page
 			bitmap = cropThumbnail(resizeThumbnail(album.getPage(album.getCurrentPage(), -1, ComicsParameters.THUMBNAIL_HEIGHT, true)));
-		
+
 			album.close();
 		}
-		
+
 		if (bitmap == null) return null;
 
 		// if thumbnail can't be saved, continue

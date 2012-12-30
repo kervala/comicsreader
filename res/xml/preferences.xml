@@ -58,6 +58,26 @@
             android:key="preference_overlay_duration"
             android:summary="@string/preference_overlay_duration_summary"
             android:title="@string/preference_overlay_duration_label" />
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/preference_edges_resistance_names"
+            android:entryValues="@array/preference_edges_resistance_values"
+            android:key="preference_edges_resistance"
+            android:summary="@string/preference_edges_resistance_summary"
+            android:title="@string/preference_edges_resistance_label" />
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/preference_page_transition_speed_names"
+            android:entryValues="@array/preference_page_transition_speed_values"
+            android:key="preference_page_transition_speed"
+            android:summary="@string/preference_page_transition_speed_summary"
+            android:title="@string/preference_page_transition_speed_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="preference_reading_direction"
+            android:summary="@string/preference_reading_direction_summary"
+            android:title="@string/preference_reading_direction_label" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="preference_category_advanced"

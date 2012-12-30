@@ -28,6 +28,8 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import android.util.Log;
+
 public class CbzAlbum extends Album {
 	private ZipFile mZip;
 
@@ -52,7 +54,7 @@ public class CbzAlbum extends Album {
 				FileInputStream ifs = new FileInputStream(file);
 
 				byte [] buffer = new byte[2];
-					
+
 				if (ifs.read(buffer, 0, 2) == 2 && buffer[0] == 'P' && buffer[1] == 'K') {
 					valid = true;
 				}
@@ -91,6 +93,7 @@ public class CbzAlbum extends Album {
 			// open ZIP file
 			mZip = new ZipFile(mFilename);
 		} catch (IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 
@@ -101,12 +104,17 @@ public class CbzAlbum extends Album {
 			ZipEntry entry = zippedFiles.nextElement();
 			if (!entry.isDirectory()) {
 				String filename = entry.getName();
-				if (isValidImage(filename)) {
+				if (Album.isValidImage(filename)) {
 					mFiles.add(filename);
 				}
 			}
 		}
 		
+		if (mFiles.isEmpty()) {
+			close();
+			return false;
+		}
+
 		// generate a title from filename
 		int first = mFilename.lastIndexOf("/");
 			
@@ -129,16 +137,24 @@ public class CbzAlbum extends Album {
 		super.close();
 
 		try {
-			if (mZip != null)
+			if (mZip != null) {
 				mZip.close();
+				mZip = null;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	protected InputStream getInputStream(int page) throws IOException {
-		// get a stream on a page
+	protected byte [] getBytes(int page) throws IOException {
+		byte [] buffer = null;
+
 		ZipEntry entry = mZip.getEntry(mFiles.get(page));
-		return mZip.getInputStream(entry);
+		
+		if (entry != null) {
+			buffer = Album.inputStreamToBytes(mZip.getInputStream(entry), (int)entry.getSize());
+		}
+
+		return buffer;
 	}
 }

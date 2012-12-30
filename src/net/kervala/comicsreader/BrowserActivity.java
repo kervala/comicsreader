@@ -280,6 +280,8 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 					}
 				}
 
+				mAdapter.stopThread();
+
 				// download it and save it somewhere
 				mDownloadAlbumTask = new DownloadAlbumTask(this, item);
 				mDownloadAlbumTask.execute();
@@ -354,6 +356,8 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 		// a SD card is mounted, use it
 		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
 			folder = ComicsParameters.sExternalDirectory.getAbsolutePath();
+		} else {
+			folder = ComicsParameters.sRootDirectory.getAbsolutePath();
 		}
 		
 		return folder;
@@ -455,6 +459,8 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 		if (mDownloadAlbumTask != null) {
 			mDownloadAlbumTask.cancel();
 			mDownloadAlbumTask = null;
+
+			mAdapter.refresh();
 		}
 	}
 
@@ -611,6 +617,8 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 			mLastFile = prefs.getString("last_file", null);
 			mLastVersion = prefs.getInt("last_version", 0);
 
+			if (mLastUrl == null) return 0;
+
 			Uri uri = Uri.parse(mLastUrl);
 			
 			String userInfo = uri.getUserInfo();
@@ -652,7 +660,7 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 			prefs.putBoolean("remember_password", mRememberPassword);
 
 			updateUserInfo();
-			
+
 			prefs.putString("last_url", mLastUrl);
 			prefs.putString("last_title", mLastTitle);
 			prefs.putString("last_file", mLastFile);

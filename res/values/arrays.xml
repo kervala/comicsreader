@@ -60,4 +60,26 @@
         <item>10000</item>
         <item>0</item>
     </string-array>
+    <string-array name="preference_edges_resistance_names">
+        <item>None</item>
+        <item>Weak</item>
+        <item>Medium</item>
+        <item>Strong</item>
+    </string-array>
+    <string-array name="preference_edges_resistance_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="preference_page_transition_speed_names">
+        <item>Slow</item>
+        <item>Medium</item>
+        <item>Fast</item>
+    </string-array>
+    <string-array name="preference_page_transition_speed_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

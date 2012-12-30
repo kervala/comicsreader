@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class CbrAlbum extends Album {
@@ -100,6 +99,8 @@ public class CbrAlbum extends Album {
 			}
 		}
 		
+		if (mFiles.isEmpty()) return false;
+
 		// generate a title from filename
 		int first = mFilename.lastIndexOf("/");
 			
@@ -124,9 +125,8 @@ public class CbrAlbum extends Album {
 		if (mRar != null)
 			mRar.close();
 	}
-	
-	protected InputStream getInputStream(int page) throws IOException {
-		// get a stream on a page
-		return mRar.getInputStream(mFiles.get(page));
+	protected byte [] getBytes(int page) throws IOException {
+		// get a buffer on a page
+		return mRar.getBytes(mFiles.get(page));
 	}
 }

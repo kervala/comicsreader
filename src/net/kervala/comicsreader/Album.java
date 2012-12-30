@@ -48,6 +48,8 @@ public class Album {
 	protected int mScale = 1;
 	protected int mMaxImagesInMemory = 0;
 	protected File mCachePagesDir;
+	protected int mLastCachedPage = -1;
+	protected byte [] mLastCachedBuffer = null;
 
 	final static String undefinedExtension = "";
 	final static String undefinedMimeType = "";
@@ -55,7 +57,8 @@ public class Album {
 	static final int ALBUM_TYPE_NONE = 0;
 	static final int ALBUM_TYPE_CBZ = 1;
 	static final int ALBUM_TYPE_CBR = 2;
-	static final int ALBUM_TYPE_FOLDER = 3;
+	static final int ALBUM_TYPE_CBT = 3;
+	static final int ALBUM_TYPE_FOLDER = 4;
 
 	static Album createInstance(String filename) {
 		if (CbzAlbum.isValid(filename)) {
@@ -65,7 +68,11 @@ public class Album {
 		if (CbrAlbum.isValid(filename)) {
 			return new CbrAlbum();
 		}
-		
+
+		if (CbtAlbum.isValid(filename)) {
+			return new CbtAlbum();
+		}
+
 		if (FolderAlbum.isValid(filename)) {
 			return new FolderAlbum();
 		}
@@ -100,6 +107,11 @@ public class Album {
 			return ALBUM_TYPE_CBR;
 		}
 
+		// file is a cbt
+		if (CbtAlbum.isValid(filename)) {
+			return ALBUM_TYPE_CBT;
+		}
+		
 		// file is an image or a folder containing images
 		if (FolderAlbum.isValid(filename)) {
 			return ALBUM_TYPE_FOLDER;
@@ -116,6 +128,7 @@ public class Album {
 		{
 			case ALBUM_TYPE_CBZ: return CbzAlbum.getMimeType(filename);
 			case ALBUM_TYPE_CBR: return CbrAlbum.getMimeType(filename);
+			case ALBUM_TYPE_CBT: return CbtAlbum.getMimeType(filename);
 			case ALBUM_TYPE_FOLDER: return FolderAlbum.getMimeType(filename);
 			default: break;
 		}
@@ -140,6 +153,9 @@ public class Album {
 		// file is a cbr
 		if (CbrAlbum.isValid(filename)) return true;
 
+		// file is a cbt
+		if (CbtAlbum.isValid(filename)) return true;
+
 		// file is an image or a folder containing images
 		if (FolderAlbum.isValid(filename)) return true;
 
@@ -163,6 +179,9 @@ public class Album {
 		// file is a cbr
 		if (CbrAlbum.isValid(filename)) return true;
 
+		// file is a cbt
+		if (CbtAlbum.isValid(filename)) return true;
+
 		// file is an image or a folder containing images
 		if (FolderAlbum.isValid(filename)) return true;
 
@@ -176,6 +195,9 @@ public class Album {
 		// file is a cbr
 		if (CbrAlbum.askConfirm(filename)) return true;
 
+		// file is a cbt
+		if (CbtAlbum.askConfirm(filename)) return true;
+
 		// file is an image or a folder containing images
 		if (FolderAlbum.askConfirm(filename)) return true;
 		
@@ -187,6 +209,7 @@ public class Album {
 		{
 			case ALBUM_TYPE_CBZ: return CbzAlbum.getTitle(filename);
 			case ALBUM_TYPE_CBR: return CbrAlbum.getTitle(filename);
+			case ALBUM_TYPE_CBT: return CbtAlbum.getTitle(filename);
 			case ALBUM_TYPE_FOLDER: return FolderAlbum.getTitle(filename);
 			default: break;
 		}
@@ -212,8 +235,41 @@ public class Album {
 		return "png".equals(Album.getExtension(filename));
 	}
 
+	public static boolean isValidGifImage(String filename) {
+		return "gif".equals(Album.getExtension(filename));
+	}
+	
 	public static boolean isValidImage(String filename) {
-		return isValidJpegImage(filename) || isValidPngImage(filename);
+		return isValidJpegImage(filename) || isValidPngImage(filename) || isValidGifImage(filename);
+	}
+	
+	public static byte [] inputStreamToBytes(InputStream input, int size) {
+		byte [] buffer = null;
+
+		if (input != null) {
+			buffer = new byte[size];
+
+			int offset = 0;
+			int readSize = 0;
+			
+			try {
+				while (size > 0 && (readSize = input.read(buffer, offset, size)) > 0)
+				{
+					offset += readSize;
+					size -= readSize;
+				}
+
+				if (size != 0) {
+					Log.e("ComicsReader", "Album buffer length differs");
+				}
+
+				input.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return buffer;
 	}
 	
 	public Album() {
@@ -429,14 +485,11 @@ public class Album {
 		options.inScaled = false;
 		
 		try {
-			// open stream
-			InputStream is = getInputStream(page);
-
-			// get image size
-			BitmapFactory.decodeStream(is, null, options);
+			// update buffer if needed
+			updateCachedBuffer(page);
 			
-			// close stream
-			is.close();
+			// get image size
+			BitmapFactory.decodeByteArray(mLastCachedBuffer, 0, mLastCachedBuffer.length, options);
 		} catch(IOException e) {
 			Log.e(ComicsParameters.APP_TAG, "IOException while reading size of page " + String.valueOf(page) + ": " + e.toString());
 			options = null;
@@ -447,9 +500,18 @@ public class Album {
 		
 		return options;
 	}
-	
-	protected InputStream getInputStream(int page) throws IOException {
+
+	protected byte [] getBytes(int page) throws IOException {
+		Log.e("ComicsReader", "Album.getBytes shouldn't be called directly");
+		
 		return null;
+	}
+
+	protected void updateCachedBuffer(int page) throws IOException {
+		if (mLastCachedBuffer == null || page != mLastCachedPage) {
+			mLastCachedBuffer = getBytes(page);
+			mLastCachedPage = page;
+		}
 	}
 	
 	/**
@@ -477,12 +539,13 @@ public class Album {
 		}
 		
 		Bitmap bitmap = null;
-		InputStream is = null;
 
 		try {
-			is = getInputStream(page);
-			if (is == null) return null;
-			bitmap = BitmapFactory.decodeStream(is, null, options);
+			// update buffer if needed
+			updateCachedBuffer(page);
+
+			// get bitmap from buffer
+			bitmap = BitmapFactory.decodeByteArray(mLastCachedBuffer, 0, mLastCachedBuffer.length, options);
 		} catch(IllegalStateException e) {
 			Log.e(ComicsParameters.APP_TAG, "Exception while reading file " + mFilename + ": " + e.toString());
 			return null;
@@ -492,14 +555,6 @@ public class Album {
 		} catch (OutOfMemoryError e) {
 			Log.e(ComicsParameters.APP_TAG, "OutOfMemory while decoding bitmap " + mFiles.get(page) + ": " + e.toString());
 			return null;
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 /*
 		// TODO: check for Android version, 2.2 should need that
