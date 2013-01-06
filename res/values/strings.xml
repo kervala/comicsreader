@@ -115,6 +115,6 @@
     <string name="preference_edges_resistance_summary">Resistance before switching page</string>
     <string name="preference_page_transition_speed_label">Page transition speed</string>
     <string name="preference_page_transition_speed_summary">Speed used for next/previous page transition animation</string>
-    <string name="preference_reading_direction_label">Right to left pages transition</string>
+    <string name="preference_reading_direction_label">Right to left reading direction</string>
     <string name="preference_reading_direction_summary">Swipe to the left to switch to next page</string>
 </resources>

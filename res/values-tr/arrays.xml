@@ -33,4 +33,15 @@
         <item>10 saniye</item>
         <item>Belirtilmemiş</item>
     </string-array>
+    <string-array name="preference_edges_resistance_names">
+        <item>None</item>
+        <item>Weak</item>
+        <item>Medium</item>
+        <item>Strong</item>
+    </string-array>
+    <string-array name="preference_page_transition_speed_names">
+        <item>Slow</item>
+        <item>Medium</item>
+        <item>Fast</item>
+    </string-array>
 </resources>

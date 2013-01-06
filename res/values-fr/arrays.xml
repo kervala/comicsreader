@@ -33,4 +33,15 @@
         <item>10 secondes</item>
         <item>Indéfinie</item>
     </string-array>
+    <string-array name="preference_edges_resistance_names">
+        <item>Aucune</item>
+        <item>Faible</item>
+        <item>Moyenne</item>
+        <item>Forte</item>
+    </string-array>
+    <string-array name="preference_page_transition_speed_names">
+        <item>Lente</item>
+        <item>Moyenne</item>
+        <item>Rapide</item>
+    </string-array>
 </resources>
