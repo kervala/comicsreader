@@ -18,7 +18,7 @@
  *
 -->
 <resources>
-    <string name="about">Avcerca de</string>
+    <string name="about">Acerca de</string>
     <string name="about_author">© 2011–2013 Kervala</string>
     <string name="about_license">Esta aplicación se publica bajo licencia GPLv3:</string>
     <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
@@ -105,12 +105,12 @@
     <string name="password">Clave</string>
     <string name="remember_password">Recordar clave</string>
     <string name="contributors_label">Colaboradores:</string>
-    <string name="contributors">- ultrapeer (Traducción turca y errores en francés)\n- Zufre (Traducción español)</string>
-    <string name="browser_album_title">No title</string>
-    <string name="preference_edges_resistance_label">Edges resistance</string>
-    <string name="preference_edges_resistance_summary">Resistance before switching page</string>
-    <string name="preference_page_transition_speed_label">Page transition speed</string>
-    <string name="preference_page_transition_speed_summary">Speed used for next/previous page transition animation</string>
-    <string name="preference_reading_direction_label">Right to left reading direction</string>
-    <string name="preference_reading_direction_summary">Swipe to the left to switch to next page</string>
+    <string name="contributors">- ultrapeer (Traducción turca y errores en francés)\n- Zufre (Traducción española)</string>
+    <string name="browser_album_title">Sin título</string>
+    <string name="preference_edges_resistance_label">Resistencia bordes</string>
+    <string name="preference_edges_resistance_summary">Resistencia antes de cambiar la página</string>
+    <string name="preference_page_transition_speed_label">Velocidad de cambio de página</string>
+    <string name="preference_page_transition_speed_summary">Velocidad usada para la animación de paso a página previa/siguiente</string>
+    <string name="preference_reading_direction_label">Dirección de lectura de derecha a izquierda</string>
+    <string name="preference_reading_direction_summary">Deslice el dedo a la izquierda para ir a la siguiente página</string>
 </resources>
