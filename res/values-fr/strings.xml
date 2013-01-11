@@ -110,7 +110,7 @@
     <string name="preference_edges_resistance_label">Résistance aux bords</string>
     <string name="preference_edges_resistance_summary">Résistance avant de changer de page</string>
     <string name="preference_page_transition_speed_label">Vitesse de transition de page</string>
-    <string name="preference_page_transition_speed_summary">Vitesse de l'animation de transition pour la page suivante/précédente</string>
+    <string name="preference_page_transition_speed_summary">Vitesse de l\'animation de transition pour la page suivante/précédente</string>
     <string name="preference_reading_direction_label">Sens de lecture de droite à gauche</string>
     <string name="preference_reading_direction_summary">Déplacer vers la gauche pour afficher la page suivante</string>
 </resources>
