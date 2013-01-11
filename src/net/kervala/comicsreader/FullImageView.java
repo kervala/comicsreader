@@ -283,7 +283,7 @@ public class FullImageView extends View {
 
 			// only display previous image if its right border is visible
 			if (mOffset < prevRight - mRect.right) {
-				if (mPreviousBitmap != null) {
+				if (mPreviousBitmap != null && !mPreviousBitmap.isRecycled()) {
 					bottom = Math.min(mRect.bottom, mPreviousBitmap.getHeight());
 					mRectDst.set(0, mRect.top, mPreviousBitmap.getWidth() - prevLeft, bottom);
 
@@ -307,7 +307,7 @@ public class FullImageView extends View {
 			final int nextLeft = Math.max(mRect.right, mBitmapWidth) - mOffset;
 			final int nextWidth = Math.min(mOffset, mNextBitmap != null ? mNextBitmap.getWidth():mBitmapWidth);  
 
-			if (mNextBitmap != null) {
+			if (mNextBitmap != null && !mNextBitmap.isRecycled()) {
 				bottom = Math.min(mRect.bottom, mNextBitmap.getHeight());
 				mRectDst.set(nextLeft, mRect.top, nextLeft + nextWidth, bottom);
 				mRectSrc.set(0, mRect.top, nextWidth, bottom);
