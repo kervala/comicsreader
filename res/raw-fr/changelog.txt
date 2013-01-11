@@ -1,4 +1,12 @@
-Version 1.0.0
+Version 1.1
+
+- Lecture de droite à gauche
+- Paramétrage de la vitesse de transition entre les pages
+- Paramétrage de la "résistance" aux bords
+- Support des formats GIF et CBT/TAR
+- Amélioration de generator.php pour supporter les formats CBR et CBT
+
+Version 1.0
 
 - Version initiale stable
 - Logiciel open source sous licence GPLv3

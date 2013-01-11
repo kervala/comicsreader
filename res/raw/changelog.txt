@@ -1,4 +1,12 @@
-Version 1.0.0
+Version 1.1
+
+- Right to left reading direction settings
+- Added animation speed settings
+- Added edges resistance settings
+- GIF and CBT/TAR format support
+- Improvement of generator.php to support CBR and CBT format
+
+Version 1.0
 
 - Initial stable release
 - Open source software under GPLv3 license
