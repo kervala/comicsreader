@@ -52,7 +52,7 @@ public class FolderAlbum extends Album {
 	public static class OtherFilter implements FilenameFilter {
 		public boolean accept(File dir, String filename) {
 			File f = new File(dir, filename);
-			return CbzAlbum.isValid(filename) || CbrAlbum.isValid(filename) || f.isDirectory();
+			return CbzAlbum.isValid(filename) || CbrAlbum.isValid(filename) || CbtAlbum.isValid(filename) || f.isDirectory();
 		}
 	}
 	
