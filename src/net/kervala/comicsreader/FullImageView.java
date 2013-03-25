@@ -267,7 +267,9 @@ public class FullImageView extends View {
 		if (mOffset == 0) {
 			mRectSrc.set(mRect.left, mRect.top, currRight, bottom);
 
-			canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectSrc, null);
+			if (!mCurrentBitmap.isRecycled()) {
+				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectSrc, null);
+			}
 		} else if (mOffset < 0) {
 			final int prevLeft = Math.max(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth()) + mOffset;
 			final int prevRight = Math.min(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth());
@@ -278,18 +280,22 @@ public class FullImageView extends View {
 				mRectSrc.set(0, mRect.top, currWidth, bottom);
 				mRectDst.set(-mOffset, mRect.top, -mOffset + currWidth, bottom);
 
-				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
+				if (!mCurrentBitmap.isRecycled()) {
+					canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
+				}
 			}
 
 			// only display previous image if its right border is visible
 			if (mOffset < prevRight - mRect.right) {
-				if (mPreviousBitmap != null && !mPreviousBitmap.isRecycled()) {
+				if (mPreviousBitmap != null) {
 					bottom = Math.min(mRect.bottom, mPreviousBitmap.getHeight());
 					mRectDst.set(0, mRect.top, mPreviousBitmap.getWidth() - prevLeft, bottom);
 
 					mRectSrc.set(prevLeft, mRect.top, mPreviousBitmap.getWidth(), bottom);
 
-					canvas.drawBitmap(mPreviousBitmap, mRectSrc, mRectDst, null);
+					if (!mPreviousBitmap.isRecycled()) {
+						canvas.drawBitmap(mPreviousBitmap, mRectSrc, mRectDst, null);
+					}
 				} else {
 					mRectDst.set(0, mRect.top, mBitmapWidth - prevLeft, bottom);
 					canvas.drawRect(mRectDst, mWhitePainter);
@@ -301,18 +307,22 @@ public class FullImageView extends View {
 				mRectSrc.set(mOffset + mRect.left, mRect.top, mBitmapWidth, bottom);
 				mRectDst.set(mRect.left, mRect.top, mBitmapWidth - mOffset, bottom);
 
-				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
+				if (!mCurrentBitmap.isRecycled()) {
+					canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
+				}
 			}
 
 			final int nextLeft = Math.max(mRect.right, mBitmapWidth) - mOffset;
 			final int nextWidth = Math.min(mOffset, mNextBitmap != null ? mNextBitmap.getWidth():mBitmapWidth);  
 
-			if (mNextBitmap != null && !mNextBitmap.isRecycled()) {
+			if (mNextBitmap != null) {
 				bottom = Math.min(mRect.bottom, mNextBitmap.getHeight());
 				mRectDst.set(nextLeft, mRect.top, nextLeft + nextWidth, bottom);
 				mRectSrc.set(0, mRect.top, nextWidth, bottom);
 				
-				canvas.drawBitmap(mNextBitmap, mRectSrc, mRectDst, null);
+				if (!mNextBitmap.isRecycled()) {
+					canvas.drawBitmap(mNextBitmap, mRectSrc, mRectDst, null);
+				}
 			} else {
 				mRectDst.set(nextLeft, mRect.top, nextLeft + nextWidth, bottom);
 
