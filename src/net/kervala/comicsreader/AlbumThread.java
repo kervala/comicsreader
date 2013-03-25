@@ -439,6 +439,8 @@ public class AlbumThread extends HandlerThread {
 
 	private Callback mLoaderCallback = new Callback() {
 		public boolean handleMessage(Message msg) {
+			if (mCallback.get() == null) return false;
+
 			switch (msg.what) {
 			case LOADER_OPEN: {
 				int error = 0;
