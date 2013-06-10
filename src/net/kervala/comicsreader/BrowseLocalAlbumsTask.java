@@ -92,7 +92,9 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 
 	@Override
 	protected void onPostExecute(String error) {
-		mActivity.get().dismissDialog(CommonActivity.DIALOG_WAIT);
+		if (mActivity.get() != null) {
+			mActivity.get().removeDialog(CommonActivity.DIALOG_WAIT);
+		}
 
 		if (error != null) {
 			mActivity.get().displayError(error);

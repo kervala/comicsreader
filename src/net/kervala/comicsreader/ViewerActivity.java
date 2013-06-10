@@ -371,12 +371,20 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 	@Override
 	public boolean openLastFolder() {
 		final Intent intent = getIntent();
-		int requestCode = intent.getExtras().getInt("requestCode");
+
+		Bundle bundle = intent.getExtras();
+		int requestCode = bundle != null ? bundle.getInt("requestCode"):0;
 
 		if (requestCode != REQUEST_VIEWER) {
 			startActivity(new Intent(this, BrowserActivity.class));
 		} else {
-			intent.setDataAndType(mAlbumThread.getAlbumUri(), mAlbumThread.getAlbum().getMimeType());
+			Album album = mAlbumThread.getAlbum(); 
+
+			// avoid some unexpected crash
+			if (album != null) {
+				intent.setDataAndType(mAlbumThread.getAlbumUri(), album.getMimeType());
+			}
+
 			setResult(RESULT_FILE, intent);
 			finish();
 		}

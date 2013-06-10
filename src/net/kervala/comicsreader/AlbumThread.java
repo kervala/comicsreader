@@ -382,14 +382,14 @@ public class AlbumThread extends HandlerThread {
 	}
 
 	public void updatePreviousPage() {
-		if (mAlbum.getMaxImagesInMemory() > 2) {
+		if (mAlbum != null && mAlbum.getMaxImagesInMemory() > 2) {
 			if (!isLoaderReady()) return;
 			mMainHandler.sendEmptyMessage(VIEWER_PREPARE_PREVIOUS_PAGE);
 		}
 	}
 
 	public void updateNextPage() {
-		if (mAlbum.getMaxImagesInMemory() > 1) {
+		if (mAlbum != null && mAlbum.getMaxImagesInMemory() > 1) {
 			if (!isLoaderReady()) return;
 			mMainHandler.sendEmptyMessage(VIEWER_PREPARE_NEXT_PAGE);
 		}

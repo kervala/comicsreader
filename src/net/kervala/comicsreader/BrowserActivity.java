@@ -478,7 +478,7 @@ public class BrowserActivity extends CommonActivity implements OnItemClickListen
 	}
 	
 	public void updateUserInfo() {
-		final Uri oldUri = Uri.parse(mLastUrl);
+		final Uri oldUri = Uri.parse(mLastUrl != null ? mLastUrl:"");
 
 		try {
 			String userInfo = mUsername;
