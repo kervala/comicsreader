@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -222,7 +223,7 @@ public class Album {
 
 		if (pos == -1) return "";
 		
-		return filename.toLowerCase().substring(pos+1);
+		return filename.toLowerCase(Locale.US).substring(pos+1);
 	}
 
 	public static boolean isValidJpegImage(String filename) {
@@ -247,12 +248,12 @@ public class Album {
 		byte [] buffer = null;
 
 		if (input != null) {
-			buffer = new byte[size];
-
-			int offset = 0;
-			int readSize = 0;
-			
 			try {
+				buffer = new byte[size];
+
+				int offset = 0;
+				int readSize = 0;
+				
 				while (size > 0 && (readSize = input.read(buffer, offset, size)) > 0)
 				{
 					offset += readSize;
@@ -264,6 +265,8 @@ public class Album {
 				}
 
 				input.close();
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
