@@ -45,13 +45,19 @@ public class FolderAlbum extends Album {
 
 	public static class ImageFilter implements FilenameFilter {
 		public boolean accept(File dir, String filename) {
-			return isValidImage(filename);
+			File f = new File(dir, filename);
+
+			return isValidImage(f.getAbsolutePath());
 		}
 	}
 
 	public static class OtherFilter implements FilenameFilter {
 		public boolean accept(File dir, String filename) {
 			File f = new File(dir, filename);
+
+			// build a full absolute path
+			filename = f.getAbsolutePath();  
+
 			return CbzAlbum.isValid(filename) || CbrAlbum.isValid(filename) || CbtAlbum.isValid(filename) || f.isDirectory();
 		}
 	}
