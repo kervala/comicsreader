@@ -19,7 +19,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.kervala.comicsreader"
-    android:versionCode="16"
+    android:versionCode="17"
     android:versionName="@string/version" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -53,8 +53,10 @@
 
                 <data android:mimeType="application/x-cbz" />
                 <data android:mimeType="application/x-cbr" />
+                <data android:mimeType="application/x-cbt" />
                 <data android:mimeType="image/png" />
                 <data android:mimeType="image/jpeg" />
+                <data android:mimeType="image/gif" />
             </intent-filter>
         </activity>
         <activity
@@ -72,6 +74,7 @@
 
                 <data android:mimeType="application/x-cbz" />
                 <data android:mimeType="application/x-cbr" />
+                <data android:mimeType="application/x-cbt" />
             </intent-filter>
         </activity>
         <activity android:name="ComicsPreferenceActivity" />
