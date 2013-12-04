@@ -320,7 +320,7 @@ public class Album {
 
 		mNumPages = mFiles.size();
 
-		Collections.sort(mFiles);
+		Collections.sort(mFiles, new NaturalOrderComparator());
 
 		if (mCurrentPageFilename != null) {
 			mCurrentPageNumber = mFiles.indexOf(mCurrentPageFilename);
