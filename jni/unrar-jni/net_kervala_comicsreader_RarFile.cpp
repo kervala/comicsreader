@@ -23,6 +23,7 @@
 #include <string.h>
 #include "strings.h"
 
+#include "rartypes.hpp"
 #include "rar.hpp"
 #include "version.hpp"
 #include "dll.hpp"
@@ -31,8 +32,30 @@
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
+#ifdef __arm__
+typedef long unsigned int *_Unwind_Ptr;
+
+/* Stubbed out in libdl and defined in the dynamic linker.
+ * Same semantics as __gnu_Unwind_Find_exidx().
+ */
+extern "C" _Unwind_Ptr dl_unwind_find_exidx(_Unwind_Ptr pc, int *pcount);
+extern "C" _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int *pcount)
+{
+	return dl_unwind_find_exidx(pc, pcount);
+}
+
+static void* g_func_ptr;
+
+#endif
+
 jint JNI_OnLoad(JavaVM* vm, void* reserved)
 {
+#ifdef __arm__
+	// when i throw exception, linker maybe can't find __gnu_Unwind_Find_exidx(lazy binding issue??)
+	// so I force to bind this symbol at shared object load time
+	g_func_ptr = (void*)__gnu_Unwind_Find_exidx;
+#endif
+
 	JNIEnv* env;
 	if (vm->GetEnv((void**) &env, JNI_VERSION_1_6) != JNI_OK) return -1;
 
@@ -113,7 +136,7 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 	RAROpenArchiveData data;
 	memset(&data, 0, sizeof(RAROpenArchiveData));
 
-	data.ArcName = (char*)filename;
+	data.ArcName = filename;
 	data.OpenMode = RAR_OM_LIST;
 
 	HANDLE handle = RAROpenArchive(&data);
@@ -224,7 +247,7 @@ JNIEXPORT jbyteArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetData
 	RAROpenArchiveData data;
 	memset(&data, 0, sizeof(RAROpenArchiveData));
 
-	data.ArcName = (char*)filename;
+	data.ArcName = filename;
 	data.OpenMode = RAR_OM_EXTRACT;
 
 	HANDLE handle = RAROpenArchive(&data);
