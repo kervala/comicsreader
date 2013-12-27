@@ -1,116 +1,98 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!--
- * ComicsReader is an Android application to read comics
- * Copyright (C) 2011-2013 Cedric OCHS
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
--->
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="about">À propos</string>
-    <string name="about_author">© 2011–2013 Kervala</string>
-    <string name="about_license">Cette application est publiée sous licence GPLv3 :</string>
-    <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-    <string name="about_text">Application Android de lecture de bandes dessinées numériques dans plusieurs formats. Elle propose des transitions fluides, une ergonomie intuitive, des chargements rapides et son code est libre.</string>
-    <string name="about_unrar_version">Version d\'UnRAR : %s</string>
-    <string name="about_version">Version : %s</string>
-    <string name="about_revision">Révision : %s</string>
-    <string name="about_build_date">Date de compilation : %s</string>
-    <string name="licenses_waiting">Veuillez patienter pendant l\'affichage des licences…</string>
-    <string name="album_downloading">Téléchargement de « %s » en cours…</string>
-    <string name="app_name">Lecteur de BD</string>
-    <string name="bookmark_help">Vous pouvez saisir soit un chemin absolu commençant par un / (comme /Pictures or /Download), ou une URL comme domain.com/comics/index.xml). Si vous ne précisez pas le préfixe http://, il sera ajouté automatiquement si elle ne commence pas par un /. Voir l\'\"Aide\" pour plus de détails à propos des \"Albums distants\".</string>
-    <string name="bookmark_title">Titre</string>
-    <string name="bookmark_url">Chemin local absolu ou URL</string>
-    <string name="bookmarks">Favoris</string>
-    <string name="bookmarks_add">Ajouter</string>
-    <string name="bookmarks_edit">Éditer</string>
-    <string name="bookmarks_help">Veuillez appuyer longuement sur un favori pour l\'éditer ou le supprimer.</string>
-    <string name="bookmarks_load">Charger</string>
-    <string name="bookmarks_remove">Supprimer</string>
-    <string name="bookmarks_title">Gestionnaire des favoris</string>
-    <string name="browse">Parcourir</string>
-    <string name="browser_title">Explorateur</string>
-    <string name="bytes">octets</string>
-    <string name="changelog">Notes de version</string>
-    <string name="close">Fermer</string>
-    <string name="confirm_delete_album">Êtes-vous sûr de vouloir supprimer cet album ?</string>
-    <string name="confirm_delete_bookmark">Êtes-vous sûr de vouloir supprimer ce favori ?</string>
-    <string name="confirm_open_folder">Ce répertoire contient des fichiers qui ne sont pas des images. Voulez-vous l\'ouvrir en tant qu\'album ?</string>
-    <string name="cover">Couv.</string>
-    <string name="dialog_album_delete">Supprimer</string>
-    <string name="dialog_album_size">Taille : %1$d %2$s</string>
-    <string name="dialog_album_title">Titre</string>
-    <string name="dialog_confirm_title">Confirmation</string>
-    <string name="dialog_error_title">Erreur</string>
-    <string name="dialog_progress_browser_message">Veuillez patienter pendant le chargement…</string>
-    <string name="error_no_album_loaded">Aucun album sélectionné. Veuillez utiliser le menu pour le faire.</string>
-    <string name="error_no_connection_available">Aucune connexion Internet trouvée.</string>
-    <string name="error_no_external_storage">Aucun support de stockage externe trouvé.</string>
-    <string name="error_no_room">Il n\'y a pas assez de place pour télécharger l\'album.</string>
-    <string name="error_out_of_memory">Mémoire insuffisante, veuillez diminuer la qualité ou la résolution des images dans les \"Paramètres\" ou continuer avec les paramètres actuels à vos risques et périls.</string>
-    <string name="error_unable_to_write">Écriture sur le support de stockage externe impossible.</string>
-    <string name="external_storage">Stockage externe</string>
-    <string name="first_page">Première page</string>
-    <string name="help">Aide</string>
-    <string name="kbytes">Ko</string>
-    <string name="last_page">Dernière page</string>
-    <string name="mbytes">Mo</string>
-    <string name="next_page">Page suivante</string>
-    <string name="no">Non</string>
-    <string name="pages">Aller à la page</string>
-    <string name="preference_category_advanced">Paramètres avancés</string>
-    <string name="preference_category_cache">Cache</string>
-    <string name="preference_category_view">Affichage</string>
-    <string name="preference_clear_cache_albums">Supprimer les albums</string>
-    <string name="preference_clear_cache_albums_toast">Tous les albums téléchargés ont été supprimés</string>
-    <string name="preference_clear_cache_albums_summary">Supprimer tous les albums distants téléchargés mis en cache</string>
-    <string name="preference_clear_cache_thumbnails">Supprimer les miniatures</string>
-    <string name="preference_clear_cache_thumbnails_summary">Supprimer toutes les miniatures générées ou téléchargées</string>
-    <string name="preference_clear_cache_thumbnails_toast">Toutes les miniatures ont été supprimées</string>
-    <string name="preference_double_page_label">Mode double page</string>
-    <string name="preference_double_page_summary">Affiche deux pages à la fois sur l\'écran</string>
-    <string name="preference_fast_scroll_label">Défilement rapide</string>
-    <string name="preference_fast_scroll_summary">Active le repère qui peut être utilisé pour se déplacer rapidement dans la liste</string>
-    <string name="preference_fit_to_screen_label">Adapter à l\'écran</string>
-    <string name="preference_fit_to_screen_summary">Agrandit l\'image si plus petite que la résolution d\'écran</string>
-    <string name="preference_full_screen_label">Plein écran</string>
-    <string name="preference_full_screen_summary">Cache la barre d\'état si possible</string>
-    <string name="preference_high_quality_label">Couleurs 32bits</string>
-    <string name="preference_high_quality_summary">Attention ! Ceci peut diminuer la fluidité et utiliser plus de mémoire</string>
-    <string name="preference_overlay_duration_label">Numéro de la page</string>
-    <string name="preference_overlay_duration_summary">Durée d\'affichage du numéro de la page</string>
-    <string name="preference_sample_label">Échelle d\'image forcée</string>
-    <string name="preference_sample_summary">Échelle à appliquer au moment du chargement d\'une image afin de gagner de la mémoire</string>
-    <string name="preference_zoom_label">Redimensionnement</string>
-    <string name="preference_zoom_summary">Mode de redimensionnement des pages</string>
-    <string name="preference_category_misc">Divers</string>
-    <string name="preference_about">À propos de Lecteur de BD</string>
-    <string name="preference_about_summary">Version et licences des bibliothèques tierces</string>
-    <string name="previous_page">Page précédente</string>
-    <string name="settings">Préférences</string>
-    <string name="yes">Oui</string>
-    <string name="username">Utilisateur</string>
-    <string name="password">Mot de passe</string>
-    <string name="remember_password">Se souvenir du mot de passe</string>
-    <string name="contributors_label">Contributeurs :</string>
-    <string name="contributors">- ultrapeer (traduction en turc et fautes de français)\n- Zufre (traduction en espagnol)</string>
-    <string name="browser_album_title">Aucun titre</string>
-    <string name="preference_edges_resistance_label">Résistance aux bords</string>
-    <string name="preference_edges_resistance_summary">Résistance avant de changer de page</string>
-    <string name="preference_page_transition_speed_label">Vitesse de transition de page</string>
-    <string name="preference_page_transition_speed_summary">Vitesse de l\'animation de transition pour la page suivante/précédente</string>
-    <string name="preference_reading_direction_label">Sens de lecture de droite à gauche</string>
-    <string name="preference_reading_direction_summary">Déplacer vers la gauche pour afficher la page suivante</string>
+  <string name="about">À propos</string>
+  <string name="about_author">© 2011–2013 Kervala</string>
+  <string name="about_license">Cette application est publiée sous licence GPLv3 :</string>
+  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
+  <string name="about_text">Application Android de lecture de bandes dessinées numériques dans plusieurs formats. Elle propose des transitions fluides, une ergonomie intuitive, des chargements rapides et son code est libre.</string>
+  <string name="about_unrar_version">Version d\'UnRAR : %s</string>
+  <string name="about_version">Version : %s</string>
+  <string name="about_revision">Révision : %s</string>
+  <string name="about_build_date">Date de compilation : %s</string>
+  <string name="licenses_waiting">Veuillez patienter pendant l\'affichage des licences…</string>
+  <string name="album_downloading">Téléchargement de « %s » en cours…</string>
+  <string name="app_name">Lecteur de BD</string>
+  <string name="bookmark_help">Vous pouvez saisir soit un chemin absolu commençant par un / (comme /Pictures or /Download), ou une URL comme domain.com/comics/index.xml). Si vous ne précisez pas le préfixe http://, il sera ajouté automatiquement si elle ne commence pas par un /. Voir l\'\"Aide\" pour plus de détails à propos des \"Albums distants\".</string>
+  <string name="bookmark_title">Titre</string>
+  <string name="bookmark_url">Chemin local absolu ou URL</string>
+  <string name="bookmarks">Favoris</string>
+  <string name="bookmarks_add">Ajouter</string>
+  <string name="bookmarks_edit">Éditer</string>
+  <string name="bookmarks_help">Veuillez appuyer longuement sur un favori pour l\'éditer ou le supprimer.</string>
+  <string name="bookmarks_load">Charger</string>
+  <string name="bookmarks_remove">Supprimer</string>
+  <string name="bookmarks_title">Gestionnaire des favoris</string>
+  <string name="browse">Parcourir</string>
+  <string name="browser_title">Explorateur</string>
+  <string name="bytes">octets</string>
+  <string name="changelog">Notes de version</string>
+  <string name="close">Fermer</string>
+  <string name="confirm_delete_album">Êtes-vous sûr de vouloir supprimer cet album ?</string>
+  <string name="confirm_delete_bookmark">Êtes-vous sûr de vouloir supprimer ce favori ?</string>
+  <string name="confirm_open_folder">Ce répertoire contient des fichiers qui ne sont pas des images. Voulez-vous l\'ouvrir en tant qu\'album ?</string>
+  <string name="cover">Couv.</string>
+  <string name="dialog_album_delete">Supprimer</string>
+  <string name="dialog_album_size">Taille : %1$d %2$s</string>
+  <string name="dialog_album_title">Titre</string>
+  <string name="dialog_confirm_title">Confirmation</string>
+  <string name="dialog_error_title">Erreur</string>
+  <string name="dialog_progress_browser_message">Veuillez patienter pendant le chargement…</string>
+  <string name="error_no_album_loaded">Aucun album sélectionné. Veuillez utiliser le menu pour le faire.</string>
+  <string name="error_no_connection_available">Aucune connexion Internet trouvée.</string>
+  <string name="error_no_external_storage">Aucun support de stockage externe trouvé.</string>
+  <string name="error_no_room">Il n\'y a pas assez de place pour télécharger l\'album.</string>
+  <string name="error_out_of_memory">Mémoire insuffisante, veuillez diminuer la qualité ou la résolution des images dans les \"Paramètres\" ou continuer avec les paramètres actuels à vos risques et périls.</string>
+  <string name="error_unable_to_write">Écriture sur le support de stockage externe impossible.</string>
+  <string name="external_storage">Stockage externe</string>
+  <string name="first_page">Première page</string>
+  <string name="help">Aide</string>
+  <string name="kbytes">Ko</string>
+  <string name="last_page">Dernière page</string>
+  <string name="mbytes">Mo</string>
+  <string name="next_page">Page suivante</string>
+  <string name="no">Non</string>
+  <string name="pages">Aller à la page</string>
+  <string name="preference_category_advanced">Paramètres avancés</string>
+  <string name="preference_category_cache">Cache</string>
+  <string name="preference_category_view">Affichage</string>
+  <string name="preference_clear_cache_albums">Supprimer les albums</string>
+  <string name="preference_clear_cache_albums_summary">Supprimer tous les albums distants téléchargés mis en cache</string>
+  <string name="preference_clear_cache_albums_toast">Tous les albums téléchargés ont été supprimés</string>
+  <string name="preference_clear_cache_thumbnails">Supprimer les miniatures</string>
+  <string name="preference_clear_cache_thumbnails_summary">Supprimer toutes les miniatures générées ou téléchargées</string>
+  <string name="preference_clear_cache_thumbnails_toast">Toutes les miniatures ont été supprimées</string>
+  <string name="preference_double_page_label">Mode double page</string>
+  <string name="preference_double_page_summary">Affiche deux pages à la fois sur l\'écran</string>
+  <string name="preference_fast_scroll_label">Défilement rapide</string>
+  <string name="preference_fast_scroll_summary">Active le repère qui peut être utilisé pour se déplacer rapidement dans la liste</string>
+  <string name="preference_fit_to_screen_label">Adapter à l\'écran</string>
+  <string name="preference_fit_to_screen_summary">Agrandit l\'image si plus petite que la résolution d\'écran</string>
+  <string name="preference_full_screen_label">Plein écran</string>
+  <string name="preference_full_screen_summary">Cache la barre d\'état si possible</string>
+  <string name="preference_high_quality_label">Couleurs 32bits</string>
+  <string name="preference_high_quality_summary">Attention ! Ceci peut diminuer la fluidité et utiliser plus de mémoire</string>
+  <string name="preference_overlay_duration_label">Numéro de la page</string>
+  <string name="preference_overlay_duration_summary">Durée d\'affichage du numéro de la page</string>
+  <string name="preference_sample_label">Échelle d\'image forcée</string>
+  <string name="preference_sample_summary">Échelle à appliquer au moment du chargement d\'une image afin de gagner de la mémoire</string>
+  <string name="preference_zoom_label">Redimensionnement</string>
+  <string name="preference_zoom_summary">Mode de redimensionnement des pages</string>
+  <string name="preference_category_misc">Divers</string>
+  <string name="preference_about">À propos de Lecteur de BD</string>
+  <string name="preference_about_summary">Version et licences des bibliothèques tierces</string>
+  <string name="previous_page">Page précédente</string>
+  <string name="settings">Préférences</string>
+  <string name="yes">Oui</string>
+  <string name="username">Utilisateur</string>
+  <string name="password">Mot de passe</string>
+  <string name="remember_password">Se souvenir du mot de passe</string>
+  <string name="contributors_label">Contributeurs :</string>
+  <string name="contributors">- ultrapeer (traduction en turc et fautes de français)\n- Zufre (traduction en espagnol)\n- Kathjal sur Transifex (traduction en italien)\n- Shark103 sur Transifex (traduction en polonais)\n- Xesusmosquera sur Transifex (traduction en galicien)\n - Jules Blok (natural ordering of page numbers implementation)</string>
+  <string name="browser_album_title">Aucun titre</string>
+  <string name="preference_edges_resistance_label">Résistance aux bords</string>
+  <string name="preference_edges_resistance_summary">Résistance avant de changer de page</string>
+  <string name="preference_page_transition_speed_label">Vitesse de transition de page</string>
+  <string name="preference_page_transition_speed_summary">Vitesse de l\'animation de transition pour la page suivante/précédente</string>
+  <string name="preference_reading_direction_label">Sens de lecture de droite à gauche</string>
+  <string name="preference_reading_direction_summary">Déplacer vers la gauche pour afficher la page suivante</string>
 </resources>
