@@ -8,6 +8,7 @@
 #define VMCF_USEFLAGS       32
 #define VMCF_CHFLAGS        64
 
+#ifndef NORARVM
 static byte VM_CmdFlags[]=
 {
   /* VM_MOV   */ VMCF_OP2 | VMCF_BYTEMODE                                ,
@@ -51,3 +52,4 @@ static byte VM_CmdFlags[]=
   /* VM_SBB   */ VMCF_OP2 | VMCF_BYTEMODE | VMCF_USEFLAGS | VMCF_CHFLAGS ,
   /* VM_PRINT */ VMCF_OP0
 };
+#endif
