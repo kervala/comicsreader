@@ -29,7 +29,7 @@ public class ConfirmDialog extends AlertDialog {
 	public ConfirmDialog(Context context, Handler handler, String str) {
 		super(context);
 
-		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
 		setTitle(context.getString(R.string.dialog_confirm_title));
 		setCancelable(true);
@@ -46,7 +46,7 @@ public class ConfirmDialog extends AlertDialog {
 
 		setView(message);
 
-		setButton(BUTTON_POSITIVE, context.getString(R.string.yes), handler.obtainMessage(CommonActivity.ACTION_CONFIRM_YES));
-		setButton(BUTTON_NEGATIVE, context.getString(R.string.no), handler.obtainMessage(CommonActivity.ACTION_CONFIRM_NO));
+		setButton(BUTTON_POSITIVE, context.getString(R.string.yes), handler.obtainMessage(BrowserActivity.ACTION_CONFIRM_YES));
+		setButton(BUTTON_NEGATIVE, context.getString(R.string.no), handler.obtainMessage(BrowserActivity.ACTION_CONFIRM_NO));
 	}
 }

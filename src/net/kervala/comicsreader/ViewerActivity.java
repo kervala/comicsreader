@@ -19,15 +19,26 @@
 
 package net.kervala.comicsreader;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import net.kervala.comicsreader.AlbumThread.AlbumPageCallback;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -36,11 +47,29 @@ import android.view.View.OnTouchListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
-public class ViewerActivity extends CommonActivity implements OnTouchListener, FullScrollView.OnSizeChangedListener, AlbumPageCallback {
+public class ViewerActivity extends Activity implements OnTouchListener, FullScrollView.OnSizeChangedListener, AlbumPageCallback {
 	static final int PREVIOUS_PAGE = -1;
 	static final int CURRENT_PAGE = 0;
 	static final int NEXT_PAGE = 1;
 
+	static final int DIALOG_NONE = 0;
+	static final int DIALOG_PAGES = 1;
+	static final int DIALOG_TEXT = 2;
+	static final int DIALOG_ABOUT = 3;
+	static final int DIALOG_ERROR = 5;
+	static final int DIALOG_ALBUM = 7;
+	
+	static final int REQUEST_PREFERENCES = 0;
+	static final int REQUEST_BOOKMARK = 2;
+	
+	static final int RESULT_FILE = RESULT_FIRST_USER;
+	static final int RESULT_URL = RESULT_FIRST_USER+1;
+	
+	protected ErrorDialog mErrorDialog;
+	protected String mError;
+	protected String mText;
+	protected String mTitle;
+	
 	private FullScrollView mScrollView;
 	private FullImageView mImageView;
 	
@@ -53,15 +82,25 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 	private boolean mProcessTouch = false;
 	private Scroller mScroller;
 	private Overlay mOverlay;
+	private boolean mActionBarVisible = true;
+	private boolean mHideActionBar = false;
+	private Object mActionBar;
+	private Method mActionBarShow;
+	private Method mActionBarHide;
+	private Method mActionBarSetTitle;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		ComicsParameters.init(this);
 		
+		initActionBar();
+
 		setContentView(R.layout.viewer);
 
 		mScroller = new Scroller(this, new DecelerateInterpolator(1.0f));
-		mOverlay = new Overlay(this, mHandler);
+		mOverlay = new Overlay(this);
 		
 		mScrollView = (FullScrollView) findViewById(R.id.scrollview);
 		mImageView = (FullImageView) findViewById(R.id.imageview);
@@ -71,8 +110,8 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 		mAlbumThread = new AlbumThread();
 		mAlbumThread.setAlbumPageCallback(this);
-		
-		mAlbumThread.loadPreferences();
+
+		mAlbumThread.loadPreferences(true);
 
 		Intent intent = getIntent();
 
@@ -82,18 +121,94 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 		}
 	}
 	
+	public boolean initActionBar() {
+		try {
+			// call getActionBar to get a pointer on ActionBar
+			Method getActionBar = getClass().getMethod("getActionBar");
+			mActionBar = getActionBar.invoke(this);
+
+			if (mActionBar == null) return false;
+
+			// get ActionBar methods we need to use
+			Class<?> actionBar = mActionBar.getClass();
+			mActionBarShow = actionBar.getMethod("show");
+			mActionBarHide = actionBar.getMethod("hide");
+			mActionBarSetTitle = actionBar.getMethod("setTitle", CharSequence.class);
+
+			// set a black background (default is transparent in overlay mode)
+			Method setBackgroundDrawable = actionBar.getMethod("setBackgroundDrawable", Drawable.class);
+			setBackgroundDrawable.invoke(mActionBar, new ColorDrawable(Resources.getSystem().getColor(android.R.color.background_dark)));
+
+			return true;
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+
+		mActionBar = null;
+		mActionBarVisible = false;
+
+		return false;
+	}
+
+	public void setActionBarVisible(boolean visible) {
+		if (mActionBarVisible == visible || mActionBar == null) return;
+
+		mActionBarVisible = visible;
+
+		try {
+			if (visible) {
+				mOverlay.hide();
+				mActionBarShow.invoke(mActionBar);
+			} else {
+				mActionBarHide.invoke(mActionBar);
+			}
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+	}
+
+	public boolean getActionBarVisible() {
+		return mActionBarVisible;		
+	}
+
+	public void setActionBarTitle(String title) {
+		if (mActionBar == null || title == null) return;
+
+		try {
+			mActionBarSetTitle.invoke(mActionBar, title);
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		} 
+	}
+
 	public void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {
 		if (newWidth == oldWidth && newHeight == oldHeight) return;
 
 		int width = ComicsParameters.sScreenWidth;
 		int height = ComicsParameters.sScreenHeight;
+		
+		Log.d("ComicsReader", "height " + String.valueOf(newHeight));
 
 		ComicsParameters.sScreenWidth = newWidth;
 		ComicsParameters.sScreenHeight = newHeight;
 
 		if (mAlbumThread != null && mAlbumThread.isValid() && (width != newWidth || height != newHeight)) {
 			// force refreshing current page even if already loaded
-			mAlbumThread.updateCurrentPage(true);
+
+			if (AlbumParameters.zoom == Album.ZOOM_FIT_SCREEN ||
+				(AlbumParameters.zoom == Album.ZOOM_FIT_WIDTH && width != newWidth) ||
+				(AlbumParameters.zoom == Album.ZOOM_FIT_HEIGHT && height != newHeight)) {
+				mAlbumThread.updateCurrentPage(true);
+			}
+
+			// we suppose user succeeded to show navigation bar (with power button ?)
+			if (!mActionBarVisible && mImageView.getFullScreen() && newHeight <= height && newWidth <= width) {
+				mAlbumThread.updateWindow();
+			}
 		}
 
 		mMinPixelsBeforeSwitch = newWidth >> 3;
@@ -134,25 +249,37 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 		
 		// reset current open album
 		ComicsParameters.sCurrentOpenAlbum = null;
+
+		ComicsParameters.release();
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch(requestCode) {
 			case REQUEST_BOOKMARK:
-				if (resultCode == CommonActivity.RESULT_URL) {
+				if (resultCode == BrowserActivity.RESULT_URL) {
 					openIntentFolder(data);
 				}
 			break;
 
 			case REQUEST_PREFERENCES:
-				mAlbumThread.loadPreferences();
+				mAlbumThread.loadPreferences(false);
 			break;
 		}
 	}
 	
 	@Override
 	protected Dialog onCreateDialog(int id) {
+		// manage common dialogs
+		switch(id) {
+			case DIALOG_ERROR:
+			mErrorDialog = new ErrorDialog(this);
+			return mErrorDialog;
+			
+			case DIALOG_TEXT:
+			return new TextDialog(this);
+		}
+		
 		Dialog dialog = super.onCreateDialog(id);
 
 		if (dialog == null && mAlbumThread.isValid() && id == DIALOG_PAGES) {
@@ -168,10 +295,21 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 		// manage viewer specific dialogs
 		switch(id) {
+		case DIALOG_TEXT:
+			TextDialog textDialog = (TextDialog)dialog;
+			textDialog.setTitle(mTitle);
+			textDialog.setText(mText);
+			break;
+
+		case DIALOG_ERROR:
+			ErrorDialog errorDialog = (ErrorDialog)dialog;
+			errorDialog.setError(mError);
+			break;
+
 		case DIALOG_PAGES:
 			PagesDialog pagesDialog = (PagesDialog) dialog;
 
-			pagesDialog.setAlbum(mAlbumThread.getAlbum());
+			pagesDialog.setAlbum(mAlbumThread.album);
 			pagesDialog.setPage(mAlbumThread.getCurrentPage());
 			break;
 
@@ -201,7 +339,7 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 			return true;
 		case KeyEvent.KEYCODE_BACK:
 			if (mAlbumThread != null) {
-				String mimeType = mAlbumThread.getAlbum() != null ? mAlbumThread.getAlbum().getMimeType():null;
+				String mimeType = mAlbumThread.album != null ? mAlbumThread.album.getMimeType():null;
 				Intent intent = getIntent();
 				intent.setDataAndType(mAlbumThread.getAlbumUri(), mimeType);
 				setResult(RESULT_FILE, intent);
@@ -233,12 +371,23 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 	private boolean touchBegan(int posX, int posY) {
 		if (mScroller.isFinished()){
+			mHideActionBar = true;
+
 			mPrevTouchPosX = -1;
 			mFirstTouchPosX = posX;
 			mFirstTouchPosY = posY;
 		} else {
-			mScroller.forceFinished(true);
-			mProcessTouch = true;
+			// width of borders to change page without fling
+			int zoneWidth = ComicsParameters.sScreenWidth >> 4;
+
+			if (posX < zoneWidth) {
+				scrollToPreviousPage();
+			} else if (posX > ComicsParameters.sScreenWidth - zoneWidth) {
+				scrollToNextPage();
+			} else {
+				mScroller.forceFinished(true);
+				mProcessTouch = true;
+			}
 		}
 		
 		// make sure FullScrollView only receive touch events if scrollable
@@ -255,7 +404,7 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 		// horizontal fling
 		if (absFullDeltaX > (absFullDeltaY << 2)) {
-			int resistance = mAlbumThread.getEdgeResistance();
+			int resistance = AlbumParameters.edgesResistance;
 			
 			if ((resistance < 1) || (absFullDeltaX > (mMinPixelsBeforeSwitch >> 2) * resistance)) {
 				int x = mImageView.getOffset() + mScrollView.getScrollX();
@@ -263,11 +412,11 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 				if (x == 0 && fullDeltaX > 0 && !mAlbumThread.isFirstPage()) {
 					// left border, enable scroll to previous page
-					mAlbumThread.updatePreviousPage();
+					mAlbumThread.updatePreviousPage(true);
 					scroll = true;
-				} else if (x + w >= Math.max(ComicsParameters.sScreenWidth, mAlbumThread.getPageWidth()) && fullDeltaX < 0 &&  !mAlbumThread.isLastPage()) {
+				} else if (x + w >= Math.max(ComicsParameters.sScreenWidth, mAlbumThread.getPageWidth()) && fullDeltaX < 0 && !mAlbumThread.isLastPage()) {
 					// right border, enable scroll to next page
-					mAlbumThread.updateNextPage();
+					mAlbumThread.updateNextPage(true);
 					scroll = true;
 				}
 			}
@@ -281,6 +430,22 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 				mProcessTouch = true;
 
 				return true;
+			} else {
+				int deltaMin = ComicsParameters.sScreenHeight >> 2;
+
+				// scroll up when on the top, show the action bar
+				if (mScrollView.getScrollY() == 0 && fullDeltaY > 0) {
+					if (fullDeltaY > deltaMin) {
+						setActionBarVisible(true);
+						
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+							mImageView.setFullScreen(false);
+						}
+					}
+					mHideActionBar = false;
+				} else {
+					mHideActionBar = true;
+				}
 			}
 		} else {
 			if (mPrevTouchPosX == -1) {
@@ -299,7 +464,28 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 	}
 
 	private boolean touchEnded(int posX, int posY) {
-		if (!mProcessTouch) return false;
+		if (mHideActionBar && getActionBarVisible()) {
+			setActionBarVisible(false);
+			mAlbumThread.updateWindow();
+			mHideActionBar = false;
+		}
+
+		if (!mProcessTouch)
+		{
+			// width of borders to change page without fling
+			int zoneWidth = ComicsParameters.sScreenWidth >> 4;
+
+			if (posX < zoneWidth) {
+				scrollToPreviousPage();
+				return true;
+			} else if (posX > ComicsParameters.sScreenWidth - zoneWidth) {
+				scrollToNextPage();
+				return true;
+			}
+
+			// process clicks, not flings
+			return false;
+		}
 
 		int deltaX = posX - mFirstTouchPosX;
 
@@ -322,7 +508,7 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 			final int offset = mImageView.getOffset();
 			final int dx = -(Math.max(ComicsParameters.sScreenWidth, mAlbumThread.getPageWidth()) + offset);
 
-			mScroller.startScroll(offset, mScrollView.getScrollY(), dx, -mScrollView.getScrollY(), Math.abs(dx) << 7 >> mAlbumThread.getPageTransitionSpeed());
+			mScroller.startScroll(offset, mScrollView.getScrollY(), dx, -mScrollView.getScrollY(), Math.abs(dx) << 7 >> AlbumParameters.pageTransitionSpeed);
 			mAlbumThread.updatePageScrolling(PREVIOUS_PAGE);
 		}
 	}
@@ -330,8 +516,8 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 	public void scrollToCurrentPage() {
 		final int offset = mImageView.getOffset();
 		final int dx = -offset;
-			
-		mScroller.startScroll(offset, mScrollView.getScrollY(), dx, 0, Math.abs(dx) << 7 >> mAlbumThread.getPageTransitionSpeed());
+
+		mScroller.startScroll(offset, mScrollView.getScrollY(), dx, 0, Math.abs(dx) << 7 >> AlbumParameters.pageTransitionSpeed);
 		mAlbumThread.updatePageScrolling(CURRENT_PAGE);
 	}
 	
@@ -340,7 +526,7 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 			final int offset = mImageView.getOffset() + mScrollView.getScrollX();
 			final int dx = Math.max(ComicsParameters.sScreenWidth, mAlbumThread.getPageWidth()) - offset;
 
-			mScroller.startScroll(offset, mScrollView.getScrollY(), dx, -mScrollView.getScrollY(), Math.abs(dx) << 7 >> mAlbumThread.getPageTransitionSpeed());
+			mScroller.startScroll(offset, mScrollView.getScrollY(), dx, -mScrollView.getScrollY(), Math.abs(dx) << 7 >> AlbumParameters.pageTransitionSpeed);
 			mAlbumThread.updatePageScrolling(NEXT_PAGE);
 		}
 	}
@@ -350,14 +536,18 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 	}
 	
 	public void showPageNumber(int page, int pages, int duration) {
-		mOverlay.show(String.valueOf(page + 1) + "/" + String.valueOf(pages), duration);
+		++page;
+
+		if (!getActionBarVisible()) mOverlay.show(String.valueOf(page) + "/" + String.valueOf(pages), duration);
+
+		setActionBarTitle(String.format("%s - %d/%d", mAlbumThread.album.title, page, pages));
 	}
 
 	boolean openIntentFolder(Intent i) {
 		// check if current Intent was started from BrowserActivity
 		int requestCode = getIntent().getExtras().getInt("requestCode");
 
-		if (requestCode != REQUEST_VIEWER) {
+		if (requestCode != BrowserActivity.REQUEST_VIEWER) {
 			// start BrowserActivity if not already started
 			startActivity(new Intent(this, BrowserActivity.class));
 		} else {
@@ -368,17 +558,16 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 		return true;
 	}
 	
-	@Override
 	public boolean openLastFolder() {
 		final Intent intent = getIntent();
 
 		Bundle bundle = intent.getExtras();
 		int requestCode = bundle != null ? bundle.getInt("requestCode"):0;
 
-		if (requestCode != REQUEST_VIEWER) {
+		if (requestCode != BrowserActivity.REQUEST_VIEWER) {
 			startActivity(new Intent(this, BrowserActivity.class));
 		} else {
-			Album album = mAlbumThread.getAlbum(); 
+			Album album = mAlbumThread.album; 
 
 			// avoid some unexpected crash
 			if (album != null) {
@@ -400,67 +589,44 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 		return mImageView.getBitmapHeight();
 	}
 
-	public boolean onSwapNextPage() {
-		return mImageView.swapNext();
-	}
-
-	public boolean onSwapPreviousPage() {
-		return mImageView.swapPrevious();
-	}
-
-	public boolean onPrepareNextPage(int newPage, int oldPage) {
-		if (newPage == oldPage && mImageView.getNextBitmap() != null) return false;
-
-		mImageView.recycleNextBitmap();
-
-		return true;
-	}
-
-	public boolean onPreparePreviousPage(int newPage, int oldPage) {
-		if (newPage == oldPage && mImageView.getPreviousBitmap() != null) return false;
-
-		mImageView.recyclePreviousBitmap();
-
-		return true;
-	}
-
-	public boolean onPrepareCurrentPage(int newPage, int oldPage) {
-		if (newPage == oldPage && mImageView.getCurrentBitmap() != null) return false;
-
-		mImageView.recyclePreviousBitmap();
-
-		return true;
-	}
-	
-	public boolean onUpdateNextPage(Bitmap bitmap) {
+	public void onUpdateNextPage(Bitmap bitmap) {
 		mImageView.setNextBitmap(bitmap);
-		return true;
 	}
 
-	public boolean onUpdatePreviousPage(Bitmap bitmap) {
+	public void onUpdatePreviousPage(Bitmap bitmap) {
 		mImageView.setPreviousBitmap(bitmap);
-		return true;
 	}
 	
-	public boolean onUpdateCurrentPage(Bitmap bitmap) {
+	public void onUpdateCurrentPage(Bitmap bitmap) {
+		mImageView.setOffset(0);
+
 		mImageView.setCurrentBitmap(bitmap);
-		return true;
 	}
 
-	public void onDisplayPageNumber(int page, int pages, int duration) {
-		showPageNumber(page, pages, duration);
-	}
-
-	public void onPageChanged() {
+	public void onPageChanged(int current, int previous) {
 		mScrollView.scrollTo(0, 0);
 
-		// preload next page
-		mAlbumThread.updateNextPage();
-
-		// preload previous page
-		mAlbumThread.updatePreviousPage();
-		
 		mAlbumThread.saveCurrentAlbum();
+
+		if (AlbumParameters.overlayDuration > -1) {
+			showPageNumber(current, mAlbumThread.album.numPages, AlbumParameters.overlayDuration);
+		}
+
+		int next = current;
+
+		// load and cache the next bitmap to display
+		if (current >= previous) {
+			mAlbumThread.updateNextPage(true);
+			mAlbumThread.updatePreviousPage(false);
+			++next;
+		} else if (current < previous){
+			mAlbumThread.updatePreviousPage(true);
+			mAlbumThread.updateNextPage(false);
+			--next;
+		}
+
+		// load/flush buffers
+		mAlbumThread.updateBuffers(current, next, previous);
 	}
 
 	public boolean onReset() {
@@ -474,7 +640,7 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 		System.gc();
 	}
-	
+
 	public void onWindowChanged(boolean highQuality, boolean fullScreen) {
 		final Window window = getWindow();
 
@@ -492,38 +658,81 @@ public class ViewerActivity extends CommonActivity implements OnTouchListener, F
 
 		// don't turn off screen while reading
 		window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		// try to set full screen for tablets using CyanogenMod 9.x and + or Android 4.4+
+		mImageView.setFullScreen(fullScreen);
+
+		// hide ActionBar
+		setActionBarVisible(false);
 	}
 
-	public void onPageScrolled(int page) {
+	public void onPageScrolled(int direction) {
 		if (mScroller.computeScrollOffset()) {
 			mImageView.setOffset(mScroller.getCurrX());
 
 			// if changing page, set position to left
-			if (page != CURRENT_PAGE) {
+			if (direction != CURRENT_PAGE) {
 				mScrollView.scrollTo(0, mScroller.getCurrY());
 			}
 
 			if (!mScroller.isFinished()) {
-				mAlbumThread.updatePageScrolling(page);
+				mAlbumThread.updatePageScrolling(direction);
 			} else {
-				if (page == NEXT_PAGE) {
+				if (direction == NEXT_PAGE) {
 					mAlbumThread.nextPage();
-				} else if (page == PREVIOUS_PAGE) {
+				} else if (direction == PREVIOUS_PAGE) {
 					mAlbumThread.previousPage();
 				}
 			}
 		}
 	}
 
-	public void onOpenBegin() {
-		showDialog(CommonActivity.DIALOG_WAIT);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean res = super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return res;
 	}
 
-	public void onOpenEnd() {
-		dismissDialog(CommonActivity.DIALOG_WAIT);
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_browse:
+			openLastFolder();
+			return true;
+		case R.id.menu_bookmarks:
+			startActivityForResult(new Intent(this, BookmarksActivity.class), REQUEST_BOOKMARK);
+			return true;
+		case R.id.menu_pages:
+			showDialog(DIALOG_PAGES);
+			return true;
+		case R.id.menu_settings:
+			startActivityForResult(new Intent(this, ComicsPreferenceActivity.class), REQUEST_PREFERENCES);
+			return true;
+		}
+		return false;
+	}
+
+	public void displayError(String error) {
+		mError = error;
+		showDialog(DIALOG_ERROR);
+
+		Log.e(ComicsParameters.APP_TAG, mError);
 	}
 
 	public Context getContext() {
 		return this;
+	}
+
+	public void onOpenBegin() {
+	}
+
+	public void onOpenEnd() {
 	}
 }

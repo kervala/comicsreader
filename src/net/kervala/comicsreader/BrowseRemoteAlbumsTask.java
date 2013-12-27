@@ -50,7 +50,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 	
 	@Override
 	protected void onPreExecute() {
-		mActivity.get().showDialog(CommonActivity.DIALOG_WAIT);
+		mActivity.get().showDialog(BrowserActivity.DIALOG_WAIT);
 	}
 	
 	private boolean parseJson(String json) {
@@ -145,7 +145,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 			if (urlConnection != null) {
 				urlConnection.disconnect();
 			}
-				
+
 			try {
 				urlConnection = (HttpURLConnection)url.openConnection();
 				urlConnection.setConnectTimeout(ComicsParameters.TIME_OUT);
@@ -236,7 +236,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 	  
 	@Override
 	protected void onPostExecute(String error) {
-		mActivity.get().dismissDialog(CommonActivity.DIALOG_WAIT);
+		mActivity.get().removeDialog(BrowserActivity.DIALOG_WAIT);
 
 		if (error != null) {
 			mActivity.get().displayError(error);

@@ -82,12 +82,12 @@ public class PagesDialog extends Dialog implements OnItemClickListener, Callback
 		if (mAlbum == null) return;
 
 		final TextView t = (TextView) findViewById(R.id.title);
-		t.setText(mAlbum.get().getTitle());
+		t.setText(mAlbum.get().title);
 
 		// create pages list
 		final ArrayList<ThumbnailItem> items = new ArrayList<ThumbnailItem>();
 
-		for(int i = 0; i < mAlbum.get().getNumPages(); ++i) {
+		for(int i = 0, len = mAlbum.get().numPages; i < len; ++i) {
 			items.add(new PagesItem(getContext(), i, mAlbum.get()));
 		}
 
@@ -120,7 +120,7 @@ public class PagesDialog extends Dialog implements OnItemClickListener, Callback
 	}
 
 	public boolean handleMessage(Message msg) {
-		if (msg.what == CommonActivity.ACTION_UPDATE_ITEM) {
+		if (msg.what == BrowserActivity.ACTION_UPDATE_ITEM) {
 			final Bundle bundle = msg.getData();
 			int index = bundle.getInt("index");
 

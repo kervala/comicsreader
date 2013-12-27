@@ -90,7 +90,7 @@ public class CbtAlbum extends Album {
 	boolean loadFiles() {
 		try {
 			// open RAR file
-			mTar = new TarFile(mFilename);
+			mTar = new TarFile(filename);
 		} catch (IOException e) {
 			return false;
 		}
@@ -106,18 +106,18 @@ public class CbtAlbum extends Album {
 		if (mFiles.isEmpty()) return false;
 		
 		// generate a title from filename
-		int first = mFilename.lastIndexOf("/");
+		int first = filename.lastIndexOf("/");
 			
 		if (first != -1) {
-			mTitle = mFilename.substring(first+1, mFilename.length());
+			title = filename.substring(first+1, filename.length());
 		} else {
-			mTitle = mFilename;
+			title = filename;
 		}
 
-		int last = mTitle.lastIndexOf(".");
+		int last = title.lastIndexOf(".");
 			
 		if (last != -1) {
-			mTitle = mTitle.substring(0, last);
+			title = title.substring(0, last);
 		}
 		
 		return true;
@@ -130,7 +130,7 @@ public class CbtAlbum extends Album {
 			mTar.close();
 	}
 
-	protected byte [] getBytes(int page) throws IOException {
+	protected byte [] getBytes(int page) {
 		// get a buffer on a page
 		return mTar.getBytes(mFiles.get(page));
 	}

@@ -142,7 +142,7 @@ public class ThumbnailAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(mResItem, null);
 		}
 
-		item.setIndex(position);
+		item.index = position;
 		item.updateView((TextView)convertView);
 		convertView.setTag(item);
 
@@ -194,11 +194,10 @@ public class ThumbnailAdapter extends BaseAdapter {
 							if (Thread.interrupted()) break;
 
 							// ask to refresh this item
-							int index = item.getIndex();
-							if (index != -1) {
-								final Message msg = mHandler.get().obtainMessage(CommonActivity.ACTION_UPDATE_ITEM);
+							if (item.index != -1) {
+								final Message msg = mHandler.get().obtainMessage(BrowserActivity.ACTION_UPDATE_ITEM);
 								final Bundle bundle = new Bundle();
-								bundle.putInt("index", index);
+								bundle.putInt("index", item.index);
 								msg.setData(bundle);
 								mHandler.get().sendMessage(msg);
 							}

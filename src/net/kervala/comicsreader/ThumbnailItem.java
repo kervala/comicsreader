@@ -32,12 +32,13 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 	static final int THUMB_POSITION_TOP = 0;
 	static final int THUMB_POSITION_BOTTOM = 1;
 
+	public int index = -1;
+	
 	protected Bitmap mThumb;
 	protected int mThumbSize = 0;
 	protected String mText;
 	protected int mStatus = STATUS_NONE;
 	protected int mThumbPosition;
-	protected int mIndex = -1;
 
 	static int sUsedMemory = 0;
 	static int sMaxThumbSize = 0;
@@ -53,22 +54,14 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 		}
 	}
 
-	protected Bitmap loadBitmap() {
-		return null;
+	protected boolean loadBitmap() {
+		return false;
 	}
 
 	protected BitmapDrawable getDefaultDrawable() {
 		return null;
 	}
 
-	public void setIndex(int index) {
-		mIndex = index;
-	}
-	
-	public int getIndex() {
-		return mIndex;
-	}
-	
 	public synchronized Bitmap getThumb() {
 		return mThumb;
 	}
@@ -76,7 +69,7 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 	public synchronized BitmapDrawable getDrawable() {
 		if (mThumb == null || mStatus < STATUS_UPDATED) return getDefaultDrawable();
 
-		final BitmapDrawable drawable = new BitmapDrawable(mThumb);
+		final BitmapDrawable drawable = new BitmapDrawable(null, mThumb);
 		drawable.setBounds(0, 0, mThumb.getWidth(), mThumb.getHeight());
 		drawable.setTargetDensity(mThumb.getDensity());
 		
@@ -91,9 +84,7 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 		// don't update if already done
 		if (mStatus >= STATUS_UPDATED) return true;
 
-		mThumb = loadBitmap();
-			
-		if (mThumb == null) return false;
+		if (!loadBitmap()) return false;
 
 		mStatus = STATUS_UPDATED;
 
@@ -115,15 +106,7 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 		}
 	
 		final BitmapDrawable drawable = getDrawable();
-/*
-		if (mThumb != null && mStatus == STATUS_UPDATED) {
-			drawable = new BitmapDrawable(mThumb);
-			drawable.setBounds(0, 0, mThumb.getWidth(), mThumb.getHeight());
-			drawable.setTargetDensity(mThumb.getDensity());
-		} else {
-			drawable = getDefaultDrawable();
-		}
-*/		
+
 		if (mThumbPosition == THUMB_POSITION_BOTTOM) {
 			view.setCompoundDrawables(null, null, null, drawable);
 		} else {

@@ -19,21 +19,12 @@
 
 package net.kervala.comicsreader;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.InputStreamReader;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -45,7 +36,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 public class ComicsParameters {
@@ -54,7 +45,7 @@ public class ComicsParameters {
 	static final int MAX_IMAGES_IN_MEMORY = 3;
 	static final int MIN_SCALED_SIZE = 256;
 	static final int THUMBNAIL_HEIGHT = 96;
-	static final int TIME_OUT = 60000;
+	static final int TIME_OUT = 5000;
 
 	static BitmapDrawable sPlaceholderDrawable;
 	static BitmapDrawable sFolderChildDrawable;
@@ -63,12 +54,17 @@ public class ComicsParameters {
 	static File sRootDirectory;
 	static File sExternalDirectory;
 	static File sCacheDirectory;
+	static File sCacheCurrentAlbumDirectory;
 	static File sCoversDirectory;
 	static File sPagesDirectory;
 
 	static int sScreenDensity = 0;
 	static int sBitmapDensity = 0;
 	static boolean sLarge = false;
+	static boolean sIsTablet = false;
+	static boolean sHasMenuKey = false;
+	static boolean sIsCyanogenMod = false;
+	static String sDeviceType;
 	static int sThumbnailRescaledHeight;
 
 	static String sPackageName;
@@ -108,6 +104,8 @@ public class ComicsParameters {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
+
+		sIsCyanogenMod = context.getPackageManager().hasSystemFeature("com.cyanogenmod.android");
 	}
 	
 	public static void initDensity(Context context) {
@@ -123,6 +121,53 @@ public class ComicsParameters {
 
 		sThumbnailRescaledHeight = sLarge ? THUMBNAIL_HEIGHT:THUMBNAIL_HEIGHT * sScreenDensity / 240;
 		sBitmapDensity = sLarge ? sScreenDensity:240;
+
+		sHasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
+	}
+
+	public static void initTablet() {
+		// already defined
+		if (sDeviceType != null) return;
+
+		sDeviceType = System.getProperty("ro.build.characteristics", "unknown");
+
+		if ("unknown".equals(sDeviceType)) {
+			File buildPropFile = new File("/system/build.prop");
+
+			try {
+				BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(buildPropFile)));
+
+				String line = null;
+
+				while((line = in.readLine()) != null) {
+					if (line.startsWith("ro.build.characteristics")) {
+						String [] tokens = line.split("=");
+
+						if (tokens.length > 1) {
+							tokens = tokens[1].split(",");
+							
+							for(int i = 0; i < tokens.length; ++i) {
+								if ("tablet".equalsIgnoreCase(tokens[i])) {
+									sDeviceType = "tablet";
+									break;
+								} else if ("phone".equalsIgnoreCase(tokens[i])) {
+									sDeviceType = "phone";
+									break;
+								}
+							}
+						}
+
+						break;
+					}
+				}
+
+				in.close();
+			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
+			}
+		}
+
+		sIsTablet = "tablet".equalsIgnoreCase(sDeviceType);
 	}
 
 	public static void loadBitmaps(Context context) {
@@ -134,7 +179,7 @@ public class ComicsParameters {
 		if (sPlaceholderDrawable == null) {
 			options.inPreferredConfig = Bitmap.Config.RGB_565;
 			final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder, options);
-			sPlaceholderDrawable = new BitmapDrawable(bitmap);
+			sPlaceholderDrawable = new BitmapDrawable(null, bitmap);
 			sPlaceholderDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 			sPlaceholderDrawable.setTargetDensity(bitmap.getDensity());
 		}
@@ -142,7 +187,7 @@ public class ComicsParameters {
 		if (sFolderChildDrawable == null) {
 			options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 			final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher_folder, options);
-			sFolderChildDrawable = new BitmapDrawable(bitmap);
+			sFolderChildDrawable = new BitmapDrawable(null, bitmap);
 			sFolderChildDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 			sFolderChildDrawable.setTargetDensity(bitmap.getDensity());
 		}
@@ -150,7 +195,7 @@ public class ComicsParameters {
 		if (sFolderParentDrawable == null) {
 			options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 			final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher_folder_open, options);
-			sFolderParentDrawable = new BitmapDrawable(bitmap);
+			sFolderParentDrawable = new BitmapDrawable(null, bitmap);
 			sFolderParentDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
 			sFolderParentDrawable.setTargetDensity(bitmap.getDensity());
 		}
@@ -181,6 +226,11 @@ public class ComicsParameters {
 
 		// create root cache directory
 		if (!sCacheDirectory.exists()) sCacheDirectory.mkdirs();
+		
+		sCacheCurrentAlbumDirectory = new File(sCacheDirectory, "current");
+
+		// create current album cache directory
+		if (!sCacheCurrentAlbumDirectory.exists()) sCacheCurrentAlbumDirectory.mkdirs();
 
 		sCoversDirectory = new File(sCacheDirectory, "covers");
 
@@ -192,9 +242,9 @@ public class ComicsParameters {
 		// create pages directory
 		if (!sPagesDirectory.exists()) sPagesDirectory.mkdirs();
 	}
-	
+
 	public static int getDownloadedSize() {
-		final File [] files = sCacheDirectory.listFiles();
+		final File [] files = ComicsParameters.sCacheDirectory.listFiles();
 		
 		int size = 0;
 		
@@ -206,7 +256,7 @@ public class ComicsParameters {
 	}
 	
 	public static void clearDownloadedAlbumsCache() {
-		final File [] files = sCacheDirectory.listFiles();
+		final File [] files = ComicsParameters.sCacheDirectory.listFiles();
 		if (files != null) {
 			for(File file: files) {
 				// don't delete current open album
@@ -249,203 +299,11 @@ public class ComicsParameters {
 		}
 	}
 
-	static Bitmap resizeThumbnail(Bitmap bitmap) {
-		if (bitmap == null) return null;
-
-		if (bitmap.getHeight() == ComicsParameters.sThumbnailRescaledHeight) return bitmap;
-
-		final Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * ComicsParameters.sThumbnailRescaledHeight / bitmap.getHeight(), ComicsParameters.sThumbnailRescaledHeight, true);
-		bitmap.recycle();
-		return newBitmap;
-	}
-
-	static Bitmap cropThumbnail(Bitmap bitmap) {
-		if (bitmap == null) return null;
-
-		if (bitmap.getWidth() <= ComicsParameters.THUMBNAIL_HEIGHT && bitmap.getHeight() <= ComicsParameters.THUMBNAIL_HEIGHT) return bitmap;
-
-		final Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getWidth()), Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getHeight()));
-		bitmap.recycle();
-
-		return croppedBitmap;
-	}
-
-	static Bitmap createThumbnail(String filename) {
-		Album album = Album.createInstance(filename);
-		
-		Bitmap bitmap = null;
-		
-		if (album.open(filename, false)) {
-			// get a thumbnail for first page
-			bitmap = cropThumbnail(resizeThumbnail(album.getPage(album.getCurrentPage(), -1, ComicsParameters.THUMBNAIL_HEIGHT, true)));
-
-			album.close();
+	public static void clearCurrentAlbumDirectory() {
+		// delete all cached pages
+		File[] files = ComicsParameters.sCacheCurrentAlbumDirectory.listFiles();
+		for (File f : files) {
+			f.delete();
 		}
-
-		if (bitmap == null) return null;
-
-		// if thumbnail can't be saved, continue
-		try {
-			File f = new File(ComicsParameters.sCoversDirectory, md5(filename) + ".png");
-			OutputStream os = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 70, os);
-			os.close();
-		} catch (FileNotFoundException e) {
-			Log.e(APP_TAG, filename + " not found");
-		} catch (IOException e) {
-			Log.e(APP_TAG, e.getMessage());
-		} catch (Error e) {
-			Log.e(APP_TAG, "Error: " + e.getMessage());
-		} catch (Exception e) {
-			Log.e(APP_TAG, "Exception: " + e.getMessage());
-		}
-		
-		return bitmap;
-	}
-	
-	public static String md5(String str) {
-		try {
-			// Create MD5 Hash
-			final MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-			digest.update(str.getBytes());
-			final byte messageDigest[] = digest.digest();
-
-			// Create Hex String
-			StringBuffer hexString = new StringBuffer();
-			for (int i = 0; i < messageDigest.length; i++) {
-				String h = Integer.toHexString(0xFF & messageDigest[i]);
-				while (h.length() < 2) h = "0" + h;
-				hexString.append(h);
-			}
-
-			return hexString.toString();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-	
-	static Bitmap loadThumbnail(File f) {
-		Bitmap bitmap = null;
-		
-		if (f.exists() && f.length() > 0) {
-			// load cached file
-			try {
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inScaled = true;
-				options.inJustDecodeBounds = true;
-				options.inDensity = ComicsParameters.sBitmapDensity;
-				options.inTargetDensity = ComicsParameters.sScreenDensity;
-				options.inScreenDensity = ComicsParameters.sScreenDensity;
-				options.inPreferredConfig = Bitmap.Config.RGB_565;
-
-				// get image size
-				final BufferedInputStream is = new BufferedInputStream(new FileInputStream(f), ComicsParameters.BUFFER_SIZE);
-				BitmapFactory.decodeStream(is, null, options);
-
-				// don't load image if exceed maximum size or can't be decoded
-				if (options.outHeight <= ComicsParameters.THUMBNAIL_HEIGHT && options.outHeight > 0 && options.outWidth <= ComicsParameters.THUMBNAIL_HEIGHT && options.outWidth > 0) {
-					options.inJustDecodeBounds = false;
-
-					is.reset();
-					bitmap = resizeThumbnail(BitmapFactory.decodeStream(is, null, options));
-					is.close();
-				} else {
-					is.close();
-					f.delete();
-				}
-			} catch (FileNotFoundException e) {
-				Log.e(APP_TAG, f + " not found");
-			} catch (Error e) {
-				Log.e(APP_TAG, "Error: " + e.getMessage());
-			} catch (Exception e) {
-				Log.e(APP_TAG, "Exception: " + e.getMessage());
-			}
-		}
-
-		return bitmap;
-	}
-	
-	static Bitmap getThumbnailFromCache(String filename) {
-		String file;
-		
-		if (filename.startsWith("http://")) {
-			int pos = filename.lastIndexOf('/');
-			
-			if (pos == -1) {
-				file = filename;
-			} else {
-				file = filename.substring(pos + 1);
-			}
-		} else {
-			file = md5(filename) + ".png";			
-		}
-
-		return loadThumbnail(new File(ComicsParameters.sCoversDirectory, file));
-	}
-
-	static boolean downloadThumbnailFromUrl(String url) {
-		boolean res = false;
-		String filename;
-
-		int pos = url.lastIndexOf('/');
-		
-		if (pos == -1) {
-			filename = url;
-		} else {
-			filename = url.substring(pos + 1);
-		}
-		
-		File f = new File(ComicsParameters.sCoversDirectory, filename);
-
-		HttpURLConnection urlConnection = null;
-		
-		try {
-			URL u = new URL(url);
-
-			// create the new connection
-			ComicsAuthenticator.sInstance.reset();
-			
-			urlConnection = (HttpURLConnection)u.openConnection();
-			urlConnection.setConnectTimeout(TIME_OUT);
-			urlConnection.setReadTimeout(TIME_OUT);
-			
-			// download the file
-			final InputStream input = new BufferedInputStream(urlConnection.getInputStream(), ComicsParameters.BUFFER_SIZE);
-			final OutputStream output = new FileOutputStream(f);
-
-			int count = 0;
-			byte data[] = new byte[ComicsParameters.BUFFER_SIZE];
-				
-			while ((count = input.read(data)) != -1) {
-				output.write(data, 0, count);
-			}
-
-			output.flush();
-			output.close();
-			input.close();
-
-			res = true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-		} catch (SocketTimeoutException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// no space left on device
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (urlConnection != null) {
-				urlConnection.disconnect();
-			}
-		}
-		
-		return res;
 	}
 }

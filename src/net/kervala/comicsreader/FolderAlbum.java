@@ -19,12 +19,8 @@
 
 package net.kervala.comicsreader;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 public class FolderAlbum extends Album {
@@ -121,22 +117,22 @@ public class FolderAlbum extends Album {
 	}
 	
 	boolean loadFiles() {
-		mFolder = new File(mFilename);
+		mFolder = new File(filename);
 		
 		if (!mFolder.isDirectory()) {
 			mFolder = mFolder.getParentFile();
 
 			// generate a title from filename
-			int first = mFilename.lastIndexOf("/");
+			int first = filename.lastIndexOf("/");
 
 			if (first > 0) {
-				mTitle = mFilename.substring(first+1, mFilename.length());
+				title = filename.substring(first+1, filename.length());
 			} else {
-				mTitle = mFilename;
+				title = filename;
 			}
 			
-			mCurrentPageFilename = mTitle;
-			mFilename = mFolder.getAbsolutePath();
+			mCurrentPageFilename = title;
+			filename = mFolder.getAbsolutePath();
 		}
 
 		mFiles = Arrays.asList(mFolder.list(new ImageFilter()));
@@ -144,12 +140,12 @@ public class FolderAlbum extends Album {
 		if (mFiles.isEmpty()) return false;
 
 		// generate a title from filename
-		int first = mFilename.lastIndexOf("/");
+		int first = filename.lastIndexOf("/");
 
 		if (first > 0) {
-			mTitle = mFilename.substring(first+1, mFilename.length());
+			title = filename.substring(first+1, filename.length());
 		} else {
-			mTitle = mFilename;
+			title = filename;
 		}
 
 		return true;
@@ -160,16 +156,15 @@ public class FolderAlbum extends Album {
 
 		mFolder = null;
 	}
-	
-	protected byte [] getBytes(int page) throws IOException {
+
+	protected byte [] getBytes(int page) {
 		// get a buffer on a page
 		File file = new File(mFolder, mFiles.get(page));
 
 		if (!file.exists()) return null;
+		
+		byte buffer[] = new byte[(int)file.length()];
 
-		InputStream fis = new FileInputStream(file);
-		InputStream bis = new BufferedInputStream(fis, ComicsParameters.BUFFER_SIZE);
-
-		return Album.inputStreamToBytes(bis, (int)file.length());
+		return ComicsHelpers.loadFileToBuffer(file, buffer) ? buffer:null;
 	}
 }

@@ -20,10 +20,15 @@
 package net.kervala.comicsreader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.util.Log;
 
 public class BrowserItem extends ThumbnailItem {
 	private String mFilename;
@@ -105,31 +110,64 @@ public class BrowserItem extends ThumbnailItem {
 		return Uri.fromFile(new File(mPath));
 	}
 	
-	@Override
-	protected Bitmap loadBitmap() {
-		Bitmap bitmap = null;
+	boolean createThumbnail(String filename) {
+		Album album = Album.createInstance(filename);
+		
+		if (album.open(filename, false)) {
+			// get a thumbnail for first page
+			if (album.updateThumbnail(0)) {
+				mThumb = ComicsHelpers.cropThumbnail(ComicsHelpers.resizeThumbnail(album.getPageThumbnail(0)));
+			}
 
+			album.close();
+		}
+
+		if (mThumb != null) {
+			// if thumbnail can't be saved, continue
+			try {
+				File f = new File(ComicsParameters.sCoversDirectory, ComicsHelpers.md5(filename) + ".png");
+				OutputStream os = new FileOutputStream(f);
+				mThumb.compress(Bitmap.CompressFormat.PNG, 70, os);
+				os.close();
+			} catch (FileNotFoundException e) {
+				Log.e(ComicsParameters.APP_TAG, filename + " not found");
+			} catch (IOException e) {
+				Log.e(ComicsParameters.APP_TAG, e.getMessage());
+			} catch (Error e) {
+				Log.e(ComicsParameters.APP_TAG, "Error: " + e.getMessage());
+			} catch (Exception e) {
+				Log.e(ComicsParameters.APP_TAG, "Exception: " + e.getMessage());
+			}
+		}
+
+		return mThumb != null;
+	}
+	
+	@Override
+	protected boolean loadBitmap() {
 		if (mType == TYPE_FILE) {
 			if (!mRemote) {
 				// try to load thumbnail from cache
-				bitmap = ComicsParameters.getThumbnailFromCache(mPath);
+				mThumb = ComicsHelpers.getThumbnailFromCache(mPath);
 				
-				if (bitmap == null) {
+				if (mThumb == null) {
 					// if file is not in cache, create it
-					bitmap = ComicsParameters.createThumbnail(mPath);
+					return createThumbnail(mPath);
 				}
 			} else {
-				bitmap = ComicsParameters.getThumbnailFromCache(mThumbnailUrl);
+				mThumb = ComicsHelpers.getThumbnailFromCache(mThumbnailUrl);
 
-				if (bitmap == null) {
-					if (ComicsParameters.downloadThumbnailFromUrl(mThumbnailUrl)) {
-						bitmap = ComicsParameters.getThumbnailFromCache(mThumbnailUrl);
+				if (mThumb == null) {
+					if (ComicsHelpers.downloadThumbnailFromUrl(mThumbnailUrl)) {
+						mThumb = ComicsHelpers.getThumbnailFromCache(mThumbnailUrl);
+						
+						if (mThumb == null) return false;
 					}
 				}
 			}
 		}
 		
-		return bitmap;
+		return true;
 	}
 
 	@Override

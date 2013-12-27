@@ -23,12 +23,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import android.util.Log;
 
 public class CbzAlbum extends Album {
 	private ZipFile mZip;
@@ -91,8 +88,11 @@ public class CbzAlbum extends Album {
 	boolean loadFiles() {
 		try {
 			// open ZIP file
-			mZip = new ZipFile(mFilename);
+			mZip = new ZipFile(filename);
 		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -116,18 +116,18 @@ public class CbzAlbum extends Album {
 		}
 
 		// generate a title from filename
-		int first = mFilename.lastIndexOf("/");
+		int first = filename.lastIndexOf("/");
 			
 		if (first != -1) {
-			mTitle = mFilename.substring(first+1, mFilename.length());
+			title = filename.substring(first+1, filename.length());
 		} else {
-			mTitle = mFilename;
+			title = filename;
 		}
 
-		int last = mTitle.lastIndexOf(".");
+		int last = title.lastIndexOf(".");
 			
 		if (last != -1) {
-			mTitle = mTitle.substring(0, last);
+			title = title.substring(0, last);
 		}
 
 		return true;
@@ -146,13 +146,18 @@ public class CbzAlbum extends Album {
 		}
 	}
 	
-	protected byte [] getBytes(int page) throws IOException {
+	protected byte [] getBytes(int page) {
 		byte [] buffer = null;
 
 		ZipEntry entry = mZip.getEntry(mFiles.get(page));
 		
 		if (entry != null) {
-			buffer = Album.inputStreamToBytes(mZip.getInputStream(entry), (int)entry.getSize());
+			try {
+				buffer = ComicsHelpers.inputStreamToBytes(mZip.getInputStream(entry), (int)entry.getSize());
+			} catch (IOException e) {
+				buffer = null;
+				e.printStackTrace();
+			}
 		}
 
 		return buffer;

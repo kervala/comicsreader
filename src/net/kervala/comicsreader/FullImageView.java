@@ -19,12 +19,17 @@
 
 package net.kervala.comicsreader;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class FullImageView extends View {
@@ -34,10 +39,13 @@ public class FullImageView extends View {
 	private int mBitmapWidth;
 	private int mBitmapHeight;
 	private int mOffset;
+	private boolean mFullScreen;
 	final private Rect mRect = new Rect();
 	final private Rect mRectSrc = new Rect();
 	final private Rect mRectDst = new Rect();
 	final private Paint mWhitePainter = new Paint(); 
+
+	private Method mSetSystemUiVisibility;
 	
 	public FullImageView(Context context) {
 		super(context);
@@ -64,12 +72,64 @@ public class FullImageView extends View {
 		setWillNotCacheDrawing(true);
 		
 		mWhitePainter.setARGB(255, 255, 255, 255);
+		mFullScreen = false;
+
+		try {
+			mSetSystemUiVisibility = getClass().getMethod("setSystemUiVisibility", Integer.TYPE);
+		} catch (NoSuchMethodException e) {
+		}
 	}
 
-	public void reset() {
-		recyclePreviousBitmap();
-		recycleNextBitmap();
-		recycleCurrentBitmap();
+	public boolean getFullScreen() {
+		return mFullScreen;
+	}
+
+	public boolean setFullScreen(boolean fullscreen) {
+		// we can't set full screen if :
+		
+		// setSystemUiVisibility not available
+		if (mSetSystemUiVisibility == null) return false;
+
+		// device has menu key
+		if (ComicsParameters.sHasMenuKey) return false;
+			
+		// using CyanogenMod older than 9.0 or Android older than 4.4
+		if (!ComicsParameters.sIsCyanogenMod && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return false;
+
+		mFullScreen = fullscreen;
+
+		int newVis = SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+		if (fullscreen) {
+			if (ComicsParameters.sIsCyanogenMod) {
+				newVis |= SYSTEM_UI_FLAG_LOW_PROFILE;
+			}
+
+			newVis |= SYSTEM_UI_FLAG_FULLSCREEN;
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				newVis |= SYSTEM_UI_FLAG_IMMERSIVE | SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+			}
+		}
+
+		try {
+			mSetSystemUiVisibility.invoke(this, newVis);
+			return true;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	public synchronized void reset() {
+		mPreviousBitmap = null;
+		mNextBitmap = null;
+		mCurrentBitmap = null;
 	}
 	
 	public int getBitmapWidth() {
@@ -163,53 +223,13 @@ public class FullImageView extends View {
 		return mOffset;
 	}
 
-	public boolean swapNext() {
-		if (mNextBitmap == null) return false;
-
-		recyclePreviousBitmap();
-
-		setPreviousBitmap(mCurrentBitmap);
-		setCurrentBitmap(mNextBitmap);
-		setNextBitmap(null);
-
-		return true;
-	}
-
-	public boolean swapPrevious() {
-		if (mPreviousBitmap == null) return false;
-
-		recycleNextBitmap();
-
-		setNextBitmap(mCurrentBitmap);
-		setCurrentBitmap(mPreviousBitmap);
-		setPreviousBitmap(null);
-
-		return true;
-	}
-
-	public synchronized void recycleCurrentBitmap() {
-		if (mCurrentBitmap != null) {
-			mCurrentBitmap.recycle();
-			mCurrentBitmap = null;
-		}
-	}
-
-	public synchronized void recyclePreviousBitmap() {
-		if (mPreviousBitmap != null) {
-			mPreviousBitmap.recycle();
-			mPreviousBitmap = null;
-		}
-	}
-
-	public synchronized void recycleNextBitmap() {
-		if (mNextBitmap != null) {
-			mNextBitmap.recycle();
-			mNextBitmap = null;
-		}
-	}
-
 	@Override
 	protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int minWidth = getMinimumWidth();
+		int minHeight = getMinimumHeight();
+		
+		Log.d("ComicsReader", "min " + String.valueOf(minWidth) + " " + String.valueOf(minHeight));
+		
 		int w;
 		int h;
 
@@ -253,10 +273,23 @@ public class FullImageView extends View {
 	protected synchronized void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
+		// don't reuse bitmaps if they have been recycled
+		if (mCurrentBitmap != null && mCurrentBitmap.isRecycled()) {
+			mCurrentBitmap = null;
+		}
+
+		if (mNextBitmap != null && mNextBitmap.isRecycled()) {
+			mNextBitmap = null;
+		}
+
+		if (mPreviousBitmap != null && mPreviousBitmap.isRecycled()) {
+			mPreviousBitmap = null;
+		}
+		
 		if (mCurrentBitmap == null || mBitmapWidth == 0 || mBitmapHeight == 0) {
 			return;
 		}
-
+		
 		canvas.getClipBounds(mRect);
 		
 		// the right limit of current bitmap
@@ -266,10 +299,15 @@ public class FullImageView extends View {
 		
 		if (mOffset == 0) {
 			mRectSrc.set(mRect.left, mRect.top, currRight, bottom);
+			mRectDst.set(mRectSrc);
 
-			if (!mCurrentBitmap.isRecycled()) {
-				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectSrc, null);
+			if (mBitmapHeight < mRectDst.height()) {
+				mRectDst.top = (mRectDst.height() - mBitmapHeight) / 2;
 			}
+			
+			Log.d("ComicsReader", "rect = " + mRect);
+			
+			canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
 		} else if (mOffset < 0) {
 			final int prevLeft = Math.max(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth()) + mOffset;
 			final int prevRight = Math.min(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth());
@@ -280,9 +318,7 @@ public class FullImageView extends View {
 				mRectSrc.set(0, mRect.top, currWidth, bottom);
 				mRectDst.set(-mOffset, mRect.top, -mOffset + currWidth, bottom);
 
-				if (!mCurrentBitmap.isRecycled()) {
-					canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
-				}
+				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
 			}
 
 			// only display previous image if its right border is visible
@@ -293,9 +329,7 @@ public class FullImageView extends View {
 
 					mRectSrc.set(prevLeft, mRect.top, mPreviousBitmap.getWidth(), bottom);
 
-					if (!mPreviousBitmap.isRecycled()) {
-						canvas.drawBitmap(mPreviousBitmap, mRectSrc, mRectDst, null);
-					}
+					canvas.drawBitmap(mPreviousBitmap, mRectSrc, mRectDst, null);
 				} else {
 					mRectDst.set(0, mRect.top, mBitmapWidth - prevLeft, bottom);
 					canvas.drawRect(mRectDst, mWhitePainter);
@@ -307,9 +341,7 @@ public class FullImageView extends View {
 				mRectSrc.set(mOffset + mRect.left, mRect.top, mBitmapWidth, bottom);
 				mRectDst.set(mRect.left, mRect.top, mBitmapWidth - mOffset, bottom);
 
-				if (!mCurrentBitmap.isRecycled()) {
-					canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
-				}
+				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
 			}
 
 			final int nextLeft = Math.max(mRect.right, mBitmapWidth) - mOffset;
@@ -320,9 +352,7 @@ public class FullImageView extends View {
 				mRectDst.set(nextLeft, mRect.top, nextLeft + nextWidth, bottom);
 				mRectSrc.set(0, mRect.top, nextWidth, bottom);
 				
-				if (!mNextBitmap.isRecycled()) {
-					canvas.drawBitmap(mNextBitmap, mRectSrc, mRectDst, null);
-				}
+				canvas.drawBitmap(mNextBitmap, mRectSrc, mRectDst, null);
 			} else {
 				mRectDst.set(nextLeft, mRect.top, nextLeft + nextWidth, bottom);
 

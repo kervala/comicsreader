@@ -36,6 +36,10 @@ public class RarFile {
 	private static native byte[] nativeGetData(String filename, String entry);
 	private static native String nativeGetVersion();
 
+	public static boolean isLoaded() {
+		return sLoaded;
+	}
+
 	public static String getVersion() {
 		if (mVersion == null && sLoaded) {
 			mVersion = nativeGetVersion();

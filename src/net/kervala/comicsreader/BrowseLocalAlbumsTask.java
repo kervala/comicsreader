@@ -40,7 +40,7 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 	
 	@Override
 	protected void onPreExecute() {
-		mActivity.get().showDialog(CommonActivity.DIALOG_WAIT);
+		mActivity.get().showDialog(BrowserActivity.DIALOG_WAIT);
 	}
 	
 	@Override
@@ -92,9 +92,9 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 
 	@Override
 	protected void onPostExecute(String error) {
-		if (mActivity.get() != null) {
-			mActivity.get().removeDialog(CommonActivity.DIALOG_WAIT);
-		}
+		if (mActivity.get() == null) return;
+		
+		mActivity.get().removeDialog(BrowserActivity.DIALOG_WAIT);
 
 		if (error != null) {
 			mActivity.get().displayError(error);

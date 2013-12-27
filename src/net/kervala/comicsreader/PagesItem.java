@@ -29,23 +29,23 @@ public class PagesItem extends ThumbnailItem {
 	private final WeakReference<Album> mAlbum;
 
 	public PagesItem(Context context, int index, Album album) {
-		mIndex = index;
+		this.index = index;
 		mAlbum = new WeakReference<Album>(album);
-		mText = mIndex == 0 ? context.getString(R.string.cover):String.valueOf(mIndex);
+		mText = String.valueOf(index+1);
 		mThumbPosition = THUMB_POSITION_BOTTOM;
 	}
 
 	@Override
-	protected Bitmap loadBitmap() {
+	protected boolean loadBitmap() {
 		// try to load thumbnail from cache
-		Bitmap bitmap = mAlbum.get().getPageThumbnailFromCache(mIndex);
+		mThumb = mAlbum.get().getPageThumbnailFromCache(index);
 
-		if (bitmap == null) {
+		if (mThumb == null) {
 			// create a thumbnail for specified page
-			bitmap = mAlbum.get().createPageThumbnail(mIndex);
+			mThumb = mAlbum.get().createPageThumbnail(index);
 		}
 		
-		return bitmap;
+		return mThumb != null;
 	}
 
 	@Override

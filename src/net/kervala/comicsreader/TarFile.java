@@ -28,8 +28,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 public class TarFile {
 	private class TarEntry {
 		String filename;
@@ -87,7 +85,7 @@ public class TarFile {
 					BufferedInputStream in = new BufferedInputStream(is);
 
 					if (in.skip(ent.offset) == ent.offset) {
-						buffer = Album.inputStreamToBytes(in, ent.filesize);
+						buffer = ComicsHelpers.inputStreamToBytes(in, ent.filesize);
 					}
 					
 					is.close();

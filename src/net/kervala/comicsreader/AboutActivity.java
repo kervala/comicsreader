@@ -47,7 +47,7 @@ public class AboutActivity extends Activity {
 		unrarVersionView.setText(getString(R.string.about_unrar_version, RarFile.getVersion()));
 		
 		String revision = getString(R.string.revision);
-	
+
 		if ("".equals(revision)) {
 			revision = "local";
 		} else {

@@ -83,7 +83,7 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
 	
 	public void onClick(View v) {
 		if (v == mOkButton) {
-			Message msg = mHandler.get().obtainMessage(CommonActivity.ACTION_LOGIN);
+			Message msg = mHandler.get().obtainMessage(BrowserActivity.ACTION_LOGIN);
 			Bundle b = new Bundle();
 			b.putString("username", mUsernameEdit.getText().toString());
 			b.putString("password", mPasswordEdit.getText().toString());
@@ -92,7 +92,7 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
 			mHandler.get().sendMessage(msg);
 			dismiss();
 		} else {
-			mHandler.get().sendEmptyMessage(CommonActivity.ACTION_CANCEL_LOGIN);
+			mHandler.get().sendEmptyMessage(BrowserActivity.ACTION_CANCEL_LOGIN);
 			cancel();
 		}
 	}

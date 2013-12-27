@@ -80,7 +80,7 @@ public class BookmarkDialog extends Dialog implements View.OnClickListener {
 	
 	public void onClick(View v) {
 		if (v == mOkButton) {
-			Message msg = mHandler.get().obtainMessage(CommonActivity.ACTION_BOOKMARK);
+			Message msg = mHandler.get().obtainMessage(BrowserActivity.ACTION_BOOKMARK);
 			Bundle b = new Bundle();
 			b.putString("title", mTitleEdit.getText().toString());
 			b.putString("url", mUrlEdit.getText().toString());

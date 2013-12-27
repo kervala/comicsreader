@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,27 +30,27 @@ import java.util.List;
 import java.util.Locale;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.util.Log;
 
 public class Album {
 
-	protected String mTitle;
-	protected String mFilename;
-	protected List<String> mFiles;
-	protected int mNumPages = 0;
-	protected int mCurrentPageNumber = 0;
-	protected String mCurrentPageFilename;
-	protected boolean mHighQuality = false;
-	protected boolean mFitToScreen = true;
-	protected int mScale = 1;
-	protected int mMaxImagesInMemory = 0;
-	protected File mCachePagesDir;
-	protected int mLastCachedPage = -1;
-	protected byte [] mLastCachedBuffer = null;
+	public String title;
+	public String filename;
+	public int numPages = 0;
+	public int currentPageNumber = 0;
+	public int maxImagesInMemory = 0;
 
+	protected List<String> mFiles = new ArrayList<String>();
+	protected AlbumPage mPages[];
+	protected String mCurrentPageFilename;
+	protected File mCachePagesDir;
+	protected File mCacheThumbnailsDir;
+	
+	protected int mFirstBufferPageNumber = 65536;
+	protected int mLastBufferPageNumber = 0;
+	
 	final static String undefinedExtension = "";
 	final static String undefinedMimeType = "";
 
@@ -61,12 +60,23 @@ public class Album {
 	static final int ALBUM_TYPE_CBT = 3;
 	static final int ALBUM_TYPE_FOLDER = 4;
 
+	static final int ZOOM_NONE = 0;
+	static final int ZOOM_FIT_WIDTH = 1;
+	static final int ZOOM_FIT_HEIGHT = 2;
+	static final int ZOOM_FIT_SCREEN = 3;
+	static final int ZOOM_100 = 4;
+	static final int ZOOM_50 = 5;
+	static final int ZOOM_25 = 6;
+
+	public int maxBitmapsInMemory = 3;
+	public int maxBuffersInMemory = 6;
+
 	static Album createInstance(String filename) {
 		if (CbzAlbum.isValid(filename)) {
 			return new CbzAlbum();
 		}
 
-		if (CbrAlbum.isValid(filename)) {
+		if (RarFile.isLoaded() && CbrAlbum.isValid(filename)) {
 			return new CbrAlbum();
 		}
 
@@ -80,11 +90,11 @@ public class Album {
 
 		return new Album();
 	}
-	
+
 	static Uri getUriFromFilename(String filename) {
 		return Uri.parse(filename.replace("#", "%23"));
 	}
-	
+
 	static String getFilenameFromUri(Uri uri) {
 		return uri.getPath();
 	}
@@ -92,7 +102,7 @@ public class Album {
 	static String getPageFromUri(Uri uri) {
 		return uri.getFragment();
 	}
-	
+
 	static int getType(String uriString) {
 		Uri uri = Album.getUriFromFilename(uriString);
 
@@ -104,7 +114,7 @@ public class Album {
 		}
 
 		// file is a cbr
-		if (CbrAlbum.isValid(filename)) {
+		if (RarFile.isLoaded() && CbrAlbum.isValid(filename)) {
 			return ALBUM_TYPE_CBR;
 		}
 
@@ -152,7 +162,7 @@ public class Album {
 		if (CbzAlbum.isValid(filename)) return true;
 
 		// file is a cbr
-		if (CbrAlbum.isValid(filename)) return true;
+		if (RarFile.isLoaded() && CbrAlbum.isValid(filename)) return true;
 
 		// file is a cbt
 		if (CbtAlbum.isValid(filename)) return true;
@@ -178,7 +188,7 @@ public class Album {
 		if (CbzAlbum.isValid(filename)) return true;
 
 		// file is a cbr
-		if (CbrAlbum.isValid(filename)) return true;
+		if (RarFile.isLoaded() && CbrAlbum.isValid(filename)) return true;
 
 		// file is a cbt
 		if (CbtAlbum.isValid(filename)) return true;
@@ -194,7 +204,7 @@ public class Album {
 		if (CbzAlbum.askConfirm(filename)) return true;
 
 		// file is a cbr
-		if (CbrAlbum.askConfirm(filename)) return true;
+		if (RarFile.isLoaded() && CbrAlbum.askConfirm(filename)) return true;
 
 		// file is a cbt
 		if (CbtAlbum.askConfirm(filename)) return true;
@@ -244,37 +254,6 @@ public class Album {
 		return isValidJpegImage(filename) || isValidPngImage(filename) || isValidGifImage(filename);
 	}
 	
-	public static byte [] inputStreamToBytes(InputStream input, int size) {
-		byte [] buffer = null;
-
-		if (input != null) {
-			try {
-				buffer = new byte[size];
-
-				int offset = 0;
-				int readSize = 0;
-				
-				while (size > 0 && (readSize = input.read(buffer, offset, size)) > 0)
-				{
-					offset += readSize;
-					size -= readSize;
-				}
-
-				if (size != 0) {
-					Log.e("ComicsReader", "Album buffer length differs");
-				}
-
-				input.close();
-			} catch (OutOfMemoryError e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return buffer;
-	}
-	
 	public Album() {
 	}
 
@@ -286,55 +265,40 @@ public class Album {
 		return undefinedMimeType;
 	}
 	
-	public String getFilename() {
-		return mFilename;
-	}
-
-	public String getTitle() {
-		return mTitle;
-	}
-	
-	public int getNumPages() {
-		return mNumPages;
-	}
-
-	public int getCurrentPage() {
-		return mCurrentPageNumber;
-	}
-	
-	public int getMaxImagesInMemory() {
-		return mMaxImagesInMemory;
-	}
-	
 	boolean loadFiles() {
 		return false;
 	}
 	
-	public boolean open(String filename, boolean full) {
-		if (filename == null) return false;
+	public boolean open(String file, boolean full) {
+		if (file == null) return false;
 
-		mFilename = filename;
-		mFiles = new ArrayList<String>();
-		
+		filename = file;
+
 		if (!loadFiles()) return false;
 
-		mNumPages = mFiles.size();
+		numPages = full ? mFiles.size():Math.min(1, mFiles.size());
 
 		Collections.sort(mFiles, new NaturalOrderComparator());
 
 		if (mCurrentPageFilename != null) {
-			mCurrentPageNumber = mFiles.indexOf(mCurrentPageFilename);
+			currentPageNumber = mFiles.indexOf(mCurrentPageFilename);
 			
-			if (mCurrentPageNumber == -1) mCurrentPageNumber = 0;
+			if (currentPageNumber == -1) currentPageNumber = 0;
+		}
+
+		mPages = new AlbumPage[numPages];
+
+		for(int i = 0; i < numPages; ++i) {
+			AlbumPage album = new AlbumPage(i, mFiles.get(i));
+
+			mPages[i] = album;
 		}
 		
 		if (full) {
-			mCachePagesDir = new File(ComicsParameters.sPagesDirectory, ComicsParameters.md5(filename));
+			mCachePagesDir = new File(ComicsParameters.sPagesDirectory, ComicsHelpers.md5(filename));
 			mCachePagesDir.mkdirs();
 
 			checkMaxImagesInMemory();
-			
-//			createPagesThumbnails();
 		}
 
 		return true;
@@ -357,7 +321,7 @@ public class Album {
 	}
 	
 	public void checkMaxImagesInMemory() {
-		mMaxImagesInMemory = 3; 
+		maxImagesInMemory = 3; 
 
 /*
 		System.gc();
@@ -408,26 +372,14 @@ public class Album {
 */
 	}
 	
-	public boolean createPagesThumbnails() {
-		for(int page = 0; page < mNumPages; ++page) {
-			Bitmap bitmap = createPageThumbnail(page);
-
-			if (bitmap == null) continue;
-
-			bitmap.recycle();
-		}
-		
-		return true;
-	}
-	
 	public Bitmap createPageThumbnail(int page) {
 		File f = new File(mCachePagesDir, String.valueOf(page) + ".png");
 		if (f.exists() && f.length() > 0) return null;
 
-		
-		
 		// get a thumbnail for specified page
-		Bitmap bitmap = getPage(page, -1, ComicsParameters.THUMBNAIL_HEIGHT, true);
+		if (!updateThumbnail(page)) return null;
+
+		Bitmap bitmap = mPages[page].thumbnail;
 		if (bitmap == null) return null;
 
 		// if thumbnail can't be saved, continue
@@ -445,346 +397,104 @@ public class Album {
 			Log.e(ComicsParameters.APP_TAG, "Exception: " + e.getMessage());
 		}
 		
-		return ComicsParameters.resizeThumbnail(bitmap);
+		return ComicsHelpers.resizeThumbnail(bitmap);
 	}
 
 	public Bitmap getPageThumbnailFromCache(int page) {
-		return ComicsParameters.loadThumbnail(new File(mCachePagesDir, String.valueOf(page) + ".png"));
+		return ComicsHelpers.loadThumbnail(new File(mCachePagesDir, String.valueOf(page) + ".png"));
+	}
+
+	public void clearThumbnailsCache() {
+		// delete all pages thumbnails
+		File[] files = mCacheThumbnailsDir.listFiles();
+		for (File f : files) {
+			f.delete();
+		}
+
+		// delete directory
+		mCacheThumbnailsDir.delete();
 	}
 
 	public void clearPagesCache() {
-		// delete all pages thumbnails
+		// delete all pages
 		File[] files = mCachePagesDir.listFiles();
 		for (File f : files) {
 			f.delete();
 		}
-		
+
 		// delete directory
 		mCachePagesDir.delete();
 	}
-	
+
 	public void close() {
-		mFiles = null;
-		mFilename = null; 
-	}
+		if (mPages != null) {
+			for(AlbumPage page: mPages) {
+				page.reset();
+			}
 
-	public void setHighQuality(boolean highQuality) {
-		mHighQuality = highQuality;
-	}
-
-	public void setFitToScreen(boolean fitToScreen) {
-		mFitToScreen = fitToScreen;
-	}
-	
-	public void setScale(int scale) {
-		mScale = scale;
-	}
-	
-	private BitmapFactory.Options getPageOptions(int page) {
-		if (page >= mNumPages || page < 0) return null;
-
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		options.inScaled = false;
-		
-		try {
-			// update buffer if needed
-			updateCachedBuffer(page);
-			
-			// get image size
-			BitmapFactory.decodeByteArray(mLastCachedBuffer, 0, mLastCachedBuffer.length, options);
-		} catch(IOException e) {
-			Log.e(ComicsParameters.APP_TAG, "IOException while reading size of page " + String.valueOf(page) + ": " + e.toString());
-			options = null;
-		} catch(Exception e) {
-			Log.e(ComicsParameters.APP_TAG, "Exception while reading size of page " + String.valueOf(page) + ": " + e.toString());
-			options = null;
+			mPages = null;
 		}
-		
-		return options;
+
+		filename = null; 
 	}
 
-	protected byte [] getBytes(int page) throws IOException {
+	protected byte [] getBytes(int page) {
 		Log.e("ComicsReader", "Album.getBytes shouldn't be called directly");
 		
 		return null;
 	}
-
-	protected void updateCachedBuffer(int page) throws IOException {
-		if (mLastCachedBuffer == null || page != mLastCachedPage) {
-			mLastCachedBuffer = getBytes(page);
-			mLastCachedPage = page;
-		}
-	}
 	
-	/**
-	 * Load a page from stream
-	 * 
-	 * @param page Page to process
-	 * @param scale Scale to apply on page size
-	 * @return Bitmap representing this page
-	 */
-	private Bitmap getPageRaw(int page, int scale) {
-		if (page >= mNumPages || page < 0) return null;
+	public boolean updateDoublePage(int page, int width, int height) {
+		if (page < 0 || page >= numPages) return false;
 
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-
-		// decode with inSampleSize
-		options.inSampleSize = scale;
-		options.inScaled = false;
-//		options.inPurgeable = true; // if necessary purge pixels into disk
-
-		if (mHighQuality) {
-			options.inDither = false;
-			options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		} else {
-			options.inPreferredConfig = Bitmap.Config.RGB_565;
-		}
+		updateBuffer(page);
+		updateBuffer(page+1);
 		
-		Bitmap bitmap = null;
-
-		try {
-			// update buffer if needed
-			updateCachedBuffer(page);
-
-			// get bitmap from buffer
-			bitmap = BitmapFactory.decodeByteArray(mLastCachedBuffer, 0, mLastCachedBuffer.length, options);
-		} catch(IllegalStateException e) {
-			Log.e(ComicsParameters.APP_TAG, "Exception while reading file " + mFilename + ": " + e.toString());
-			return null;
-		} catch (IOException e) {
-			Log.e(ComicsParameters.APP_TAG, "Exception while decoding bitmap " + mFiles.get(page) + ": " + e.toString());
-			return null;
-		} catch (OutOfMemoryError e) {
-			Log.e(ComicsParameters.APP_TAG, "OutOfMemory while decoding bitmap " + mFiles.get(page) + ": " + e.toString());
-			return null;
-		}
-/*
-		// TODO: check for Android version, 2.2 should need that
-		if (mHighQuality && bitmap != null) {
-			final int width = bitmap.getWidth();
-			final int height = bitmap.getHeight();
-
-			Bitmap newBitmap = null;
-
-			try {
-				// create a new bitmap with the right format
-				newBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-			} catch (OutOfMemoryError e) {
-				Log.e(ComicsParameters.APP_TAG, "OutOfMemory while decoding bitmap " + mFiles.get(page) + ": " + e.toString());
-				return null;
-			}
-
-			newBitmap.eraseColor(0);
-
-			// create a canvas to draw the old bitmap on new one
-			final Canvas canvas = new Canvas(newBitmap);
-			Rect r = new Rect();
-			r.set(0, 0, width, height);
-			canvas.drawBitmap(bitmap, null, r, null);
-
-			// original bitmap is not needed anymore
-			bitmap.recycle();
-
-			return newBitmap;
-		}
-*/
-		return bitmap;
-	}
-	
-	// class to manage in and out sizes of a page
-	private class PageSize {
-		int srcWidth;
-		int srcHeight;
-		int dstWidth;
-		int dstHeight;
-		int dstScale;
-		boolean fitToScreen;
-	}
-	
-	private void computePageSize(PageSize size) {
-		int scaleX = 1;
-		int scaleY = 1;
+		mPages[page].updateSrcSize();
+		mPages[page+1].updateSrcSize();
 		
-		// update horizontal scale
-		if (size.dstWidth < 1) {
-			scaleX = -size.dstWidth;
-			size.dstWidth = -1;
-		}
-
-		// update vertical scale
-		if (size.dstHeight < 1) {
-			scaleY = -size.dstHeight;
-			size.dstHeight = -1;
-		}
-		
-		// computes original image size
-		final int imageWidth = size.srcWidth / scaleX;
-		final int imageHeight = size.srcHeight / scaleY;
-
-		if (size.dstWidth == -1 && size.dstHeight == -1) {
-			size.dstWidth = imageWidth;
-			size.dstHeight = imageHeight;
-		} else if (size.dstWidth == -1) {
-			if (size.dstScale < 1) {
-				size.dstScale = 1;
-
-				// find the correct scale value, it should be a power of 2
-				int tmpHeight = imageHeight;
-
-				while(tmpHeight / 2 >= Math.max(size.dstHeight, ComicsParameters.MIN_SCALED_SIZE)) {
-					tmpHeight /= 2;
-					size.dstScale *= 2;
-				}
-			}
-
-			if (!size.fitToScreen && imageHeight < size.dstHeight) {
-				size.dstWidth = imageWidth;
-				size.dstHeight = imageHeight;
-			} else {
-				size.dstWidth = size.dstHeight * imageWidth / imageHeight;
-			}
-		} else if (size.dstHeight == -1) {
-			if (size.dstScale < 1) {
-				size.dstScale = 1;
-
-				// find the correct scale value, it should be the power of 2
-				int tmpWidth = imageWidth;
-
-				while(tmpWidth / 2 >= Math.max(size.dstWidth, ComicsParameters.MIN_SCALED_SIZE)) {
-					tmpWidth /= 2;
-					size.dstScale *= 2;
-				}
-			}
-
-			if (!size.fitToScreen && imageWidth < size.dstWidth) {
-				size.dstWidth = imageWidth;
-				size.dstHeight = imageHeight;
-			} else {
-				size.dstHeight = size.dstWidth * imageHeight / imageWidth;
-			}
-		} else {
-			if (size.dstScale < 1) {
-				size.dstScale = 1;
-
-				// find the correct scale value, it should be a power of 2
-				int tmpWidth = imageWidth, tmpHeight = imageHeight;
-
-				while((tmpWidth / 2 >= Math.max(size.dstWidth, ComicsParameters.MIN_SCALED_SIZE)) && (tmpHeight / 2 >= Math.max(size.dstHeight, ComicsParameters.MIN_SCALED_SIZE))) {
-					tmpWidth /= 2;
-					tmpHeight /= 2;
-					size.dstScale *= 2;
-				}
-			}
-
-			// keep aspect ratio
-			int newHeight = size.dstWidth * imageHeight / imageWidth;
-				
-			if (newHeight > size.dstHeight) {
-				size.dstWidth = size.dstHeight * imageWidth / imageHeight;
-			} else {
-				size.dstHeight = newHeight;
-			}
-		}
-	}
-
-	public Bitmap getPage(int page, int width, int height, boolean thumbnail) {
-		final BitmapFactory.Options options = getPageOptions(page);
-		
-		if (options == null) {
-			return null;
-		}
-		
-		final PageSize size = new PageSize();
-		size.srcWidth = options.outWidth;
-		size.srcHeight = options.outHeight;
-		size.dstWidth = width;
-		size.dstHeight = height;
-		size.dstScale = thumbnail ? 0:mScale;
-		size.fitToScreen = thumbnail ? true:mFitToScreen;
-
-		// compute new size based on aspect ratio and scales
-		computePageSize(size);
-
-		final Bitmap bitmapRaw = getPageRaw(page, size.dstScale);
-
-		if (bitmapRaw == null) return null;
-
-		if (size.srcWidth == size.dstWidth && size.srcHeight == size.dstHeight) {
-			return bitmapRaw;
-		}
-
-		Bitmap bitmap = null;
-		
-		try {
-			// good quality resize
-			bitmap = Bitmap.createScaledBitmap(bitmapRaw, size.dstWidth, size.dstHeight, true);
-			bitmapRaw.recycle();
-		} catch(OutOfMemoryError e) {
-			Log.e(ComicsParameters.APP_TAG, "Out of memory while creating scaled bitmap");
-			bitmap = null;
-
-			bitmapRaw.recycle();
-
-			return null;
-		} catch (Exception e) {
-			Log.e(ComicsParameters.APP_TAG, "Exception: " + e);
-			e.printStackTrace();
-			bitmap = null;
-		}
-
-		return bitmap;
-	}
-	
-	public Bitmap getDoublePage(int page, int width, int height) {
-		// read sizes of 2 pages
-		final BitmapFactory.Options options1 = getPageOptions(page);
-		final BitmapFactory.Options options2 = getPageOptions(page+1);
-
-		if (options1 == null || options2 == null) {
-			return null;
-		}
-
-		PageSize size1 = new PageSize();
-		size1.srcWidth = options1.outWidth;
-		size1.srcHeight = options1.outHeight;
-		size1.dstWidth = width;
-		size1.dstHeight = height;
-		size1.dstScale = mScale;
-		size1.fitToScreen = mFitToScreen;
-
-		PageSize size2 = new PageSize();
-		size2.srcWidth = options2.outWidth;
-		size2.srcHeight = options2.outHeight;
-		size2.dstWidth = width;
-		size2.dstHeight = height;
-		size2.dstScale = mScale;
-		size2.fitToScreen = mFitToScreen;
-
 		// compute new sizes based on aspect ratio and scales
-		computePageSize(size1);
-		computePageSize(size2);
+		mPages[page].updateBitmapDstSize(width, height);
+		mPages[page+1].updateBitmapDstSize(width, height);
+		
+		// read sizes of 2 pages
+		final AlbumPage.Size size1 = mPages[page].bitmapSize;
+		final AlbumPage.Size size2 = mPages[page+1].bitmapSize;
 
-		// create a new bitmap with the size of the 2 bitmaps
-		Bitmap bitmap = Bitmap.createBitmap(size1.dstWidth + size2.dstWidth, Math.max(size1.dstHeight, size2.dstHeight), mHighQuality ? Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565);
-
+		if (size1 == null || size2 == null) return false;
+		
+		Bitmap bitmap = null;
+		Bitmap tmp = null;
+		
 		try {
+			// create a new bitmap with the size of the 2 bitmaps
+			bitmap = Bitmap.createBitmap(size1.dstWidth + size2.dstWidth, Math.max(size1.dstHeight, size2.dstHeight), AlbumParameters.highQuality ? Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565);
+
 			Canvas canvas = new Canvas(bitmap);
 
 			// get first page
-			Bitmap tmpRaw = getPageRaw(page, size1.dstScale);
+			Bitmap tmpRaw = mPages[page].getPageRaw(size1.dstScale);
 
-			if (tmpRaw == null) return null;
+			if (tmpRaw == null) {
+				bitmap.recycle();
+				return false;
+			}
 
 			// good quality resize
-			Bitmap tmp = Bitmap.createScaledBitmap(tmpRaw, size1.dstWidth, size1.dstHeight, true);
+			tmp = Bitmap.createScaledBitmap(tmpRaw, size1.dstWidth, size1.dstHeight, true);
 			tmpRaw.recycle();
 
 			canvas.drawBitmap(tmp, 0, 0, null);
 			tmp.recycle();
 
 			// get second page
-			tmpRaw = getPageRaw(page+1, size2.dstScale);
+			tmpRaw = mPages[page+1].getPageRaw(size2.dstScale);
+
+			if (tmpRaw == null) {
+				bitmap.recycle();
+				tmp.recycle();
+				return false;
+			}
 
 			// good quality resize
 			tmp = Bitmap.createScaledBitmap(tmpRaw, size2.dstWidth, size2.dstHeight, true);
@@ -792,15 +502,208 @@ public class Album {
 
 			canvas.drawBitmap(tmp, size1.dstWidth, 0, null);
 			tmp.recycle();
+
+			mPages[page].bitmap = bitmap;
+
+			return true;
 		} catch(OutOfMemoryError e) {
 			Log.e(ComicsParameters.APP_TAG, "Out of memory while assembling a double page");
-
-			return null;
 		} catch (Exception e) {
 			Log.e(ComicsParameters.APP_TAG, "Exception: " + e.getMessage());
 			e.printStackTrace();
 		}
+
+		if (bitmap != null) bitmap.recycle();
+		if (tmp != null) tmp.recycle();
+
+		return false;
+	}
+	
+	public boolean updatePage(int page) {
+		Log.d("ComicsReader", "updatePage " + String.valueOf(page));
 		
-		return bitmap;
+		if (ComicsParameters.sScreenWidth < 1 || ComicsParameters.sScreenHeight < 1) return false;
+
+		// already updated
+		if (mPages[page].bitmap != null) return false;
+
+		boolean divideByTwo = false;
+		int width = -1;
+		int height = -1;
+
+		switch (AlbumParameters.zoom) {
+		case ZOOM_FIT_WIDTH: {
+			width = ComicsParameters.sScreenWidth;
+			if (AlbumParameters.doublePage) {
+				divideByTwo = true;
+			}
+			break;
+		}
+		case ZOOM_FIT_HEIGHT: {
+			height = ComicsParameters.sScreenHeight;
+			break;
+		}
+		case ZOOM_FIT_SCREEN: {
+			width = ComicsParameters.sScreenWidth;
+			if (AlbumParameters.doublePage) {
+				divideByTwo = true;
+			}
+			height = ComicsParameters.sScreenHeight;
+			break;
+		}
+		case ZOOM_50: {
+			width = -2;
+			height = -2;
+			break;
+		}
+		case ZOOM_25: {
+			width = -4;
+			height = -4;
+			break;
+		}
+		}
+
+		if (AlbumParameters.doublePage && page > 0) {
+			return updateDoublePage(page, divideByTwo ? width/2:width, height);
+		} else {
+			updateBuffer(page);
+
+			if (!mPages[page].updateBitmap(width, height)) return false;
+		}
+
+//		debugMemory();
+
+		return true;
+	}
+
+	protected void updateBuffers(int current, int next, int previous) {
+		// TODO: make different algorithms depending on free memory
+
+		// recycle all unused pages
+		for(int i = mFirstBufferPageNumber; i <= mLastBufferPageNumber; ++i) {
+			if (mPages[i].bitmap != null && i != current && (maxBitmapsInMemory < 2 || i != next) && (maxBitmapsInMemory < 3 || i != previous)) {
+				mPages[i].bitmap.recycle();
+				mPages[i].bitmap = null;
+				
+				Log.d("ComicsReader", "Recycle page " + String.valueOf(i));
+			}
+		}
+
+		// save unused buffers to disk to free memory
+		int start;
+		int end;
+
+		if (next < current) {
+			start = current + 2;
+			end = mLastBufferPageNumber;
+
+			// update last buffer page
+			mLastBufferPageNumber = Math.min(current + 1, numPages - 1);
+		} else {
+			start = mFirstBufferPageNumber;
+			end = current - 2;
+
+			// update first buffer page
+			mFirstBufferPageNumber = Math.max(current - 1, 0);
+		}
+
+		// fix bounding wrong values
+		if (start >= numPages) start = numPages - 1;
+		if (end < 0) end = 0;
+
+		for(int i = start; i <= end; ++i) {
+			mPages[i].saveBufferToCache();
+		}
+		
+		// load new buffers to speed up loading
+		if (next < current) {
+			start = current - (maxBuffersInMemory - 2);
+			end = current + 1;
+		} else {
+			start = current - 1;
+			end = current + (maxBuffersInMemory - 2);
+		}
+		
+		// fix bounding wrong values
+		if (start < 0) start = 0;
+		if (end >= numPages) end = numPages - 1;
+
+		for(int i = start; i <= end; ++i) {
+			if (!AlbumPage.sAbortLoading) updateBuffer(i);
+		}
+		
+		AlbumPage.sAbortLoading = false;
+	}
+
+	protected void updateBuffer(int page) {
+		if (!mPages[page].loadBufferFromCache()) {
+			mPages[page].buffer = getBytes(page);
+			
+			Log.d("ComicsReader", "Loaded buffer for page " + String.valueOf(page));
+		} else {
+			Log.d("ComicsReader", "Buffer already in memory for page " + String.valueOf(page));
+		}
+
+		if (page < mFirstBufferPageNumber) mFirstBufferPageNumber = page;
+		if (page > mLastBufferPageNumber) mLastBufferPageNumber = page;
+	}
+
+	public boolean updateThumbnail(int page) {
+		updateBuffer(page);
+		
+		return mPages[page].updateThumbnail();
+	}
+	
+	public boolean hasPageBitmap(int page) {
+		return mPages[page].bitmap != null;
+	}
+	
+	public Bitmap getPageThumbnail(int page) {
+		return mPages[page].thumbnail;
+	}
+
+	public Bitmap getPageBitmap(int page) {
+		return mPages[page].bitmap;
+	}
+
+	public int getPageWidth(int page) {
+		return mPages[page].bitmapSize.dstWidth;
+	}
+	
+	public void updatePagesSizes() {
+		Log.d("ComicsReader", "updatePagesSizes");
+		
+		for(int i = 0; i < numPages; ++i) {
+			if (mPages[i].bitmap != null) {
+				mPages[i].bitmap.recycle();
+				mPages[i].bitmap = null;
+			}
+			
+			mPages[i].resetSize();
+		}
+	}
+	
+	public int getMemoryUsed() {
+		int size = 0;
+
+		for(int i = mFirstBufferPageNumber; i <= mLastBufferPageNumber; ++i) {
+			size += mPages[i].getMemoryUsed();
+		}
+		
+		return size;
+	}
+	
+	public void debugMemory() {
+		Runtime runtime = Runtime.getRuntime();
+		int used = (int)runtime.totalMemory();
+		int max = (int)runtime.maxMemory();
+		
+		Log.d("ComicsReader", "From page " + String.valueOf(mFirstBufferPageNumber) + " to " + String.valueOf(mLastBufferPageNumber) + " using " + String.valueOf(getMemoryUsed()) + " bytes (" + String.valueOf(used) + " on " + String.valueOf(max));
+		
+		for(int i = 0; i < numPages; ++i) {
+			String buffer = mPages[i].buffer == null ? "0":String.valueOf(mPages[i].buffer.length);
+			String bitmap = mPages[i].bitmap == null ? "0":String.valueOf(mPages[i].getMemoryUsed());
+			Log.d("ComicsReader", "Page " + String.valueOf(i) + ": buffer " + buffer + ", bitmap " + bitmap);
+		}
 	}
 }

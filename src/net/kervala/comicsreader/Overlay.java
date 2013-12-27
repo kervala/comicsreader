@@ -24,7 +24,10 @@ import java.lang.ref.WeakReference;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Handler;
+import android.os.Handler.Callback;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,28 +35,23 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 
-public class Overlay {
-	private final class HideThread implements Runnable {
-		public void run() {
-			hide();
-		}
-	}
-
+public class Overlay implements Callback {
 	protected TextView mView;
-	protected HideThread mHideThread = new HideThread();
 	protected WindowManager mWindowManager;
 	protected WeakReference<Activity> mActivity;
-	protected WeakReference<Handler> mHandler;
+	protected Handler mHandler;
 	protected boolean mAdded = false;
 	
-	public Overlay(Activity activity, Handler handler) {
+	static private int ACTION_HIDE = 0;
+
+	public Overlay(Activity activity) {
 		mActivity = new WeakReference<Activity>(activity);
-		mHandler = new WeakReference<Handler>(handler);
+		mHandler = new Handler(this);
 
 		mWindowManager = (WindowManager)mActivity.get().getSystemService(Context.WINDOW_SERVICE);
-		final LayoutInflater inflate = mActivity.get().getLayoutInflater();
+		final LayoutInflater inflater = mActivity.get().getLayoutInflater();
 
-		mView = (TextView) inflate.inflate(R.layout.overlay, null);
+		mView = (TextView) inflater.inflate(R.layout.overlay, null);
 		mView.setVisibility(View.INVISIBLE);
 	}
 	
@@ -68,7 +66,13 @@ public class Overlay {
 
 			// set position to top right corner
 			lp.gravity = Gravity.TOP|Gravity.RIGHT;
-					
+
+			// hack to prevent overlay being cut
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				lp.y = 32;
+				lp.x = 32;
+			}
+
 			// add view to window
 			mWindowManager.addView(mView, lp);
 					
@@ -78,7 +82,7 @@ public class Overlay {
 
 	public void remove() {
 		if (mWindowManager != null && mView != null && mAdded) {
-			mHandler.get().removeCallbacks(mHideThread);
+			mHandler.removeMessages(ACTION_HIDE);
 			mWindowManager.removeView(mView);
 			mAdded = false;
 		}
@@ -89,7 +93,7 @@ public class Overlay {
 
 		if (!mAdded) add();
 
-		mHandler.get().removeCallbacks(mHideThread);
+		mHandler.removeMessages(ACTION_HIDE);
 		
 		// show overlay
 		mView.setVisibility(View.VISIBLE);
@@ -97,7 +101,7 @@ public class Overlay {
 
 		if (duration > 0) {
 			// send a message to hide toast after 1 second
-			mHandler.get().postDelayed(mHideThread, duration);
+			mHandler.sendEmptyMessageDelayed(ACTION_HIDE, duration);
 		}
 	}
 
@@ -106,6 +110,12 @@ public class Overlay {
 
 		mView.setVisibility(View.INVISIBLE);
 
-		mHandler.get().removeCallbacks(mHideThread);
+		mHandler.removeMessages(ACTION_HIDE);
+	}
+
+	public boolean handleMessage(Message msg) {
+		hide();
+
+		return true;
 	}
 }

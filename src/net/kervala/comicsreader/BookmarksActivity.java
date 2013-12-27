@@ -120,12 +120,12 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
-			case CommonActivity.DIALOG_BOOKMARK:
+			case BrowserActivity.DIALOG_BOOKMARK:
 			{
 				mBookmarkDialog = new BookmarkDialog(BookmarksActivity.this, mHandler);
 				return mBookmarkDialog;
 			}
-			case CommonActivity.DIALOG_CONFIRM:
+			case BrowserActivity.DIALOG_CONFIRM:
 			{
 				return new ConfirmDialog(this, mHandler, getString(R.string.confirm_delete_bookmark));
 			}
@@ -139,7 +139,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 	}
 	
 	private boolean displayBookmark() {
-		showDialog(CommonActivity.DIALOG_BOOKMARK);
+		showDialog(BrowserActivity.DIALOG_BOOKMARK);
 		
 		if (mPosition == -1) {
 			mBookmarkDialog.setId(-1);
@@ -165,7 +165,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 	}
 	
 	private boolean displayConfirm() {
-		showDialog(CommonActivity.DIALOG_CONFIRM);
+		showDialog(BrowserActivity.DIALOG_CONFIRM);
 		return true;
 	}
 	
@@ -183,7 +183,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 			
 			final Intent intent = getIntent();
 			intent.setDataAndType(uri, null);
-			setResult(CommonActivity.RESULT_URL, intent);
+			setResult(BrowserActivity.RESULT_URL, intent);
 			finish();
 
 			return true;
@@ -202,14 +202,14 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		Bundle bundle = msg.getData();
 		
 		switch(msg.what) {
-			case CommonActivity.ACTION_BOOKMARK:
+			case BrowserActivity.ACTION_BOOKMARK:
 			{
 				new SetBookmarkTask(bundle.getInt("id"), bundle.getString("title"), bundle.getString("url")).execute();
 				
 				return true;
 			}
 			
-			case CommonActivity.ACTION_CONFIRM_YES:
+			case BrowserActivity.ACTION_CONFIRM_YES:
 			{
 				if (mCursor.moveToPosition(mPosition)) {
 					new DeleteBookmarkTask().execute(mCursor.getInt(0));
@@ -218,7 +218,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 				}
 			}
 
-			case CommonActivity.ACTION_CONFIRM_NO:
+			case BrowserActivity.ACTION_CONFIRM_NO:
 			{
 				return true;
 			}

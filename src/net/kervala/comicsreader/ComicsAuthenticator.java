@@ -40,7 +40,7 @@ public class ComicsAuthenticator extends Authenticator {
 	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
 		if (mLogin == null || mPassword == null) {
-			mHandler.sendEmptyMessage(CommonActivity.ACTION_ASK_LOGIN);
+			mHandler.sendEmptyMessage(BrowserActivity.ACTION_ASK_LOGIN);
 
 			// wait until dialog is validated
 			synchronized(this) {
