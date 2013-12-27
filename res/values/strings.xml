@@ -19,7 +19,7 @@
 -->
 <resources>
     <string name="icon">Icon</string>
-    <string name="version">1.1</string>
+    <string name="version">1.2</string>
     <string name="revision"></string>
     <string name="build_date"></string>
     <string name="about">About</string>
