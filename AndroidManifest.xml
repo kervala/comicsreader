@@ -19,7 +19,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.kervala.comicsreader"
-    android:versionCode="17"
+    android:versionCode="18"
     android:versionName="@string/version" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -28,22 +28,23 @@
 
     <uses-sdk
         android:minSdkVersion="4"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="19" />
 
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:resizeable="true"
-        android:smallScreens="true" />
+        android:smallScreens="true"
+        android:xlargeScreens="true"/>
 
     <application
         android:name="ComicsApplication"
         android:icon="@drawable/icon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name" android:largeHeap="true">
         <activity
             android:name="ViewerActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.Viewer" >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -61,7 +62,7 @@
         </activity>
         <activity
             android:name="BrowserActivity"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
