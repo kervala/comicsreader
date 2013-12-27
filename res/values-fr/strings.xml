@@ -97,7 +97,7 @@
     <string name="preference_zoom_summary">Mode de redimensionnement des pages</string>
     <string name="preference_category_misc">Divers</string>
     <string name="preference_about">À propos de Lecteur de BD</string>
-    <string name="preference_about_summary">Version et licences des bibliothèques externes</string>
+    <string name="preference_about_summary">Version et licences des bibliothèques tierces</string>
     <string name="previous_page">Page précédente</string>
     <string name="settings">Préférences</string>
     <string name="yes">Oui</string>
