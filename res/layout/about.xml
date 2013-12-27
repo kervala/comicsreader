@@ -141,7 +141,9 @@
             android:layout_height="wrap_content"
             android:text="@string/licenses_waiting"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="8dp" />
+            android:textSize="12sp"
+            android:typeface="monospace" />
+
     </LinearLayout>
 
 </ScrollView>
