@@ -31,6 +31,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.util.DisplayMetrics;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity {
@@ -65,6 +66,12 @@ public class AboutActivity extends Activity {
 		
 		final TextView buildDateView = (TextView)findViewById(R.id.dialog_about_build_date);
 		buildDateView.setText(getString(R.string.about_build_date, buildDate));
+
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+		final TextView view = (TextView)findViewById(R.id.licenses);
+		view.setTextSize((float)dm.widthPixels * 0.75f * dm.density / 80.f);
 		
 		// licenses loading in a thread
 		new LoadLicensesTask().execute("COMICSREADER", "UNRAR");

@@ -438,6 +438,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 					if (fullDeltaY > deltaMin) {
 						setActionBarVisible(true);
 						
+						// in immersive mode, we can't display ActionBar anymore, so we need to leave it temporarily
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 							mImageView.setFullScreen(false);
 						}
