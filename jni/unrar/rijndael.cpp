@@ -66,7 +66,7 @@ Rijndael::Rijndael()
 
 void Rijndael::Init(bool Encrypt,const byte *key,uint keyLen,const byte * initVector)
 {
-  uint uKeyLenInBytes;
+  uint uKeyLenInBytes = 0;
   switch(keyLen)
   {
     case 128:

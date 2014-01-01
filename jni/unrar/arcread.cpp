@@ -91,7 +91,7 @@ void Archive::UnexpEndArcMsg()
   // It can happen when we reached the end of older RAR 1.5 archive,
   // which did not have the end of archive block.
   if (CurBlockPos>ArcSize || NextBlockPos>ArcSize || 
-      CurBlockPos!=ArcSize && NextBlockPos!=ArcSize && Format==RARFMT50)
+      (CurBlockPos!=ArcSize && NextBlockPos!=ArcSize && Format==RARFMT50))
   {
 #ifndef SHELL_EXT
     Log(FileName,St(MLogUnexpEOF));

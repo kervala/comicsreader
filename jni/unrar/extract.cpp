@@ -550,9 +550,7 @@ bool CmdExtract::ExtractCurrentFile(CommandData *Cmd,Archive &Arc,size_t HeaderS
       CurFile.SetAllowDelete(!Cmd->KeepBroken);
 
       bool FileCreateMode=!TestMode && !SkipSolid && Command!='P';
-#ifndef GUI
       bool ShowChecksum=true; // Display checksum verification result.
-#endif
 
       bool LinkSuccess=true; // Assume success for test mode.
       if (LinkEntry)
@@ -568,7 +566,7 @@ bool CmdExtract::ExtractCurrentFile(CommandData *Cmd,Archive &Arc,size_t HeaderS
             if (Type==FSREDIR_HARDLINK)
               LinkSuccess=ExtractHardlink(DestFileName,NameExisting,ASIZE(NameExisting));
             else
-              LinkSuccess=ExtractFileCopy(CurFile,Arc.FileName,DestFileName,NameExisting,ASIZE(NameExisting));
+              LinkSuccess=ExtractFileCopy(Cmd,CurFile,Arc.FileName,DestFileName,NameExisting,ASIZE(NameExisting));
           }
         }
         else
@@ -744,7 +742,7 @@ void CmdExtract::UnstoreFile(ComprDataIO &DataIO,int64 DestUnpSize)
 }
 
 
-bool CmdExtract::ExtractFileCopy(File &New,wchar *ArcName,wchar *NameNew,wchar *NameExisting,size_t NameExistingSize)
+bool CmdExtract::ExtractFileCopy(CommandData *Cmd,File &New,wchar *ArcName,wchar *NameNew,wchar *NameExisting,size_t NameExistingSize)
 {
 #ifdef _WIN_ALL
   UnixSlashToDos(NameExisting,NameExisting,NameExistingSize);
