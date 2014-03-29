@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -600,6 +601,18 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	
 	public void onUpdateCurrentPage(Bitmap bitmap) {
 		mImageView.setOffset(0);
+
+		if (bitmap != null && AlbumParameters.autoRotate)
+		{
+			int width = bitmap.getWidth();
+			int height = bitmap.getHeight();
+			if (width > height) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			}
+			else if (width < height) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			}
+		}
 
 		mImageView.setCurrentBitmap(bitmap);
 	}

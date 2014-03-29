@@ -34,6 +34,7 @@ public class AlbumParameters {
 	static public int overlayDuration = 5000;
 	static public int edgesResistance = 1;
 	static public int pageTransitionSpeed = 2;
+	static public boolean autoRotate = false;
 	
 	static public boolean getAlbumPreferences(Context context) {
 		boolean oldHighQuality = highQuality;
@@ -43,6 +44,7 @@ public class AlbumParameters {
 		boolean oldDoublePage = doublePage;
 		boolean oldFullScreen = fullScreen;
 		int oldZoom = zoom;
+		boolean oldAutoRotate = autoRotate;
 		
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		highQuality = prefs.getBoolean("preference_high_quality", false);
@@ -55,6 +57,7 @@ public class AlbumParameters {
 		edgesResistance = Integer.parseInt(prefs.getString("preference_edges_resistance", "1"));
 		pageTransitionSpeed = Integer.parseInt(prefs.getString("preference_page_transition_speed", "2"));
 		rightToLeft = prefs.getBoolean("preference_reading_direction", false);
+		autoRotate = prefs.getBoolean("preference_auto_rotate", false);
 
 		switch(pageTransitionSpeed) {
 			case 1:
@@ -74,6 +77,6 @@ public class AlbumParameters {
 		return oldHighQuality != highQuality ||	oldfitToScreen != fitToScreen ||
 			oldScale != scale || oldRightToLeft != rightToLeft ||
 			oldDoublePage != doublePage || oldFullScreen != fullScreen ||
-			oldZoom != zoom;
+			oldZoom != zoom || oldAutoRotate != autoRotate;
 	}
 }
