@@ -122,7 +122,7 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 
 	public int compareTo(ThumbnailItem item) {
 		if (mText != null) {
-			return mText.compareTo(item.mText);
+			return NaturalOrderComparator.compareStrings(mText, item.mText);
 		} else {
 			throw new IllegalArgumentException();
 		}

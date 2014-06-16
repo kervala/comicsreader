@@ -24,13 +24,18 @@ misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
 
-// Altered source code, main method is removed in this version
+// Altered source code, main method is removed and changed some methods to static
 
 import java.util.*;
 
 public class NaturalOrderComparator implements Comparator<String>
 {
-   int compareRight(String a, String b)
+   public int compare(String o1, String o2)
+   {
+	   return compareStrings(o1, o2);
+   }
+
+   static int compareRight(String a, String b)
    {
        int bias = 0;
        int ia = 0;
@@ -76,7 +81,7 @@ public class NaturalOrderComparator implements Comparator<String>
        }
    }
 
-   public int compare(String o1, String o2)
+   public static int compareStrings(String o1, String o2)
    {
        String a = o1.toString();
        String b = o2.toString();
