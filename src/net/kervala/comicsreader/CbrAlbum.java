@@ -40,6 +40,8 @@ public class CbrAlbum extends Album {
 	}
 	
 	public static boolean isValid(String filename) {
+		if (!RarFile.isLoaded()) return false;
+
 		File file = new File(filename);
 
 		boolean valid = false;
@@ -82,8 +84,10 @@ public class CbrAlbum extends Album {
 	public static String getMimeType(String filename) {
 		return cbrMimeType;
 	}
-	
+
 	boolean loadFiles() {
+		if (!RarFile.isLoaded()) return false;
+
 		try {
 			// open RAR file
 			mRar = new RarFile(filename);
