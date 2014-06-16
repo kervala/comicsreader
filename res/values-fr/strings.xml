@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="icon">Icône</string>
   <string name="about">À propos</string>
   <string name="about_author">© 2011–2013 Kervala</string>
   <string name="about_license">Cette application est publiée sous licence GPLv3 :</string>
