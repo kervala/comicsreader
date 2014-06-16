@@ -1,6 +1,6 @@
 #include "rar.hpp"
 
-#ifndef __ANDROID__
+#ifndef _ANDROID
 #define MBFUNCTIONS
 #else
 wchar_t* unrar_wcsncpy(wchar_t* destination, const wchar_t* source, size_t num)
@@ -123,13 +123,17 @@ bool WideToChar(const wchar *Src,char *Dest,size_t DestSize)
   if (WideCharToMultiByte(CP_ACP,0,Src,-1,Dest,(int)DestSize,NULL,NULL)==0)
     RetCode=false;
 
-#elif defined(_APPLE) || defined(__ANDROID__)
+// wcstombs is broken in Android NDK r9.
+#elif defined(_APPLE) || defined(_ANDROID)
   WideToUtf(Src,Dest,DestSize);
 
 #elif defined(MBFUNCTIONS)
   if (!WideToCharMap(Src,Dest,DestSize,RetCode))
   {
-    size_t ResultingSize=wcstombs(Dest,Src,DestSize);
+    mbstate_t ps; // Use thread safe external state based functions.
+    memset (&ps, 0, sizeof(ps));
+    const wchar *SrcParam=Src; // wcsrtombs can change the pointer.
+    size_t ResultingSize=wcsrtombs(Dest,&SrcParam,DestSize,&ps);
     if (ResultingSize==(size_t)-1)
       RetCode=false;
     if (ResultingSize==0 && *Src!=0)
@@ -166,11 +170,15 @@ bool CharToWide(const char *Src,wchar *Dest,size_t DestSize)
   if (MultiByteToWideChar(CP_ACP,0,Src,-1,Dest,(int)DestSize)==0)
     RetCode=false;
 
-#elif defined(_APPLE) || defined(__ANDROID__)
+// mbstowcs is broken in Android NDK r9.
+#elif defined(_APPLE) || defined(_ANDROID)
   UtfToWide(Src,Dest,DestSize);
 
 #elif defined(MBFUNCTIONS)
-  size_t ResultingSize=mbstowcs(Dest,Src,DestSize);
+  mbstate_t ps;
+  memset (&ps, 0, sizeof(ps));
+  const char *SrcParam=Src; // mbsrtowcs can change the pointer.
+  size_t ResultingSize=mbsrtowcs(Dest,&SrcParam,DestSize,&ps);
   if (ResultingSize==(size_t)-1)
     RetCode=false;
   if (ResultingSize==0 && *Src!=0)
@@ -178,7 +186,6 @@ bool CharToWide(const char *Src,wchar *Dest,size_t DestSize)
 
   if (RetCode==false && DestSize>1)
     CharToWideMap(Src,Dest,DestSize,RetCode);
-
 #else
   for (int I=0;I<DestSize;I++)
   {
@@ -200,7 +207,7 @@ bool CharToWide(const char *Src,wchar *Dest,size_t DestSize)
 }
 
 
-#if defined(_UNIX) && defined(MBFUNCTIONS)
+#if defined(_UNIX) && defined(MBFUNCTIONS) && !defined(_ANDROID)
 // Convert and restore mapped inconvertible Unicode characters. 
 // We use it for extended ASCII names in Unix.
 bool WideToCharMap(const wchar *Src,char *Dest,size_t DestSize,bool &Success)
@@ -230,12 +237,13 @@ bool WideToCharMap(const wchar *Src,char *Dest,size_t DestSize,bool &Success)
       Dest[DestPos++]=char(uint(Src[SrcPos++])-MapAreaStart);
     else
     {
-      ignore_result( wctomb(NULL,0) ); // Reset shift state.
-      if (wctomb(Dest+DestPos,Src[SrcPos])==-1)
+      mbstate_t ps;
+      memset(&ps,0,sizeof(ps));
+      if (wcrtomb(Dest+DestPos,Src[SrcPos],&ps)==-1)
         Success=false;
       SrcPos++;
-      ignore_result( mblen(NULL,0) ); // Reset shift state.
-      int Length=mblen(Dest+DestPos,MB_CUR_MAX);
+      memset(&ps,0,sizeof(ps));
+      int Length=mbrlen(Dest+DestPos,MB_CUR_MAX,&ps);
       DestPos+=Max(Length,1);
     }
   }
@@ -244,7 +252,7 @@ bool WideToCharMap(const wchar *Src,char *Dest,size_t DestSize,bool &Success)
 #endif
 
 
-#if defined(_UNIX) && defined(MBFUNCTIONS)
+#if defined(_UNIX) && defined(MBFUNCTIONS) && !defined(_ANDROID)
 // Convert and map inconvertible Unicode characters. 
 // We use it for extended ASCII names in Unix.
 void CharToWideMap(const char *Src,wchar *Dest,size_t DestSize,bool &Success)
@@ -263,8 +271,9 @@ void CharToWideMap(const char *Src,wchar *Dest,size_t DestSize,bool &Success)
       Success=true;
       break;
     }
-    ignore_result( mbtowc(NULL,NULL,0) ); // Reset shift state.
-    if (mbtowc(Dest+DestPos,Src+SrcPos,MB_CUR_MAX)==-1)
+    mbstate_t ps;
+    memset(&ps,0,sizeof(ps));
+    if (mbrtowc(Dest+DestPos,Src+SrcPos,MB_CUR_MAX,&ps)==-1)
     {
       // For security reasons we do not want to map low ASCII characters,
       // so we do not have additional .. and path separator codes.
@@ -284,8 +293,8 @@ void CharToWideMap(const char *Src,wchar *Dest,size_t DestSize,bool &Success)
     }
     else
     {
-      ignore_result( mblen(NULL,0) ); // Reset shift state.
-      int Length=mblen(Src+SrcPos,MB_CUR_MAX);
+      memset(&ps,0,sizeof(ps));
+      int Length=mbrlen(Src+SrcPos,MB_CUR_MAX,&ps);
       SrcPos+=Max(Length,1);
       DestPos++;
     }
@@ -466,20 +475,29 @@ bool UtfToWide(const char *Src,wchar *Dest,size_t DestSize)
   return Success;
 }
 
+bool UnkToWide(const char *Src,wchar *Dest,size_t DestSize)
+{
+	// TODO: don't know what to do there
+	return UtfToWide(Src, Dest, DestSize);
+}
 
 int wcsicomp(const wchar *s1,const wchar *s2)
 {
 #ifdef _WIN_ALL
   return CompareStringW(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,-1,s2,-1)-2;
 #else
-  while (towupper(*s1)==towupper(*s2))
+  while (true)
   {
+    wchar u1 = towupper(*s1);
+    wchar u2 = towupper(*s2);
+    if (u1 != u2)
+      return u1 < u2 ? -1 : 1;
     if (*s1==0)
-      return 0;
+      break;
     s1++;
     s2++;
   }
-  return s1 < s2 ? -1 : 1;
+  return 0;
 #endif
 }
 
@@ -492,19 +510,37 @@ int wcsnicomp(const wchar *s1,const wchar *s2,size_t n)
   // to real string length.
   size_t l1=Min(unrar_wcslen(s1)+1,n);
   size_t l2=Min(unrar_wcslen(s2)+1,n);
-  return(CompareStringW(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,(int)l1,s2,(int)l2)-2);
+  return CompareStringW(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,(int)l1,s2,(int)l2)-2;
 #else
   if (n==0)
     return 0;
-  while (towupper(*s1)==towupper(*s2))
+  while (true)
   {
+    wchar u1 = towupper(*s1);
+    wchar u2 = towupper(*s2);
+    if (u1 != u2)
+      return u1 < u2 ? -1 : 1;
     if (*s1==0 || --n==0)
-      return 0;
+      break;
     s1++;
     s2++;
   }
-  return s1 < s2 ? -1 : 1;
+  return 0;
 #endif
+}
+
+
+const wchar_t* wcscasestr(const wchar_t *str, const wchar_t *search)
+{
+  for (size_t i=0;str[i]!=0;i++)
+    for (size_t j=0;;j++)
+    {
+      if (search[j]==0)
+        return str+i;
+      if (towlower(str[i+j])!=towlower(search[j]))
+        break;
+    }
+  return NULL;
 }
 
 
@@ -512,7 +548,7 @@ int wcsnicomp(const wchar *s1,const wchar *s2,size_t n)
 wchar* wcslower(wchar *s)
 {
 #ifdef _WIN_ALL
-  CharLowerW(s);
+  CharLower(s);
 #else
   for (wchar *c=s;*c!=0;c++)
     *c=towlower(*c);
@@ -526,7 +562,7 @@ wchar* wcslower(wchar *s)
 wchar* wcsupper(wchar *s)
 {
 #ifdef _WIN_ALL
-  CharUpperW(s);
+  CharUpper(s);
 #else
   for (wchar *c=s;*c!=0;c++)
     *c=towupper(*c);
@@ -536,23 +572,17 @@ wchar* wcsupper(wchar *s)
 #endif
 
 
+
+
 int toupperw(int ch)
 {
-#ifdef _WIN_ALL
-  return (int)CharUpperW((wchar *)ch);
-#else
   return towupper(ch);
-#endif
 }
 
 
 int tolowerw(int ch)
 {
-#ifdef _WIN_ALL
-  return (int)CharLowerW((wchar *)ch);
-#else
   return towlower(ch);
-#endif
 }
 
 

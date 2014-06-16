@@ -12,11 +12,15 @@ wchar* RawToWide(const byte *Src,wchar *Dest,size_t DestSize);
 void WideToUtf(const wchar *Src,char *Dest,size_t DestSize);
 size_t WideToUtfSize(const wchar *Src);
 bool UtfToWide(const char *Src,wchar *Dest,size_t DestSize);
+bool UnkToWide(const char *Src,wchar *Dest,size_t DestSize);
 
 int wcsicomp(const wchar *s1,const wchar *s2);
 int wcsnicomp(const wchar *s1,const wchar *s2,size_t n);
+const wchar_t* wcscasestr(const wchar_t *str, const wchar_t *search);
+#ifndef SFX_MODULE
 wchar* wcslower(wchar *s);
 wchar* wcsupper(wchar *s);
+#endif
 int toupperw(int ch);
 int tolowerw(int ch);
 uint atoiw(const wchar *s);

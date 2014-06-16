@@ -7,7 +7,7 @@ void ExtractUnixOwner20(Archive &Arc,const wchar *FileName)
 
   if (Arc.BrokenHeader)
   {
-    Log(Arc.FileName,St(MOwnersBroken),FileName);
+    uiMsg(UIERROR_UOWNERBROKEN,Arc.FileName,FileName);
     ErrHandler.SetErrorCode(RARX_CRC);
     return;
   }
@@ -16,7 +16,7 @@ void ExtractUnixOwner20(Archive &Arc,const wchar *FileName)
   errno=0; // Required by getpwnam specification if we need to check errno.
   if ((pw=getpwnam(Arc.UOHead.OwnerName))==NULL)
   {
-    Log(Arc.FileName,St(MErrGetOwnerID),GetWide(Arc.UOHead.OwnerName));
+    uiMsg(UIERROR_UOWNERGETOWNERID,Arc.FileName,GetWide(Arc.UOHead.OwnerName));
     ErrHandler.SysErrMsg();
     ErrHandler.SetErrorCode(RARX_WARNING);
     return;
@@ -27,7 +27,7 @@ void ExtractUnixOwner20(Archive &Arc,const wchar *FileName)
   errno=0; // Required by getgrnam specification if we need to check errno.
   if ((gr=getgrnam(Arc.UOHead.GroupName))==NULL)
   {
-    Log(Arc.FileName,St(MErrGetGroupID),GetWide(Arc.UOHead.GroupName));
+    uiMsg(UIERROR_UOWNERGETGROUPID,Arc.FileName,GetWide(Arc.UOHead.GroupName));
     ErrHandler.SysErrMsg();
     ErrHandler.SetErrorCode(RARX_CRC);
     return;
@@ -39,7 +39,7 @@ void ExtractUnixOwner20(Archive &Arc,const wchar *FileName)
   if (chown(NameA,OwnerID,GroupID)!=0)
 #endif
   {
-    Log(Arc.FileName,St(MSetOwnersError),FileName);
+    uiMsg(UIERROR_UOWNERSET,Arc.FileName,FileName);
     ErrHandler.SetErrorCode(RARX_CREATE);
   }
 #ifndef NOFILECREATE
@@ -64,7 +64,7 @@ void ExtractUnixOwner30(Archive &Arc,const wchar *FileName)
   struct passwd *pw;
   if ((pw=getpwnam(OwnerName))==NULL)
   {
-    Log(Arc.FileName,St(MErrGetOwnerID),GetWide(OwnerName));
+    uiMsg(UIERROR_UOWNERGETOWNERID,Arc.FileName,GetWide(OwnerName));
     ErrHandler.SetErrorCode(RARX_WARNING);
     return;
   }
@@ -73,7 +73,7 @@ void ExtractUnixOwner30(Archive &Arc,const wchar *FileName)
   struct group *gr;
   if ((gr=getgrnam(GroupName))==NULL)
   {
-    Log(Arc.FileName,St(MErrGetGroupID),GetWide(GroupName));
+    uiMsg(UIERROR_UOWNERGETGROUPID,Arc.FileName,GetWide(GroupName));
     ErrHandler.SetErrorCode(RARX_WARNING);
     return;
   }
@@ -84,7 +84,7 @@ void ExtractUnixOwner30(Archive &Arc,const wchar *FileName)
   if (chown(NameA,OwnerID,GroupID)!=0)
 #endif
   {
-    Log(Arc.FileName,St(MSetOwnersError),FileName);
+    uiMsg(UIERROR_UOWNERSET,Arc.FileName,FileName);
     ErrHandler.SetErrorCode(RARX_CREATE);
   }
 #ifndef NOFILECREATE
@@ -110,7 +110,7 @@ void SetUnixOwner(Archive &Arc,const wchar *FileName)
     {
       if (!hd.UnixOwnerNumeric)
       {
-        Log(Arc.FileName,St(MErrGetOwnerID),GetWide(hd.UnixOwnerName));
+        uiMsg(UIERROR_UOWNERGETOWNERID,Arc.FileName,GetWide(hd.UnixOwnerName));
         ErrHandler.SetErrorCode(RARX_WARNING);
         return;
       }
@@ -125,7 +125,7 @@ void SetUnixOwner(Archive &Arc,const wchar *FileName)
     {
       if (!hd.UnixGroupNumeric)
       {
-        Log(Arc.FileName,St(MErrGetGroupID),GetWide(hd.UnixGroupName));
+        uiMsg(UIERROR_UOWNERGETGROUPID,Arc.FileName,GetWide(hd.UnixGroupName));
         ErrHandler.SetErrorCode(RARX_WARNING);
         return;
       }
@@ -139,7 +139,7 @@ void SetUnixOwner(Archive &Arc,const wchar *FileName)
   if (chown(NameA,hd.UnixOwnerID,hd.UnixGroupID)!=0)
 #endif
   {
-    Log(Arc.FileName,St(MSetOwnersError),FileName);
+    uiMsg(UIERROR_UOWNERSET,Arc.FileName,FileName);
     ErrHandler.SetErrorCode(RARX_CREATE);
   }
 }

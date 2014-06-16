@@ -189,7 +189,7 @@ bool Unpack::ReadTables20()
   else
     TableSize=NC20+DC20+RC20;
 
-  for (I=0;I<BC20;I++)
+  for (I=0;I<(int)BC20;I++)
   {
     BitLength[I]=(byte)(Inp.getbits() >> 12);
     Inp.addbits(4);

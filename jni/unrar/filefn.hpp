@@ -51,5 +51,4 @@ bool SetFileCompression(const wchar *Name,bool State);
 
 
 
-
 #endif

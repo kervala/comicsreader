@@ -2,7 +2,6 @@
 #include "log.cpp"
 
 static MESSAGE_TYPE MsgStream=MSG_STDOUT;
-static bool Sound=false;
 const int MaxMsgSize=2*NM+2048;
 
 #ifdef _WIN_ALL
@@ -47,10 +46,9 @@ void InitConsole()
 }
 
 
-void InitConsoleOptions(MESSAGE_TYPE MsgStream,bool Sound)
+void InitConsoleOptions(MESSAGE_TYPE MsgStream)
 {
   ::MsgStream=MsgStream;
-  ::Sound=Sound;
 }
 
 
@@ -83,7 +81,7 @@ static void cvt_wprintf(FILE *dest,const wchar *fmt,va_list arglist)
   vswprintf(Msg,ASIZE(Msg),fmtw,arglist);
   HANDLE hOut=GetStdHandle(dest==stderr ? STD_ERROR_HANDLE:STD_OUTPUT_HANDLE);
   DWORD Written;
-  WriteConsole(hOut,Msg,(DWORD)unrar_wcslen(Msg),&Written,NULL);
+  WriteConsole(hOut,Msg,(DWORD)wcslen(Msg),&Written,NULL);
 #else
   vfwprintf(dest,fmtw,arglist);
   // We do not use setbuf(NULL) in Unix (see comments in InitConsole).
@@ -120,25 +118,6 @@ void eprintf(const wchar *fmt,...)
   va_start(arglist,fmt);
   cvt_wprintf(stderr,fmt,arglist);
   va_end(arglist);
-}
-#endif
-
-
-#ifndef SILENT
-void Alarm()
-{
-  if (Sound)
-  {
-    static clock_t LastTime=clock();
-    if ((clock()-LastTime)/CLOCKS_PER_SEC>5)
-    {
-#ifdef _WIN_ALL
-      MessageBeep(-1);
-#else
-      putwchar('\007');
-#endif
-    }
-  }
 }
 #endif
 
@@ -181,22 +160,22 @@ static void GetPasswordText(wchar *Str,uint MaxLength)
 
 
 #ifndef SILENT
-bool GetConsolePassword(PASSWORD_TYPE Type,const wchar *FileName,SecPassword *Password)
+bool GetConsolePassword(UIPASSWORD_TYPE Type,const wchar *FileName,SecPassword *Password)
 {
-  Alarm();
+  uiAlarm(UIALARM_QUESTION);
   
   while (true)
   {
-    if (Type==PASSWORD_GLOBAL)
+    if (Type==UIPASSWORD_GLOBAL)
       eprintf(L"\n%s: ",St(MAskPsw));
     else
       eprintf(St(MAskPswFor),FileName);
 
     wchar PlainPsw[MAXPASSWORD];
     GetPasswordText(PlainPsw,ASIZE(PlainPsw));
-    if (*PlainPsw==0 && Type==PASSWORD_GLOBAL)
+    if (*PlainPsw==0 && Type==UIPASSWORD_GLOBAL)
       return false;
-    if (Type==PASSWORD_GLOBAL)
+    if (Type==UIPASSWORD_GLOBAL)
     {
       eprintf(St(MReAskPsw));
       wchar CmpStr[MAXPASSWORD];
@@ -264,19 +243,23 @@ bool getwstr(wchar *str,size_t n)
 
 
 #ifndef SILENT
+// We allow this function to return 0 in case of invalid input,
+// because it might be convenient to press Enter to some not dangerous
+// prompts like "insert disk with next volume". We should call this function
+// again in case of 0 in dangerous prompt such as overwriting file.
 int Ask(const wchar *AskStr)
 {
-  Alarm();
+  uiAlarm(UIALARM_QUESTION);
 
   const int MaxItems=10;
   wchar Item[MaxItems][40];
   int ItemKeyPos[MaxItems],NumItems=0;
 
-  for (const wchar *NextItem=AskStr;NextItem!=NULL;NextItem=unrar_wcschr((NextItem+1,'_'))
+  for (const wchar *NextItem=AskStr;NextItem!=NULL;NextItem=wcschr(NextItem+1,'_'))
   {
     wchar *CurItem=Item[NumItems];
     wcsncpyz(CurItem,NextItem+1,ASIZE(Item[0]));
-    wchar *EndItem=unrar_wcschr((CurItem,'_');
+    wchar *EndItem=unrar_wcschr(CurItem,'_');
     if (EndItem!=NULL)
       *EndItem=0;
     int KeyPos=0,CurKey;

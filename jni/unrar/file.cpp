@@ -38,6 +38,7 @@ void File::operator = (File &SrcFile)
   NewFile=SrcFile.NewFile;
   LastWrite=SrcFile.LastWrite;
   HandleType=SrcFile.HandleType;
+  wcsncpyz(FileName,SrcFile.FileName,ASIZE(FileName));
   SrcFile.SkipClose=true;
 }
 
@@ -112,7 +113,16 @@ bool File::Open(const wchar *Name,uint Mode)
     return false;
   }
 #endif
-  hNewFile=handle==-1 ? BAD_HANDLE:fdopen(handle,UpdateMode ? UPDATEBINARY:READBINARY);
+  if (handle==-1)
+    hNewFile=BAD_HANDLE;
+  else
+  {
+#ifdef FILE_USE_OPEN
+    hNewFile=handle;
+#else
+    hNewFile=fdopen(handle,UpdateMode ? UPDATEBINARY:READBINARY);
+#endif
+  }
   if (hNewFile==BAD_HANDLE && errno==ENOENT)
     ErrorType=FILE_NOTFOUND;
 #endif
@@ -171,7 +181,11 @@ bool File::Create(const wchar *Name,uint Mode)
 #else
   char NameA[NM];
   WideToChar(Name,NameA,ASIZE(NameA));
+#ifdef FILE_USE_OPEN
+  hFile=open(NameA,(O_CREAT|O_TRUNC) | (WriteMode ? O_WRONLY : O_RDWR));
+#else
   hFile=fopen(NameA,WriteMode ? WRITEBINARY:CREATEBINARY);
+#endif
 #endif
   NewFile=true;
   HandleType=FILE_HANDLENORMAL;
@@ -194,7 +208,6 @@ bool File::WCreate(const wchar *Name,uint Mode)
 {
   if (Create(Name,Mode))
     return true;
-  ErrHandler.SetErrorCode(RARX_CREATE);
   ErrHandler.CreateErrorMsg(Name);
   return false;
 }
@@ -214,7 +227,11 @@ bool File::Close()
       if (HandleType==FILE_HANDLENORMAL)
         Success=CloseHandle(hFile)==TRUE;
 #else
+#ifdef FILE_USE_OPEN
+      Success=close(hFile)!=-1;
+#else
       Success=fclose(hFile)!=EOF;
+#endif
 #endif
     }
     hFile=BAD_HANDLE;
@@ -223,16 +240,6 @@ bool File::Close()
   if (!Success && AllowExceptions)
     ErrHandler.CloseError(FileName);
   return Success;
-}
-
-
-void File::Flush()
-{
-#ifdef _WIN_ALL
-  FlushFileBuffers(hFile);
-#else
-  fflush(hFile);
-#endif
 }
 
 
@@ -282,7 +289,13 @@ void File::Write(const void *Data,size_t Size)
 #else
     // Cannot use the standard stdout here, because it already has wide orientation.
     if (hFile==BAD_HANDLE)
-      hFile=fdopen(dup(1),"w"); // Open new stdout stream.
+    {
+#ifdef FILE_USE_OPEN
+      hFile=dup(STDOUT_FILENO); // Open new stdout stream.
+#else
+      hFile=fdopen(dup(STDOUT_FILENO),"w"); // Open new stdout stream.
+#endif
+    }
 #endif
   }
   while (1)
@@ -304,8 +317,13 @@ void File::Write(const void *Data,size_t Size)
     else
       Success=WriteFile(hFile,Data,(DWORD)Size,&Written,NULL)==TRUE;
 #else
-    uint Written=fwrite(Data,1,Size,hFile);
+#ifdef FILE_USE_OPEN
+    ssize_t Written=write(hFile,Data,Size);
+    Success=Written==(ssize_t)Size;
+#else
+    int Written=fwrite(Data,1,Size,hFile);
     Success=Written==Size && !ferror(hFile);
+#endif
 #endif
     if (!Success && AllowExceptions && HandleType==FILE_HANDLENORMAL)
     {
@@ -319,10 +337,10 @@ void File::Write(const void *Data,size_t Size)
 #endif
       if (ErrHandler.AskRepeatWrite(FileName,false))
       {
-#ifndef _WIN_ALL
+#if !defined(_WIN_ALL) && !defined(FILE_USE_OPEN)
         clearerr(hFile);
 #endif
-        if (Written<Size && Written>0)
+        if (Written<(ssize_t)Size && Written>0)
           Seek(Tell()-Written,SEEK_SET);
         continue;
       }
@@ -388,7 +406,11 @@ int File::DirectRead(void *Data,size_t Size)
       Size=MaxDeviceRead;
     hFile=GetStdHandle(STD_INPUT_HANDLE);
 #else
+#ifdef FILE_USE_OPEN
+    hFile=STDIN_FILENO;
+#else
     hFile=stdin;
+#endif
 #endif
   }
 #ifdef _WIN_ALL
@@ -414,6 +436,12 @@ int File::DirectRead(void *Data,size_t Size)
   }
   return Read;
 #else
+#ifdef FILE_USE_OPEN
+  ssize_t ReadSize=read(hFile,Data,Size);
+  if (ReadSize==-1)
+    return -1;
+  return (int)ReadSize;
+#else
   if (LastWrite)
   {
     fflush(hFile);
@@ -424,6 +452,7 @@ int File::DirectRead(void *Data,size_t Size)
   if (ferror(hFile))
     return -1;
   return (int)ReadSize;
+#endif
 #endif
 }
 
@@ -451,12 +480,16 @@ bool File::RawSeek(int64 Offset,int Method)
     return false;
 #else
   LastWrite=false;
-#if defined(_LARGEFILE_SOURCE) && !defined(_OSF_SOURCE) && !defined(__VMS)
+#ifdef FILE_USE_OPEN
+  if (lseek64(hFile,Offset,Method)==-1)
+    return false;
+#elif defined(_LARGEFILE_SOURCE) && !defined(_OSF_SOURCE) && !defined(__VMS)
   if (fseeko(hFile,Offset,Method)!=0)
+    return false;
 #else
   if (fseek(hFile,(long)Offset,Method)!=0)
-#endif
     return false;
+#endif
 #endif
   return true;
 }
@@ -481,7 +514,9 @@ int64 File::Tell()
       return -1;
   return INT32TO64(HighDist,LowDist);
 #else
-#if defined(_LARGEFILE_SOURCE) && !defined(_OSF_SOURCE)
+#ifdef FILE_USE_OPEN
+  return lseek64(hFile,0,SEEK_CUR);
+#elif defined(_LARGEFILE_SOURCE) && !defined(_OSF_SOURCE)
   return ftello(hFile);
 #else
   return ftell(hFile);
@@ -503,7 +538,7 @@ void File::Prealloc(int64 Size)
 #if defined(_UNIX) && defined(USE_FALLOCATE)
   // fallocate is rather new call. Only latest kernels support it.
   // So we are not using it by default yet.
-  int fd = fileno(hFile);
+  int fd = GetFD(hFile);
   if (fd >= 0)
     fallocate(fd, 0, 0, Size);
 #endif
@@ -599,7 +634,7 @@ void File::GetOpenFileTime(RarTime *ft)
 #endif
 #if defined(_UNIX) || defined(_EMX)
   struct stat st;
-  fstat(fileno(hFile),&st);
+  fstat(GetFD(),&st);
   *ft=st.st_mtime;
 #endif
 }
@@ -621,7 +656,7 @@ bool File::IsDevice()
   uint Type=GetFileType(hFile);
   return Type==FILE_TYPE_CHAR || Type==FILE_TYPE_PIPE;
 #else
-  return isatty(fileno(hFile));
+  return isatty(GetFD());
 #endif
 }
 

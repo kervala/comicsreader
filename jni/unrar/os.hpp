@@ -42,10 +42,9 @@
 #include <shlobj.h>
 #include <winioctl.h>
 #include <wincrypt.h>
-
-
 #include <wchar.h>
 #include <wctype.h>
+
 
 #endif // _WIN_ALL
 
@@ -96,8 +95,7 @@
 #define DefLogName     L"rar.log"
 
 
-#define PATHDIVIDER  "\\"
-#define PATHDIVIDERW L"\\"
+#define SPATHDIVIDER L"\\"
 #define CPATHDIVIDER '\\'
 #define MASKALL      L"*"
 
@@ -138,25 +136,25 @@
   #include <sys/sysctl.h>
 #endif
 #ifndef SFX_MODULE
-#ifdef __ANDROID__
-  #include <sys/statfs.h>
-  #define statvfs statfs
-  #undef unrar_wcsncpy
-  #undef unrar_wcscmp
-  #undef unrar_wcslen
-  #undef unrar_wcscpy
-  #undef unrar_wcschr
-  #undef unrar_wcscat
-  #undef unrar_wcsncmp
-  wchar_t* unrar_wcsncpy(wchar_t* destination, const wchar_t* source, size_t num);
-  int unrar_wcscmp(const wchar_t* wcs1, const wchar_t* wcs2);
-  size_t unrar_wcslen(const wchar_t *str);
-  wchar_t *unrar_wcscpy(wchar_t *strDestination, const wchar_t *strSource);
-  wchar_t *unrar_wcschr(const wchar_t *str, wchar_t c);
-  wchar_t *unrar_wcscat(wchar_t *strDestination, const wchar_t *strSource);
-  int unrar_wcsncmp(const wchar_t *string1, const wchar_t *string2, size_t count);
+  #ifdef _ANDROID
+    #include <sys/statfs.h>
+    #define statvfs statfs
+    #undef unrar_wcsncpy
+    #undef unrar_wcscmp
+    #undef unrar_wcslen
+    #undef unrar_wcscpy
+    #undef unrar_wcschr
+    #undef unrar_wcscat
+    #undef unrar_wcsncmp
+    wchar_t* unrar_wcsncpy(wchar_t* destination, const wchar_t* source, size_t num);
+    int unrar_wcscmp(const wchar_t* wcs1, const wchar_t* wcs2);
+    size_t unrar_wcslen(const wchar_t *str);
+    wchar_t *unrar_wcscpy(wchar_t *strDestination, const wchar_t *strSource);
+    wchar_t *unrar_wcschr(const wchar_t *str, wchar_t c);
+    wchar_t *unrar_wcscat(wchar_t *strDestination, const wchar_t *strSource);
+    int unrar_wcsncmp(const wchar_t *string1, const wchar_t *string2, size_t count);
 #else
-  #include <sys/statvfs.h>
+    #include <sys/statvfs.h>
 #endif
 #endif
 #if defined(__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__) || defined(__APPLE__)
@@ -188,8 +186,7 @@
 #define DefLogName     L".rarlog"
 
 
-#define PATHDIVIDER  "/"
-#define PATHDIVIDERW L"/"
+#define SPATHDIVIDER L"/"
 #define CPATHDIVIDER '/'
 #define MASKALL      L"*"
 
@@ -222,7 +219,7 @@
 
 #endif
 
-  typedef const char* MSGID;
+  typedef const wchar* MSGID;
 
 #ifndef SSE_ALIGNMENT // No SSE use and no special data alignment is required.
   #define SSE_ALIGNMENT 1
@@ -260,15 +257,9 @@
   #endif
 #endif
 
-#if !defined(BIG_ENDIAN) && defined(_WIN_ALL)
+#if !defined(BIG_ENDIAN) && defined(_WIN_ALL) || defined(__i386__) || defined(__x86_64__)
 // Allow not aligned integer access, increases speed in some operations.
-#define ALLOW_NOT_ALIGNED_INT
-#endif
-
-#if defined(__sparc) || defined(sparc) || defined(__sparcv9)
-// Prohibit not aligned access to data structures in text compression
-// algorithm, increases memory requirements.
-#define STRICT_ALIGNMENT_REQUIRED
+#define ALLOW_MISALIGNED
 #endif
 
 #endif // _RAR_OS_

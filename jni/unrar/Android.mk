@@ -16,7 +16,7 @@ LOCAL_SRC_FILES += \
 	errhnd.cpp rarvm.cpp secpassword.cpp rijndael.cpp getbits.cpp sha1.cpp \
 	sha256.cpp blake2s.cpp hash.cpp extinfo.cpp extract.cpp volume.cpp \
 	find.cpp unpack.cpp headers.cpp threadpool.cpp rs16.cpp \
-	filestr.cpp scantree.cpp dll.cpp qopen.cpp
+	filestr.cpp scantree.cpp dll.cpp qopen.cpp ui.cpp
 	# resource.cpp list.cpp not used
 	# rarpch.cpp recvol.cpp rs.cpp only used under Windows
 	# filcreat.cpp consio.cpp remove to earn some space
