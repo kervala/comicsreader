@@ -510,7 +510,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	public void scrollToPreviousPage() {
 		if (!mAlbumThread.isFirstPage()) {
 			final int offset = mImageView.getOffset();
-			final int dx = -(Math.max(ComicsParameters.sScreenWidth, mAlbumThread.getPageWidth()) + offset);
+			final int dx = -(mAlbumThread.getPageWidth() + offset);
 
 			mScroller.startScroll(offset, mScrollView.getScrollY(), dx, -mScrollView.getScrollY(), Math.abs(dx) << 7 >> AlbumParameters.pageTransitionSpeed);
 			mAlbumThread.updatePageScrolling(PREVIOUS_PAGE);
@@ -528,7 +528,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	public void scrollToNextPage() {
 		if (!mAlbumThread.isLastPage()) {
 			final int offset = mImageView.getOffset() + mScrollView.getScrollX();
-			final int dx = Math.max(ComicsParameters.sScreenWidth, mAlbumThread.getPageWidth()) - offset;
+			final int dx = mAlbumThread.getPageWidth() - offset;
 
 			mScroller.startScroll(offset, mScrollView.getScrollY(), dx, -mScrollView.getScrollY(), Math.abs(dx) << 7 >> AlbumParameters.pageTransitionSpeed);
 			mAlbumThread.updatePageScrolling(NEXT_PAGE);
