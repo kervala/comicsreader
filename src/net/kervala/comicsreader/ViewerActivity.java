@@ -225,7 +225,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			// refresh current page only if not already loaded
 			mAlbumThread.updateCurrentPage(false);
 		}
-		
+
 		mImageView.setFullScreen(AlbumParameters.fullScreen);
 	}
 	

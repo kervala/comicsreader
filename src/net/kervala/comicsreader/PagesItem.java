@@ -22,7 +22,6 @@ package net.kervala.comicsreader;
 import java.lang.ref.WeakReference;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 
 public class PagesItem extends ThumbnailItem {
