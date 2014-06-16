@@ -32,7 +32,7 @@ public class ErrorDialog extends AlertDialog implements View.OnClickListener {
 	public ErrorDialog(Context context) {
 		super(context);
 		
-		getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
 		setCanceledOnTouchOutside(true);
 

@@ -53,7 +53,7 @@ public class BookmarkDialog extends Dialog implements View.OnClickListener {
 		setContentView(R.layout.dialog_bookmark);
 
 		// must be called after setContentView
-		window.setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
+		window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
 		
 		mTitleEdit = (EditText)findViewById(R.id.bookmark_title);
 		mUrlEdit = (EditText)findViewById(R.id.bookmark_url);

@@ -54,7 +54,7 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
 		setContentView(R.layout.dialog_login);
 
 		// must be called after setContentView
-		window.setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
+		window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
 		
 		mUsernameEdit = (EditText)findViewById(R.id.username);
 		mPasswordEdit = (EditText)findViewById(R.id.password);

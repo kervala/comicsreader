@@ -48,7 +48,7 @@ public class TextDialog extends Dialog implements View.OnClickListener {
 		setFeatureDrawable(Window.FEATURE_LEFT_ICON, context.getResources().getDrawable(R.drawable.icon));
 
 		// must be called after setContentView
-		window.setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
+		window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
 
 		mText = (TextView)findViewById(R.id.dialog_text);
 		mText.setMovementMethod(LinkMovementMethod.getInstance());
