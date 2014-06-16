@@ -527,28 +527,43 @@ public class Album {
 		// already updated
 		if (mPages[page].bitmap != null) return false;
 
+		int screenWidth = ComicsParameters.sScreenWidth;
+		int screenHeight = ComicsParameters.sScreenHeight;
+		if (AlbumParameters.autoRotate && mPages[page].updateSrcSize()) {
+			// prepare image for automatic rotation
+			if (mPages[page].bitmapSize.srcWidth > mPages[page].bitmapSize.srcHeight &&
+					ComicsParameters.sScreenHeight > ComicsParameters.sScreenWidth) {
+				screenWidth = ComicsParameters.sScreenHeight;
+				screenHeight = ComicsParameters.sScreenWidth;
+			} else if (mPages[page].bitmapSize.srcHeight > mPages[page].bitmapSize.srcWidth &&
+					ComicsParameters.sScreenWidth > ComicsParameters.sScreenHeight) {
+				screenWidth = ComicsParameters.sScreenHeight;
+				screenHeight = ComicsParameters.sScreenWidth;
+			}
+		}
+
 		boolean divideByTwo = false;
 		int width = -1;
 		int height = -1;
 
 		switch (AlbumParameters.zoom) {
 		case ZOOM_FIT_WIDTH: {
-			width = ComicsParameters.sScreenWidth;
+			width = screenWidth;
 			if (AlbumParameters.doublePage) {
 				divideByTwo = true;
 			}
 			break;
 		}
 		case ZOOM_FIT_HEIGHT: {
-			height = ComicsParameters.sScreenHeight;
+			height = screenHeight;
 			break;
 		}
 		case ZOOM_FIT_SCREEN: {
-			width = ComicsParameters.sScreenWidth;
+			width = screenWidth;
 			if (AlbumParameters.doublePage) {
 				divideByTwo = true;
 			}
-			height = ComicsParameters.sScreenHeight;
+			height = screenHeight;
 			break;
 		}
 		case ZOOM_50: {
@@ -668,6 +683,10 @@ public class Album {
 
 	public int getPageWidth(int page) {
 		return mPages[page].bitmapSize.dstWidth;
+	}
+
+	public int getPageHeight(int page) {
+		return mPages[page].bitmapSize.dstHeight;
 	}
 	
 	public void updatePagesSizes() {

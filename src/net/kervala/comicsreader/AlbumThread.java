@@ -42,6 +42,7 @@ public class AlbumThread extends HandlerThread {
 	private int mCurrentPage = -1;
 	private int mPreviousPage = -1;
 	private int mWidth = 0;
+	private int mHeight = 0;
 	private boolean mLoadingPage = false;
 	private Handler mMainHandler;
 	private Handler mLoaderHandler;
@@ -146,6 +147,10 @@ public class AlbumThread extends HandlerThread {
 
 	public int getPageWidth() {
 		return Math.max(mWidth, ComicsParameters.sScreenWidth);
+	}
+
+	public int getPageHeight() {
+		return Math.max(mHeight, ComicsParameters.sScreenHeight);
 	}
 
 	public int getCurrentPage() {
@@ -533,6 +538,7 @@ public class AlbumThread extends HandlerThread {
 
 					if (album.hasPageBitmap(page)) {
 						mWidth = album.getPageWidth(page);
+						mHeight = album.getPageHeight(page);
 						
 						final Bitmap bitmap = album.getPageBitmap(page);
 

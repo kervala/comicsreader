@@ -201,8 +201,8 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			// force refreshing current page even if already loaded
 
 			if (AlbumParameters.zoom == Album.ZOOM_FIT_SCREEN ||
-				(AlbumParameters.zoom == Album.ZOOM_FIT_WIDTH && width != newWidth) ||
-				(AlbumParameters.zoom == Album.ZOOM_FIT_HEIGHT && height != newHeight)) {
+				(AlbumParameters.zoom == Album.ZOOM_FIT_WIDTH && mAlbumThread.getPageWidth() != newWidth) ||
+				(AlbumParameters.zoom == Album.ZOOM_FIT_HEIGHT && mAlbumThread.getPageHeight() != newHeight)) {
 				mAlbumThread.updateCurrentPage(true);
 			}
 
@@ -604,14 +604,13 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	public void onUpdateCurrentPage(Bitmap bitmap) {
 		mImageView.setOffset(0);
 
+		// automatically rotate the screen to best fit the image
 		if (bitmap != null && AlbumParameters.autoRotate)
 		{
-			int width = bitmap.getWidth();
-			int height = bitmap.getHeight();
-			if (width > height) {
+			if (bitmap.getWidth() > bitmap.getHeight()) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			}
-			else if (width < height) {
+			else {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			}
 		}
