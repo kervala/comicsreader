@@ -30,6 +30,7 @@ public class AlbumPage {
 	public Bitmap thumbnail;
 	public byte [] buffer;
 	public Size bitmapSize;
+	public Size cachedBitmapSize;
 	public Size thumbnailSize;
 
 	protected int mPage;
@@ -75,6 +76,7 @@ public class AlbumPage {
 
 		// uninitialize other variables
 		bitmapSize = null;
+		cachedBitmapSize = null;
 		thumbnailSize = null;
 
 		mFilename = null;
@@ -268,6 +270,7 @@ public class AlbumPage {
 
 			if (bitmapSize.srcWidth == bitmapSize.dstWidth && bitmapSize.srcHeight == bitmapSize.dstHeight) {
 				bitmap = bitmapRaw;
+				cachedBitmapSize = bitmapSize;
 
 				return true;
 			}
@@ -275,6 +278,7 @@ public class AlbumPage {
 			try {
 				// good quality resize
 				bitmap = Bitmap.createScaledBitmap(bitmapRaw, bitmapSize.dstWidth, bitmapSize.dstHeight, true);
+				cachedBitmapSize = bitmapSize;
 
 				res = true;
 			} catch(OutOfMemoryError e) {
