@@ -199,8 +199,8 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			// force refreshing current page even if already loaded
 
 			if (AlbumParameters.zoom == Album.ZOOM_FIT_SCREEN ||
-				(AlbumParameters.zoom == Album.ZOOM_FIT_WIDTH && mAlbumThread.getPageWidth() != newWidth) ||
-				(AlbumParameters.zoom == Album.ZOOM_FIT_HEIGHT && mAlbumThread.getPageHeight() != newHeight)) {
+				(AlbumParameters.zoom == Album.ZOOM_FIT_WIDTH && width != newWidth) ||
+				(AlbumParameters.zoom == Album.ZOOM_FIT_HEIGHT && height != newHeight)) {
 				mAlbumThread.updateCurrentPage(true);
 			}
 
