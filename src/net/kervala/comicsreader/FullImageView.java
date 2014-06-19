@@ -29,7 +29,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class FullImageView extends View {
@@ -225,11 +224,6 @@ public class FullImageView extends View {
 
 	@Override
 	protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int minWidth = getMinimumWidth();
-		int minHeight = getMinimumHeight();
-		
-		Log.d("ComicsReader", "min " + String.valueOf(minWidth) + " " + String.valueOf(minHeight));
-		
 		int w;
 		int h;
 
@@ -299,15 +293,8 @@ public class FullImageView extends View {
 		
 		if (mOffset == 0) {
 			mRectSrc.set(mRect.left, mRect.top, currRight, bottom);
-			mRectDst.set(mRectSrc);
 
-			if (mBitmapHeight < mRectDst.height()) {
-				mRectDst.top = (mRectDst.height() - mBitmapHeight) / 2;
-			}
-			
-			Log.d("ComicsReader", "rect = " + mRect);
-			
-			canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectDst, null);
+			canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectSrc, null);
 		} else if (mOffset < 0) {
 			final int prevLeft = Math.max(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth()) + mOffset;
 			final int prevRight = Math.min(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth());
