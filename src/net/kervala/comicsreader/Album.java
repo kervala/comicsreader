@@ -306,7 +306,7 @@ public class Album {
 
 		return true;
 	}
-	
+
 	public class Size implements Comparable<Size> {
 		final int width;
 		final int height;
@@ -656,7 +656,7 @@ public class Album {
 	protected void updateBuffer(int page) {
 		if (!mPages[page].loadBufferFromCache()) {
 			mPages[page].buffer = getBytes(page);
-			
+
 			Log.d("ComicsReader", "Loaded buffer for page " + String.valueOf(page));
 		} else {
 			Log.d("ComicsReader", "Buffer already in memory for page " + String.valueOf(page));

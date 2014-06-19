@@ -384,13 +384,13 @@ public class AlbumPage {
 	
 	public boolean loadBufferFromCache() {
 		if (buffer != null) return true;
-		
+
 		updateCacheFilename();
 		
 		if (!mBufferCacheFile.exists() || mBufferCacheFile.length() < 10) return false;
 
 		buffer = new byte[(int)mBufferCacheFile.length()];
-		
+
 		return ComicsHelpers.loadFileToBuffer(mBufferCacheFile, buffer);
 	}
 	
