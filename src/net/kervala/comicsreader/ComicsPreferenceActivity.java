@@ -31,6 +31,7 @@ public class ComicsPreferenceActivity extends PreferenceActivity implements OnPr
 	private Preference mClearAlbums;
 	private Preference mAbout;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

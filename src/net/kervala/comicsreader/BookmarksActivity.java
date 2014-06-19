@@ -67,6 +67,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		fillData();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -117,6 +118,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		return super.onContextItemSelected(item);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
@@ -138,6 +140,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		new GetBookmarkTask().execute();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean displayBookmark() {
 		showDialog(BrowserActivity.DIALOG_BOOKMARK);
 		
@@ -164,6 +167,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		return false;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean displayConfirm() {
 		showDialog(BrowserActivity.DIALOG_CONFIRM);
 		return true;
@@ -238,6 +242,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 			return mHelper.getBookmarkCursor();
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		protected void onPostExecute(Cursor cursor) {
 			if (mCursor != null) {

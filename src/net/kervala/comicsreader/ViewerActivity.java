@@ -271,6 +271,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		// manage common dialogs
@@ -292,6 +293,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		return dialog;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPrepareDialog (int id, Dialog dialog) {
 		super.onPrepareDialog(id, dialog);
@@ -321,12 +323,14 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onSearchRequested() {
 		showDialog(DIALOG_PAGES);
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch(keyCode) {
@@ -715,6 +719,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -734,6 +739,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void displayError(String error) {
 		mError = error;
 		showDialog(DIALOG_ERROR);

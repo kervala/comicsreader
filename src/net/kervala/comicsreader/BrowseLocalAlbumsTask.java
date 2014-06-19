@@ -38,6 +38,7 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 		mDirectory = directory;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPreExecute() {
 		mActivity.get().showDialog(BrowserActivity.DIALOG_WAIT);
@@ -90,6 +91,7 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 		return error;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPostExecute(String error) {
 		if (mActivity.get() == null) return;

@@ -300,6 +300,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean onFileClick(BrowserItem item) {
 		// file is remote
 		if (item.getRemote() && item.getPath() == null) {
@@ -359,6 +360,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void loadItem(BrowserItem item) {
 		if (Album.askConfirm(item.getPath())) {
 			mSelectedItem = item;
@@ -546,6 +548,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean handleMessage(Message msg) {
 		switch(msg.what) {
 			case ACTION_CONFIRM_YES:
@@ -609,6 +612,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 		final BrowserItem item = (BrowserItem)mAdapter.getItem(position);
 
@@ -784,6 +788,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		return res;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void displayHtml(int resText, int resTitle) {
 		InputStream raw = getResources().openRawResource(resText);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -807,6 +812,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		showDialog(DIALOG_TEXT);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -826,6 +832,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		// manage common dialogs
@@ -865,6 +872,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		return super.onCreateDialog(id);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPrepareDialog (int id, Dialog dialog) {
 		super.onPrepareDialog(id, dialog);
@@ -894,6 +902,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		dialog.setOnDismissListener(this);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void displayError(String error) {
 		mError = error;
 		showDialog(DIALOG_ERROR);

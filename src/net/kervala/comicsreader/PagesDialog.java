@@ -35,6 +35,7 @@ import android.widget.Gallery;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+@SuppressWarnings("deprecation")
 public class PagesDialog extends Dialog implements OnItemClickListener, Callback {
 	private WeakReference<Album> mAlbum;
 	private int mPage = 0;

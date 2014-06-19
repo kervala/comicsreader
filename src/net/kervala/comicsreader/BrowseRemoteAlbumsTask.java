@@ -48,6 +48,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 		mUrl = url;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPreExecute() {
 		mActivity.get().showDialog(BrowserActivity.DIALOG_WAIT);
@@ -234,6 +235,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 	protected void onProgressUpdate(Integer... progress) {
 	}
 	  
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPostExecute(String error) {
 		mActivity.get().removeDialog(BrowserActivity.DIALOG_WAIT);

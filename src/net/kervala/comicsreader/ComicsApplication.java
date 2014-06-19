@@ -20,7 +20,6 @@
 package net.kervala.comicsreader;
 
 import android.app.Application;
-import android.os.Build;
 //import android.os.StrictMode;
 
 public class ComicsApplication extends Application {
