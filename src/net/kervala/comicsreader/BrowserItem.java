@@ -115,8 +115,8 @@ public class BrowserItem extends ThumbnailItem {
 		
 		if (album.open(filename, false)) {
 			// get a thumbnail for first page
-			if (album.updateThumbnail(0)) {
-				mThumb = ComicsHelpers.cropThumbnail(ComicsHelpers.resizeThumbnail(album.getPageThumbnail(0)));
+			if (album.updateThumbnail(album.currentPageNumber)) {
+				mThumb = ComicsHelpers.cropThumbnail(ComicsHelpers.resizeThumbnail(album.getPageThumbnail(album.currentPageNumber)));
 			}
 
 			album.close();

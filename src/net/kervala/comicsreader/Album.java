@@ -50,6 +50,7 @@ public class Album {
 	
 	protected int mFirstBufferPageNumber = 65536;
 	protected int mLastBufferPageNumber = 0;
+	protected boolean mAlwaysFull = false;
 	
 	final static String undefinedExtension = "";
 	final static String undefinedMimeType = "";
@@ -271,6 +272,8 @@ public class Album {
 	
 	public boolean open(String file, boolean full) {
 		if (file == null) return false;
+
+		if (mAlwaysFull) full = true;
 
 		filename = file;
 

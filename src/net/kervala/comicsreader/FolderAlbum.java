@@ -31,6 +31,10 @@ public class FolderAlbum extends Album {
 	static final String pngMimeType = "image/png";
 	static final String folderExtension = "";
 
+	public FolderAlbum() {
+		mAlwaysFull = true;
+	}
+
 	public String getExtension() {
 		return folderExtension;
 	}
