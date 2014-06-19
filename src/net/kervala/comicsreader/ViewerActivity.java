@@ -191,8 +191,6 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		int width = ComicsParameters.sScreenWidth;
 		int height = ComicsParameters.sScreenHeight;
-		
-		Log.d("ComicsReader", "height " + String.valueOf(newHeight));
 
 		ComicsParameters.sScreenWidth = newWidth;
 		ComicsParameters.sScreenHeight = newHeight;
