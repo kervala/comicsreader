@@ -47,7 +47,9 @@ public class ComicsHelpers {
 		if (bitmap.getHeight() == ComicsParameters.sThumbnailRescaledHeight) return bitmap.copy(bitmap.getConfig(), true);
 
 		final Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * ComicsParameters.sThumbnailRescaledHeight / bitmap.getHeight(), ComicsParameters.sThumbnailRescaledHeight, true);
-		bitmap.recycle();
+
+		if (bitmap != null && bitmap != newBitmap) bitmap.recycle();
+
 		return newBitmap;
 	}
 

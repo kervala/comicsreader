@@ -268,7 +268,7 @@ public class AlbumPage {
 
 			if (bitmapRaw == null) return false;
 
-			if (bitmapSize.srcWidth == bitmapSize.dstWidth && bitmapSize.srcHeight == bitmapSize.dstHeight) {
+			if (bitmapSize.srcWidth == bitmapSize.dstWidth * bitmapSize.dstScale && bitmapSize.srcHeight == bitmapSize.dstHeight * bitmapSize.dstScale) {
 				bitmap = bitmapRaw;
 				cachedBitmapSize = bitmapSize;
 
@@ -289,7 +289,7 @@ public class AlbumPage {
 				e.printStackTrace();
 			}
 
-			if (bitmapRaw != null) bitmapRaw.recycle();
+			if (bitmapRaw != null && bitmap != bitmapRaw) bitmapRaw.recycle();
 		}
 
 		return res;
@@ -307,7 +307,7 @@ public class AlbumPage {
 
 		if (bitmapRaw == null) return false;
 
-		if (thumbnailSize.srcWidth == thumbnailSize.dstWidth && thumbnailSize.srcHeight == thumbnailSize.dstHeight) {
+		if (thumbnailSize.srcWidth == thumbnailSize.dstWidth * thumbnailSize.dstScale && thumbnailSize.srcHeight == thumbnailSize.dstHeight * thumbnailSize.dstScale) {
 			thumbnail = bitmapRaw;
 			
 			return true;
@@ -328,8 +328,8 @@ public class AlbumPage {
 			e.printStackTrace();
 		}
 
-		if (bitmapRaw != null) bitmapRaw.recycle();
-		
+		if (bitmapRaw != null && bitmapRaw != thumbnail) bitmapRaw.recycle();
+
 		return res;
 	}
 
