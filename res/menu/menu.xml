@@ -35,5 +35,9 @@
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_menu_preferences"
         android:title="@string/settings"/>
+    <item
+        android:id="@+id/menu_quit"
+        android:icon="@drawable/ic_menu_close_clear_cancel"
+        android:title="@string/quit"/>
 
 </menu>
