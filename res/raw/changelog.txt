@@ -1,34 +1,16 @@
-Version 1.1
+Version 2.0
 
-- Right to left reading direction settings
-- Added animation speed settings
-- Added edges resistance settings
-- GIF and CBT/TAR format support
-- Improvement of generator.php to support CBR and CBT format
-
-Version 1.0
-
-- Initial stable release
-- Open source software under GPLv3 license
-- Comics browser with thumbnails
-- Large screens optimizations (all Android tablets, not only limited to Honeycomb)
-- Compatible with all screens resolutions
-- Bookmarks manager to quickly access to directories or URLs
-- Remote file downloading using provided PHP script
-- Supports CBZ, CBR (using official unrar dll) and folders
-- Supports JPEG and PNG images
-- Fast pages switcher with pages previews
-- Several resize modes (screen width, screen height, both, 100%, 50%, 25%)
-- Double pages mode
-- Next and previous pages auto preloading if enough free memory
-- Supports 16 and 32 bits rendering
-- Fling gesture to change page with smooth transition
-- Fullscreen mode under Android 1.x and 2.x (impossible under Android 3.x)
-- Bidirectional scrolling if page larger than screen
-- Touchscreen, keyboard, DPad and mouse support
-- Android 1.6+ required
-- Remember last album and page
-- Support both portrait and landscape orientation
-- Can be used to open application/x-cbz, application/x-cbr, image/jpeg and image/png mime types from any file manager
-- Tested with huge images up to 1200x1600 
-- English, French, Turkish and Spanish translations (a big thanks to Ultrapeer and Zufre!) (any translators are welcome to contribute)
+- Partnership with BDZ Mag (http://www.bdzmag.com/) and download "Pirate ta BD !" comics from bookmarks
+- Fullscreen without navigation bar under Android 3.x and + (use swipe to the top to show the ActionBar with context menu)
+- Support Holo theme under Android 3.x and +
+- Support for immersive mode under Android 4.4 and +
+- Completely rewrote images loading algorithm
+- Allow application to use more memory if device supports it
+- Allow to change page by touching left or right borders
+- Experimental auto-rotate option by Jules Blok
+- Natural pages order by Jules Blok
+- Updated unrar version
+- Don't process CBR files if unrar JNI can't be loaded
+- New translations in Greek, Galician, Italian, Polish, Russian and Portuguese (contributors name in About...)
+- Quit button
+- Fixed a lot of crashes, bugs and warnings

@@ -1,34 +1,16 @@
-Version 1.1
+Version 2.0
 
-- Lecture de droite à gauche
-- Paramétrage de la vitesse de transition entre les pages
-- Paramétrage de la "résistance" aux bords
-- Support des formats GIF et CBT/TAR
-- Amélioration de generator.php pour supporter les formats CBR et CBT
-
-Version 1.0
-
-- Version initiale stable
-- Logiciel open source sous licence GPLv3
-- Navigateur de bandes dessinées avec miniatures
-- Optimisations pour les écrans larges (toutes les tablettes Android, pas seulement celles sous Honeycomb)
-- Compatible avec toutes les résolutions d'écran
-- Gestionnaire de favoris pour accéder rapidement à des répertoires ou URLs
-- Chargement de fichiers distants en utilisant le script PHP proposé
-- Supporte les fichiers CBZ, CBR (en utilisant la dll officielle d'unrar) et les répertoires
-- Supporte les images JPEG et PNG
-- Changement de page rapide avec aperçus
-- Plusieurs modes de redimentionnement (largeur d'écran, hauteur d'écran, les deux, 100%, 50%, 25%)
-- Mode double pages
-- Pré-chargement des images précédentes et suivantes s'il y a assez de mémoire disponible
-- Supporte les rendus 16 et 32 bits
-- Geste de type "fling" pour changer de page de façon totalement fluide
-- Mode plein écran sous Android 1.x et 2.x (impossible sous Android 3.x)
-- Défilement bidirectionnel si la page dépasse l'écran
-- Supporte les écrans tactiles, les claviers, DPad et souris
-- Nécessite Android 1.6+
-- Se souvient du dernier album et dernière page
-- Supporte les orientations portrait et paysage
-- Peut ouvrir les types mime application/x-cbz, application/x-cbr, image/jpeg et image/png à partir de n'importe quel gestionnaire de fichiers
-- Testé avec des grandes images jusqu'à 1200x1600 
-- Traductions anglaise, française, turque et espagnole (un grand merci à Ultrapeer et Zufre !, tous les traducteurs sont bienvenus pour y contribuer)
+- Partenariat avec BDZ Mag (http://www.bdzmag.com/) et téléchargement des BDs de "Pirate ta BD !" à partir des favoris
+- Plein écran sans barre de navigation sous Android 3.x et + (faire un swipe de haut en bas pour afficher la ActionBar et son menu contextuel)
+- Support du thème Holo sous Android 3.x et supérieur
+- Support du mode immersif sans Android 4.4 et supérieur
+- Réécriture complète de l'algorithm de chargement des images
+- Permission d'utiliser plus de mémoire si l'appareil le supporte
+- Changement de page en touchant les bords gauches et droits
+- Options auto-rotation expérimentale par Jules Blok
+- Ordre naturel des pages par Jules Blok
+- Mise-à-jour de la version de unrar
+- Ne gère plus les fichiers CBR si le JNI unrar ne peut pas être chargé
+- Nouvelles traductions en Grec, Galicien, Italien, Polonais, Russe et Portugais (nom des contributeurs dans A propos...)
+- Bouton Quitter
+- Correction de nombreux plantages, bugs et warnings
