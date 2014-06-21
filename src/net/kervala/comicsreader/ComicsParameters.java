@@ -74,6 +74,8 @@ public class ComicsParameters {
 
 	static int sScreenWidth = 0;
 	static int sScreenHeight = 0;
+	static boolean sFullScreenNoticeDisplayed = false;
+
 
 	static private int sReferences = 0;
 

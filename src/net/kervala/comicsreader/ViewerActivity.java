@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 
 import net.kervala.comicsreader.AlbumThread.AlbumPageCallback;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -57,8 +58,9 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	static final int DIALOG_PAGES = 1;
 	static final int DIALOG_TEXT = 2;
 	static final int DIALOG_ABOUT = 3;
-	static final int DIALOG_ERROR = 5;
-	static final int DIALOG_ALBUM = 7;
+	static final int DIALOG_ERROR = 4;
+	static final int DIALOG_ALBUM = 5;
+	static final int DIALOG_FULLSCREEN = 6;
 	
 	static final int REQUEST_PREFERENCES = 0;
 	static final int REQUEST_BOOKMARK = 2;
@@ -259,7 +261,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch(requestCode) {
 			case REQUEST_BOOKMARK:
-				if (resultCode == BrowserActivity.RESULT_URL) {
+				if (resultCode == RESULT_URL) {
 					openIntentFolder(data);
 				}
 			break;
@@ -275,21 +277,30 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	protected Dialog onCreateDialog(int id) {
 		// manage common dialogs
 		switch(id) {
-			case DIALOG_ERROR:
+		case DIALOG_ERROR:
 			mErrorDialog = new ErrorDialog(this);
 			return mErrorDialog;
 			
-			case DIALOG_TEXT:
+		case DIALOG_TEXT:
 			return new TextDialog(this);
-		}
-		
-		Dialog dialog = super.onCreateDialog(id);
 
-		if (dialog == null && mAlbumThread.isValid() && id == DIALOG_PAGES) {
-			dialog = new PagesDialog(this);
-		}
+		case DIALOG_PAGES:
+			Dialog dialog = super.onCreateDialog(id);
 
-		return dialog;
+			if (dialog == null && mAlbumThread.isValid() && id == DIALOG_PAGES) {
+				dialog = new PagesDialog(this);
+			}
+
+			return dialog;
+			
+		case DIALOG_FULLSCREEN:
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.fullscreen_notice);
+			return builder.create();
+					
+		default:
+			return super.onCreateDialog(id);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -659,6 +670,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		System.gc();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void onWindowChanged(boolean highQuality, boolean fullScreen) {
 		final Window window = getWindow();
 
@@ -682,6 +694,18 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		// hide ActionBar
 		setActionBarVisible(false);
+
+		if (mFullScreen != fullScreen) {
+			mFullScreen = fullScreen;
+
+			if (!ComicsParameters.sHasMenuKey && !ComicsParameters.sFullScreenNoticeDisplayed) {
+				showDialog(DIALOG_FULLSCREEN);
+				ComicsParameters.sFullScreenNoticeDisplayed = true;
+			}
+		} else {
+			// we didn't switch between screen modes, but we need to update bitmaps anyway
+			mAlbumThread.updateCurrentPage(true);
+		}
 	}
 
 	public void onPageScrolled(int direction) {
