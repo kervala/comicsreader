@@ -78,9 +78,6 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 	static final int REQUEST_VIEWER = 1;
 	static final int REQUEST_BOOKMARK = 2;
 	
-	static final int RESULT_FILE = RESULT_FIRST_USER;
-	static final int RESULT_URL = RESULT_FIRST_USER+1;
-	
 	static final int ACTION_NONE = 0;
 	static final int ACTION_CONFIRM_YES = 1;
 	static final int ACTION_CONFIRM_NO = 2;
@@ -241,7 +238,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		
 		switch(requestCode) {
 			case REQUEST_VIEWER:
-			if (resultCode == RESULT_URL) {
+			if (resultCode == ViewerActivity.RESULT_URL) {
 				// user selected a bookmark from ViewerActivity
 				if (uriString != null && !uriString.equals(mLastUrl)) {
 					mLastUrl = uriString;
@@ -254,7 +251,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 				if (mAdapter == null) {
 					openLastFolder();
 				}
-			} else if (resultCode == RESULT_FILE) {
+			} else if (resultCode == ViewerActivity.RESULT_FILE) {
 				// user closed ViewerActivity
 				if (uriString != null && !uriString.equals(mLastFile)) {
 					mLastFile = uriString;
@@ -263,11 +260,15 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 				if (mAdapter == null) {
 					openLastFolder();
 				}
+			} else if (resultCode == ViewerActivity.RESULT_QUIT) {
+				// want to quit
+				finish();
 			}
+
 			break;
 
 			case REQUEST_BOOKMARK:
-			if (resultCode == RESULT_URL) {
+			if (resultCode == ViewerActivity.RESULT_URL) {
 				if (uriString != null && !uriString.equals(mLastUrl)) {
 					mLastUrl = uriString;
 				}
@@ -827,6 +828,9 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 			return true;
 		case R.id.menu_settings:
 			startActivityForResult(new Intent(this, ComicsPreferenceActivity.class), REQUEST_PREFERENCES);
+			return true;
+		case R.id.menu_quit:
+			finish();
 			return true;
 		}
 		return false;

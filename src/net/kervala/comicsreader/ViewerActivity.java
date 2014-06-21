@@ -64,7 +64,8 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	static final int REQUEST_BOOKMARK = 2;
 	
 	static final int RESULT_FILE = RESULT_FIRST_USER;
-	static final int RESULT_URL = RESULT_FIRST_USER+1;
+	static final int RESULT_URL = RESULT_FILE+1;
+	static final int RESULT_QUIT = RESULT_URL+1;
 	
 	protected ErrorDialog mErrorDialog;
 	protected String mError;
@@ -732,6 +733,10 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			return true;
 		case R.id.menu_settings:
 			startActivityForResult(new Intent(this, ComicsPreferenceActivity.class), REQUEST_PREFERENCES);
+			return true;
+		case R.id.menu_quit:
+			setResult(RESULT_QUIT, getIntent());
+			finish();
 			return true;
 		}
 		return false;
