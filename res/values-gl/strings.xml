@@ -2,10 +2,7 @@
 <resources>
   <string name="icon">Icona</string>
   <string name="about">Acerca de</string>
-  <string name="about_author">© 2011–2013 Kervala</string>
   <string name="about_license">Este aplicativo está publicado baixo licenza GPLv3:</string>
-  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-  <string name="about_text">Un aplicativo Android para ler cómics dixitais. Emprega transicións suaves, ten unha interface intuitiva, carga rápido e o seu código é aberto.</string>
   <string name="about_unrar_version">Versión UnRAR: %s</string>
   <string name="about_version">Versión: %s</string>
   <string name="about_revision">Revisión: %s</string>
@@ -88,7 +85,6 @@
   <string name="password">Contrasinal</string>
   <string name="remember_password">Lembrar contrasinal</string>
   <string name="contributors_label">Colaboradores:</string>
-  <string name="contributors">- ultrapeer (Turkish translation and French typos)\n- Zufre (Spanish translation)\n- Kathjal on Transifex (Italian translation)\n- Shark103 on Transifex (Polish translation)\n- Xesusmosquera on Transifex (Galician translation)\n- Jules Blok (natural ordering of page numbers implementation)</string>
   <string name="browser_album_title">Sen título</string>
   <string name="preference_edges_resistance_label">Bordos</string>
   <string name="preference_edges_resistance_summary">Resistencia antes de cambiar de páxina</string>

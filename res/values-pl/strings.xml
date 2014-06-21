@@ -2,10 +2,7 @@
 <resources>
   <string name="icon">Ikona</string>
   <string name="about">O ...</string>
-  <string name="about_author">© 2011–2013 Kervala</string>
   <string name="about_license">Ta aplikacja jest opublikowana zgodnie z licenją GPLv3:</string>
-  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-  <string name="about_text">Aplikacja na Androida do czytania komiksów w wielu formatach. Aplikacja używa płynnych przejść, intuicyjnego interfejsu oraz mechanizmu szybkiego ładowania, no i oczywiście kod aplikacji jest otwarty.</string>
   <string name="about_unrar_version">Wersja UnRAR: %s</string>
   <string name="about_version">Wersja: %s</string>
   <string name="about_revision">Korekta: %s</string>

@@ -1,10 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="about">Hakkında</string>
-  <string name="about_author">© 2011–2013 Kervala</string>
   <string name="about_license">Bu uygulama GPLv3 lisansı kapsamında yayınlanmıştır:</string>
-  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-  <string name="about_text">Çeşitli biçimlerde sayısal çizgi roman görüntüleyici uygulama. Sezgisel kullanım, akıcı geçişler, hızlı yüklemeler sunar ve kaynak kodu özgürdür.</string>
   <string name="about_unrar_version">UnRAR sürümü: %s</string>
   <string name="about_version">Sürüm: %s</string>
   <string name="about_revision">Revizyon: %s</string>
@@ -87,7 +84,6 @@
   <string name="password">Parola</string>
   <string name="remember_password">Parolayı hatırla</string>
   <string name="contributors_label">İştirak edenler:</string>
-  <string name="contributors">- ultrapeer (Türkçe tercüme ve Fransızca imlâ düzeltmeleri)\n- Zufre (İspanyolca tercüme)</string>
   <string name="browser_album_title">Başlıksız</string>
   <string name="preference_edges_resistance_label">Kenarların direnci</string>
   <string name="preference_edges_resistance_summary">Sayfa çevrimi öncesi direnç</string>

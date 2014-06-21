@@ -2,10 +2,7 @@
 <resources>
   <string name="icon">Icône</string>
   <string name="about">À propos</string>
-  <string name="about_author">© 2011–2013 Kervala</string>
   <string name="about_license">Cette application est publiée sous licence GPLv3 :</string>
-  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-  <string name="about_text">Application Android de lecture de bandes dessinées numériques dans plusieurs formats. Elle propose des transitions fluides, une ergonomie intuitive, des chargements rapides et son code est libre.</string>
   <string name="about_unrar_version">Version d\'UnRAR : %s</string>
   <string name="about_version">Version : %s</string>
   <string name="about_revision">Révision : %s</string>
@@ -88,7 +85,7 @@
   <string name="password">Mot de passe</string>
   <string name="remember_password">Se souvenir du mot de passe</string>
   <string name="contributors_label">Contributeurs :</string>
-  <string name="contributors">- ultrapeer (traduction en turc et fautes de français)\n- Zufre (traduction en espagnol)\n- Kathjal sur Transifex (traduction en italien)\n- Shark103 sur Transifex (traduction en polonais)\n- Xesusmosquera sur Transifex (traduction en galicien)\n - Jules Blok (natural ordering of page numbers implementation)</string>
+  <string name="contributors">- Jules Blok (implémentation de l\'ordre naturel des pages et rotation automatique)\n- ultrapeer (traduction en turc et fautes de français)\n- Zufre (traduction en espagnol)\n- Kathjal sur Transifex (traduction en italien)\n- Shark103 sur Transifex (traduction en polonais)\n- Xesusmosquera sur Transifex (traduction en galicien)\n- Evropi sur Transifex (traduction en grec)\n- Anonyme (traduction en russe)\n- Marcelo Ghelman sur Transifex (traduction en portugais)</string>
   <string name="browser_album_title">Aucun titre</string>
   <string name="preference_edges_resistance_label">Résistance aux bords</string>
   <string name="preference_edges_resistance_summary">Résistance avant de changer de page</string>
@@ -96,4 +93,9 @@
   <string name="preference_page_transition_speed_summary">Vitesse de l\'animation de transition pour la page suivante/précédente</string>
   <string name="preference_reading_direction_label">Sens de lecture de droite à gauche</string>
   <string name="preference_reading_direction_summary">Déplacer vers la gauche pour afficher la page suivante</string>
+  <string name="preference_auto_rotate_label">Orientation automatique</string>
+  <string name="preference_auto_rotate_summary">(Expérimentale) Change l\'orientation de l\'écran pour mieux s\'adapter aux pages</string>
+  <string name="no_data">Aucune donnée</string>
+  <string name="fullscreen_notice">Veuillez scroller de haut en bas pour afficher le menu des options et quitter le mode plein écran.</string>
+  <string name="quit">Quitter</string>
 </resources>

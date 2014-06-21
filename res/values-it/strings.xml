@@ -2,10 +2,7 @@
 <resources>
   <string name="icon">Icona</string>
   <string name="about">About</string>
-  <string name="about_author">© 2011–2013 Kervala</string>
   <string name="about_license">Questa applicazione è rilasciata sotto la licenza GPLv3:</string>
-  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-  <string name="about_text">Applicazione Android che permette di leggere fumetti digitali in diversi formati. E\' costituita da transizioni semplici, un\'interfaccia intuitiva, un caricamento veloce e il codice è open source.</string>
   <string name="about_unrar_version">Versione unRAR: %s</string>
   <string name="about_version">Versione: %s</string>
   <string name="about_revision">Revisione: %s</string>
@@ -88,7 +85,6 @@
   <string name="password">Password</string>
   <string name="remember_password">Ricorda password</string>
   <string name="contributors_label">Hanno contribuito:</string>
-  <string name="contributors">- ultrapeer (traduzione in turco e correzione del francese)⏎\n- Zufre (traduzione in spagnolo)</string>
   <string name="browser_album_title">Nessun titolo</string>
   <string name="preference_edges_resistance_label">Resistenza degli angoli</string>
   <string name="preference_edges_resistance_summary">Resistenza nel voltare la pagina</string>

@@ -1,14 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="icon">Icon</string>
-  <string name="version">1.2</string>
+  <string name="version">2.0</string>
   <string name="revision"></string>
   <string name="build_date"></string>
   <string name="about">About</string>
-  <string name="about_author">© 2011–2013 Kervala</string>
+  <string name="about_author">© 2011–2014 Kervala</string>
   <string name="about_license">This application is published under GPLv3 licence:</string>
   <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
-  <string name="about_text">Android application to read digital comics in several formats. It\'s using smooth transitions, an intuitive interface, fast loading times and its code is open source.</string>
   <string name="about_unrar_version">UnRAR version: %s</string>
   <string name="about_version">Version: %s</string>
   <string name="about_revision">Revision: %s</string>
@@ -91,7 +90,7 @@
   <string name="password">Password</string>
   <string name="remember_password">Remember password</string>
   <string name="contributors_label">Contributors:</string>
-  <string name="contributors">- ultrapeer (Turkish translation and French typos)\n- Zufre (Spanish translation)\n- Kathjal on Transifex (Italian translation)\n- Shark103 on Transifex (Polish translation)\n- Xesusmosquera on Transifex (Galician translation)\n- Jules Blok (natural ordering of page numbers implementation)</string>
+  <string name="contributors">- Jules Blok (natural ordering of page numbers and auto-rotation implementation)\n- ultrapeer (Turkish translation and French typos)\n- Zufre (Spanish translation)\n- Kathjal on Transifex (Italian translation)\n- Shark103 on Transifex (Polish translation)\n- Xesusmosquera on Transifex (Galician translation)\n- Evropi on Transifex (Greek translation)\n- Anonymous (Russian translation)\n- Marcelo Ghelman on Transifex (Portuguese translation)</string>
   <string name="browser_album_title">No title</string>
   <string name="preference_edges_resistance_label">Edges resistance</string>
   <string name="preference_edges_resistance_summary">Resistance before switching page</string>
@@ -100,5 +99,8 @@
   <string name="preference_reading_direction_label">Right to left reading direction</string>
   <string name="preference_reading_direction_summary">Swipe to the left to switch to next page</string>
   <string name="preference_auto_rotate_label">Automatic orientation</string>
-  <string name="preference_auto_rotate_summary">Changes the screen orientation to best fit each page</string>
+  <string name="preference_auto_rotate_summary">(Experimental) Changes the screen orientation to best fit each page</string>
+  <string name="no_data">No data</string>
+  <string name="fullscreen_notice">Please scroll from top to bottom to display options menu and leave fullscreen mode.</string>
+  <string name="quit">Quit</string>
 </resources>
