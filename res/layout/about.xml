@@ -105,18 +105,10 @@
             android:textColorLink="@android:color/white" />
 
         <TextView
-            android:id="@+id/dialog_about_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/about_text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
             android:id="@+id/contributors_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:text="@string/contributors_label"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -131,7 +123,7 @@
             android:id="@+id/dialog_about_license"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:text="@string/about_license"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
