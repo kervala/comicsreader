@@ -92,6 +92,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	private Method mActionBarShow;
 	private Method mActionBarHide;
 	private Method mActionBarSetTitle;
+	private boolean mFullScreen = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -227,7 +228,8 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			mAlbumThread.updateCurrentPage(false);
 		}
 
-		mImageView.setFullScreen(AlbumParameters.fullScreen);
+		// small hack because on my CM 9 tablet navigation bar don't hide
+		if (!ComicsParameters.sIsCyanogenMod) mImageView.setFullScreen(mFullScreen);
 	}
 	
 	@Override
