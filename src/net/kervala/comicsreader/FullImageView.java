@@ -22,6 +22,7 @@ package net.kervala.comicsreader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -83,31 +84,30 @@ public class FullImageView extends View {
 		return mFullScreen;
 	}
 
+	@SuppressLint("InlinedApi")
 	public boolean setFullScreen(boolean fullscreen) {
 		// we can't set full screen if :
-		
+
 		// setSystemUiVisibility not available
 		if (mSetSystemUiVisibility == null) return false;
 
 		// device has menu key
 		if (ComicsParameters.sHasMenuKey) return false;
-			
+
 		// using CyanogenMod older than 9.0 or Android older than 4.4
 		if (!ComicsParameters.sIsCyanogenMod && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return false;
 
 		mFullScreen = fullscreen;
 
-		int newVis = SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | SYSTEM_UI_FLAG_LAYOUT_STABLE;
+		int newVis = 0;
 
 		if (fullscreen) {
-			if (ComicsParameters.sIsCyanogenMod) {
-				newVis |= SYSTEM_UI_FLAG_LOW_PROFILE;
-			}
-
-			newVis |= SYSTEM_UI_FLAG_FULLSCREEN;
-
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-				newVis |= SYSTEM_UI_FLAG_IMMERSIVE_STICKY | SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+				newVis |= SYSTEM_UI_FLAG_HIDE_NAVIGATION; // API 14, needed in immersive mode to hide navigation bar
+//				newVis |= SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | SYSTEM_UI_FLAG_LAYOUT_STABLE | SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | SYSTEM_UI_FLAG_FULLSCREEN; // API 16
+				newVis |= SYSTEM_UI_FLAG_IMMERSIVE_STICKY; // API 19, Android 4.4 immersive mode required
+			} else if (ComicsParameters.sIsCyanogenMod) {
+				newVis |= SYSTEM_UI_FLAG_LOW_PROFILE; // is enough to enter fullscreen on CM
 			}
 		}
 
