@@ -187,7 +187,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 			
 			final Intent intent = getIntent();
 			intent.setDataAndType(uri, null);
-			setResult(BrowserActivity.RESULT_URL, intent);
+			setResult(ViewerActivity.RESULT_URL, intent);
 			finish();
 
 			return true;

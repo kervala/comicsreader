@@ -31,6 +31,14 @@ JNIEXPORT jbyteArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetData
 JNIEXPORT jstring JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetVersion
   (JNIEnv *, jclass);
 
+/*
+ * Class:     net_kervala_comicsreader_RarFile
+ * Method:    nativeTests
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeTests
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

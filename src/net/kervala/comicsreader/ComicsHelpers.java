@@ -196,7 +196,7 @@ public class ComicsHelpers {
 
 			res = true;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.e(ComicsParameters.APP_TAG, "File " + url + " not found");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ProtocolException e) {

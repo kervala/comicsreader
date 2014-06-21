@@ -322,3 +322,52 @@ JNIEXPORT jstring JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetVersion
 
 	return env->NewStringUTF(version);
 }
+
+JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeTests(JNIEnv *env, jclass)
+{
+#ifdef _DEBUG
+	wchar_t buffer[50];
+	wchar_t str1[] = L"test1";
+	wchar_t str2[] = L"test2";
+
+	LOGI("unrar_wcslen returned %d", (int)unrar_wcslen(str1));
+	LOGI("wcslen returned %d", (int)wcslen(str1));
+
+	LOGI("unrar_wcscmp returned %d", (int)unrar_wcscmp(str1, str2));
+	LOGI("wcscmp returned %d", (int)wcscmp(str1, str2));
+
+	LOGI("unrar_wcsncmp returned %d", (int)unrar_wcsncmp(str1, str2, 5));
+	LOGI("wcsncmp returned %d", (int)wcsncmp(str1, str2, 5));
+
+	LOGI("unrar_wcschr returned %p", unrar_wcschr(str1, L'1'));
+	LOGI("wcschr returned %p", wcschr(str1, L'1'));
+
+	unrar_wcscpy(buffer, str1);
+	unrar_wcscpy(buffer, str2);
+
+	LOGI("unrar_wcscpy returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+
+	wcscpy(buffer, str1);
+	wcscpy(buffer, str2);
+
+	LOGI("wcscpy returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+
+	unrar_wcsncpy(buffer, str1, 5);
+	unrar_wcsncpy(buffer, str2, 5);
+
+	LOGI("unrar_wcsncpy returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+
+	wcsncpy(buffer, str1, 5);
+	wcsncpy(buffer, str2, 5);
+
+	LOGI("wcsncpy returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+
+	unrar_wcscat(buffer, str1);
+
+	LOGI("unrar_wcscat returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+
+	wcscat(buffer, str2);
+
+	LOGI("wcscat returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+#endif
+}

@@ -523,8 +523,8 @@ public class Album {
 	}
 	
 	public boolean updatePage(int page) {
-		Log.d("ComicsReader", "updatePage " + String.valueOf(page));
-		
+		Log.d(ComicsParameters.APP_TAG, "updatePage " + String.valueOf(page));
+
 		if (ComicsParameters.sScreenWidth < 1 || ComicsParameters.sScreenHeight < 1) return false;
 
 		// already updated
@@ -603,7 +603,7 @@ public class Album {
 				mPages[i].bitmap.recycle();
 				mPages[i].bitmap = null;
 				
-				Log.d("ComicsReader", "Recycle page " + String.valueOf(i));
+				Log.d(ComicsParameters.APP_TAG, "Recycle page " + String.valueOf(i));
 			}
 		}
 
@@ -657,9 +657,9 @@ public class Album {
 		if (!mPages[page].loadBufferFromCache()) {
 			mPages[page].buffer = getBytes(page);
 
-			Log.d("ComicsReader", "Loaded buffer for page " + String.valueOf(page));
+			Log.d(ComicsParameters.APP_TAG, "Loaded buffer for page " + String.valueOf(page));
 		} else {
-			Log.d("ComicsReader", "Buffer already in memory for page " + String.valueOf(page));
+			Log.d(ComicsParameters.APP_TAG, "Buffer already in memory for page " + String.valueOf(page));
 		}
 
 		if (page < mFirstBufferPageNumber) mFirstBufferPageNumber = page;
@@ -693,7 +693,7 @@ public class Album {
 	}
 	
 	public void updatePagesSizes() {
-		Log.d("ComicsReader", "updatePagesSizes");
+		Log.d(ComicsParameters.APP_TAG, "updatePagesSizes");
 		
 		for(int i = 0; i < numPages; ++i) {
 			if (mPages[i].bitmap != null) {
@@ -720,12 +720,13 @@ public class Album {
 		int used = (int)runtime.totalMemory();
 		int max = (int)runtime.maxMemory();
 		
-		Log.d("ComicsReader", "From page " + String.valueOf(mFirstBufferPageNumber) + " to " + String.valueOf(mLastBufferPageNumber) + " using " + String.valueOf(getMemoryUsed()) + " bytes (" + String.valueOf(used) + " on " + String.valueOf(max));
+		Log.d(ComicsParameters.APP_TAG, "From page " + String.valueOf(mFirstBufferPageNumber) + " to " + String.valueOf(mLastBufferPageNumber) + " using " + String.valueOf(getMemoryUsed()) + " bytes (" + String.valueOf(used) + " on " + String.valueOf(max));
 		
 		for(int i = 0; i < numPages; ++i) {
 			String buffer = mPages[i].buffer == null ? "0":String.valueOf(mPages[i].buffer.length);
 			String bitmap = mPages[i].bitmap == null ? "0":String.valueOf(mPages[i].getMemoryUsed());
-			Log.d("ComicsReader", "Page " + String.valueOf(i) + ": buffer " + buffer + ", bitmap " + bitmap);
+
+			Log.d(ComicsParameters.APP_TAG, "Page " + String.valueOf(i) + ": buffer " + buffer + ", bitmap " + bitmap);
 		}
 	}
 }

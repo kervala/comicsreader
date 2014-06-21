@@ -159,8 +159,6 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 				e.printStackTrace();
 			}
 			
-			Log.d("ComicsReader", "Rescode " + resCode);
-
 			if (resCode < 0) {
 				retry = true;
 			} else if (resCode == 401) {

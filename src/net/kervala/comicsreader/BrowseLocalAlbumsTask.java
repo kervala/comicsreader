@@ -37,13 +37,13 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 		mActivity = new WeakReference<BrowserActivity>(activity);
 		mDirectory = directory;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPreExecute() {
 		mActivity.get().showDialog(BrowserActivity.DIALOG_WAIT);
 	}
-	
+
 	@Override
 	protected String doInBackground(Void... params) {
 		mItems = new ArrayList<ThumbnailItem>();
