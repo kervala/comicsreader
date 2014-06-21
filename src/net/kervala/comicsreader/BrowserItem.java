@@ -160,9 +160,9 @@ public class BrowserItem extends ThumbnailItem {
 				if (mThumb == null) {
 					if (ComicsHelpers.downloadThumbnailFromUrl(mThumbnailUrl)) {
 						mThumb = ComicsHelpers.getThumbnailFromCache(mThumbnailUrl);
-						
-						if (mThumb == null) return false;
 					}
+
+					if (mThumb == null) return false;
 				}
 			}
 		}
