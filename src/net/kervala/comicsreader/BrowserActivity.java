@@ -50,7 +50,6 @@ import android.os.Message;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -201,27 +200,6 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 				destroyDownloadAlbumTask();
 			}
 		}
-	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch(keyCode) {
-		case KeyEvent.KEYCODE_BACK:
-			if (!ComicsParameters.sRootDirectory.getAbsolutePath().equals(mLastUrl) && mAdapter != null) {
-				final int pos = mAdapter.getItemPosition("..");
-				if (pos != -1) {
-					final BrowserItem item = (BrowserItem)mAdapter.getItem(pos);
-					if (!item.getRemote()) {
-						browseFolder(item.getPath());
-					} else {
-						browseFolder(item.getAlbumUrl());
-					}
-					return true;
-				}
-			}
-		}
-
-		return super.onKeyDown(keyCode, event);
 	}
 	
 	@Override
