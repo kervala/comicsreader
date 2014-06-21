@@ -227,6 +227,17 @@ public class FullImageView extends View {
 		int w;
 		int h;
 
+		int maxWidth = 0;
+		int maxHeight = 0;
+
+		View parent = (View)getParent();
+
+		// get real measured size from parent
+		if (parent != null) {
+			maxWidth = parent.getMeasuredWidth();
+			maxHeight = parent.getMeasuredHeight();
+		}
+
 		if (mCurrentBitmap == null) {
 			// If no bitmap, its intrinsic size is 0.
 			mBitmapWidth = -1;
@@ -236,14 +247,14 @@ public class FullImageView extends View {
 			w = mBitmapWidth;
 			h = mBitmapHeight;
 
-			if (ComicsParameters.sScreenWidth > 0 && w < ComicsParameters.sScreenWidth) {
-				w = ComicsParameters.sScreenWidth;
+			if (maxWidth > 0 && w < maxWidth) {
+				w = maxWidth;
 			} else if (w <= 0) {
 				w = 1;
 			}
 
-			if (ComicsParameters.sScreenHeight > 0 && h < ComicsParameters.sScreenHeight) {
-				h = ComicsParameters.sScreenHeight;
+			if (maxHeight > 0 && h < maxHeight) {
+				h = maxHeight;
 			} else if (h <= 0) {
 				h = 1;
 			}
