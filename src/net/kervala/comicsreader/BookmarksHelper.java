@@ -33,12 +33,13 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 	private static final String sUpgradeFrom1ToLast = "INSERT INTO %s (_id, name, url, category) SELECT _id, name, url, 1 FROM %s_old WHERE _id > 1 ORDER BY _id;";
 	private static final String sUpgradeFrom2ToLast = "INSERT INTO %s (_id, name, url, category) SELECT _id, name, url, 'order' FROM %s_old WHERE _id > 1 ORDER BY _id;";
 	private static final String sUpgradeFrom3ToLast = "INSERT INTO %s (_id, name, url, category) SELECT _id, name, url, category FROM %s_old WHERE _id > 1 ORDER BY _id;";
+	private static final String sUpgradeFrom4ToLast = "INSERT INTO %s (name, url, category) values('Pirate ta BD (bdzmag.com)', 'http://bdz.kervala.net/index.json', '1');";
 	private static final String sDropOldDb = "DROP TABLE %s_old;";
 	private String mExternalStorage;
 	private SQLiteDatabase mDb;
 
 	public BookmarksHelper(Context context) {
-		super(context, "bookmarks.db", null, 4);
+		super(context, "bookmarks.db", null, 5);
 
 		mExternalStorage = context.getString(R.string.external_storage);
 	}
@@ -79,6 +80,7 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(String.format(sCreateDb, sTable));
 		db.execSQL(String.format(sInsertExternal, sTable, mExternalStorage, ComicsParameters.sExternalDirectory.getAbsolutePath()));
+		db.execSQL(String.format(sUpgradeFrom4ToLast, sTable));
 	}
 
 	@Override
@@ -88,7 +90,9 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 			db.execSQL(String.format(sAlterDb, sTable, sTable));
 			db.execSQL(String.format(sCreateDb, sTable));
 			db.execSQL(String.format(sInsertExternal, sTable, mExternalStorage, ComicsParameters.sExternalDirectory.getAbsolutePath()));
-			if (oldVersion == 3) {
+			if (oldVersion == 4) {
+				db.execSQL(String.format(sUpgradeFrom4ToLast, sTable));
+			} else if (oldVersion == 3) {
 				// don't do anything, only change default entry
 				db.execSQL(String.format(sUpgradeFrom3ToLast, sTable, sTable));
 			} else if (oldVersion == 2) {
