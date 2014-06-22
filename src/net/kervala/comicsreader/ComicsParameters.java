@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -34,8 +36,10 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
@@ -76,7 +80,6 @@ public class ComicsParameters {
 	static int sScreenHeight = 0;
 	static boolean sFullScreenNoticeDisplayed = false;
 
-
 	static private int sReferences = 0;
 
 	public static void init(Context context) {
@@ -107,7 +110,24 @@ public class ComicsParameters {
 			e.printStackTrace();
 		}
 
-		sIsCyanogenMod = context.getPackageManager().hasSystemFeature("com.cyanogenmod.android");
+		if (sPackageVersion == null) {
+			sPackageVersion = context.getString(R.string.version);
+		}
+
+		PackageManager pm = context.getPackageManager();
+
+		try {
+			Class<?> pmClass = pm.getClass();
+
+			Method hasSystemFeature = pmClass.getMethod("hasSystemFeature", String.class);
+
+			sIsCyanogenMod = (Boolean)hasSystemFeature.invoke(pm, "com.cyanogenmod.android");
+		} catch (NoSuchMethodException e) {
+			Log.e(ComicsParameters.APP_TAG, "Method hasSystemFeature doesn't exist");
+		} catch (IllegalAccessException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (InvocationTargetException e) {
+		}
 	}
 	
 	public static void initDensity(Context context) {
@@ -123,8 +143,27 @@ public class ComicsParameters {
 
 		sThumbnailRescaledHeight = sLarge ? THUMBNAIL_HEIGHT:THUMBNAIL_HEIGHT * sScreenDensity / 240;
 		sBitmapDensity = sLarge ? sScreenDensity:240;
+		
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			sHasMenuKey = true;
+		} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			sHasMenuKey = false;
+		} else {
+			ViewConfiguration config = ViewConfiguration.get(context);
 
-		sHasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
+			try {
+				Class<?> configClass = config.getClass();
+
+				Method hasPermanentMenuKey = configClass.getMethod("hasPermanentMenuKey");
+
+				sHasMenuKey = (Boolean)hasPermanentMenuKey.invoke(config);
+			} catch (NoSuchMethodException e) {
+				Log.e(ComicsParameters.APP_TAG, "Method hasPermanentMenuKey doesn't exist");
+			} catch (IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+			}
+		}
 	}
 
 	public static void initTablet() {
