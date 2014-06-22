@@ -217,6 +217,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		mMinPixelsBeforeSwitch = newWidth >> 3;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -230,6 +231,11 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		// small hack because on my CM 9 tablet navigation bar don't hide
 		if (!ComicsParameters.sIsCyanogenMod) mImageView.setFullScreen(mFullScreen);
+
+		if (!ComicsParameters.sHasMenuKey && !ComicsParameters.sFullScreenNoticeDisplayed) {
+			showDialog(DIALOG_FULLSCREEN);
+			ComicsParameters.sFullScreenNoticeDisplayed = true;
+		}
 	}
 	
 	@Override
@@ -490,8 +496,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			mHideActionBar = false;
 		}
 
-		if (!mProcessTouch)
-		{
+		if (!mProcessTouch) {
 			// width of borders to change page without fling
 			int zoneWidth = ComicsParameters.sScreenWidth >> 4;
 
@@ -672,7 +677,6 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		System.gc();
 	}
 
-	@SuppressWarnings("deprecation")
 	public void onWindowChanged(boolean highQuality, boolean fullScreen) {
 		final Window window = getWindow();
 
@@ -699,11 +703,6 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		if (mFullScreen != fullScreen) {
 			mFullScreen = fullScreen;
-
-			if (!ComicsParameters.sHasMenuKey && !ComicsParameters.sFullScreenNoticeDisplayed) {
-				showDialog(DIALOG_FULLSCREEN);
-				ComicsParameters.sFullScreenNoticeDisplayed = true;
-			}
 		} else {
 			// we didn't switch between screen modes, but we need to update bitmaps anyway
 			mAlbumThread.updateCurrentPage(true);
