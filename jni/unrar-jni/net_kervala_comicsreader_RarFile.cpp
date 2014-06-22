@@ -325,7 +325,7 @@ JNIEXPORT jstring JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetVersion
 
 JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeTests(JNIEnv *env, jclass)
 {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(DEBUG)
 	wchar_t buffer[50];
 	wchar_t str1[] = L"test1";
 	wchar_t str2[] = L"test2";

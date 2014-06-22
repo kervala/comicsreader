@@ -3,8 +3,8 @@ Version 2.0
 - Partenariat avec BDZ Mag (http://www.bdzmag.com/) et téléchargement des BDs de "Pirate ta BD !" à partir des favoris
 - Plein écran sans barre de navigation sous Android 3.x et + (faire un swipe de haut en bas pour afficher la ActionBar et son menu contextuel)
 - Support du thème Holo sous Android 3.x et supérieur
-- Support du mode immersif sans Android 4.4 et supérieur
-- Réécriture complète de l'algorithm de chargement des images
+- Support du mode immersif sous Android 4.4 et supérieur
+- Réécriture complète de l'algorithme de chargement des images
 - Permission d'utiliser plus de mémoire si l'appareil le supporte
 - Changement de page en touchant les bords gauches et droits
 - Options auto-rotation expérimentale par Jules Blok
