@@ -34,7 +34,7 @@ public class TarFile {
 		int offset = 0;
 		int filesize = 0;
 	}
-	
+
 	protected String mName;
 	protected List<TarEntry> mEntries = new ArrayList<TarEntry>();
 

@@ -296,12 +296,12 @@ public class FullImageView extends View {
 		}
 		
 		canvas.getClipBounds(mRect);
-		
+
 		// the right limit of current bitmap
 		final int currRight = Math.min(mRect.right, mBitmapWidth);
 
 		int bottom = Math.min(mRect.bottom, mBitmapHeight);
-		
+
 		if (mOffset == 0) {
 			mRectSrc.set(mRect.left, mRect.top, currRight, bottom);
 
