@@ -663,6 +663,9 @@ public class Album {
 		if (!mPages[page].loadBufferFromCache()) {
 			mPages[page].buffer = getBytes(page);
 
+			// exit because we didn't succeed to load buffer
+			if (mPages[page].buffer == null) return;
+
 			Log.d(ComicsParameters.APP_TAG, "Loaded buffer for page " + String.valueOf(page));
 		} else {
 			Log.d(ComicsParameters.APP_TAG, "Buffer already in memory for page " + String.valueOf(page));

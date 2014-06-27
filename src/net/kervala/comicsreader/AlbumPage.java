@@ -393,7 +393,12 @@ public class AlbumPage {
 		
 		if (!mBufferCacheFile.exists() || mBufferCacheFile.length() < 10) return false;
 
-		buffer = new byte[(int)mBufferCacheFile.length()];
+		try {
+			buffer = new byte[(int)mBufferCacheFile.length()];
+		} catch (OutOfMemoryError e) {
+			Log.e(ComicsParameters.APP_TAG, "OutOfMemoryError while allocating a buffer of " + String.valueOf(mBufferCacheFile.length()) + " bytes for page " + String.valueOf(mPage));
+			return false;
+		}
 
 		return ComicsHelpers.loadFileToBuffer(mBufferCacheFile, buffer);
 	}

@@ -282,12 +282,13 @@ public class ComicsHelpers {
 				}
 
 				if (size != 0) {
-					Log.e("ComicsReader", "Album buffer length differs");
+					Log.e(ComicsParameters.APP_TAG, "Album buffer length differs");
 				}
 
 				input.close();
 			} catch (OutOfMemoryError e) {
-				e.printStackTrace();
+				Log.e(ComicsParameters.APP_TAG, "OutOfMemoryError while allocating a buffer of " + String.valueOf(size) + " bytes");
+				return null;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
