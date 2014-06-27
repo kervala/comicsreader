@@ -410,8 +410,11 @@ public class Album {
 	public void clearThumbnailsCache() {
 		// delete all pages thumbnails
 		File[] files = mCacheThumbnailsDir.listFiles();
-		for (File f : files) {
-			f.delete();
+
+		if (files != null) {
+			for (File f : files) {
+				f.delete();
+			}
 		}
 
 		// delete directory
@@ -421,8 +424,11 @@ public class Album {
 	public void clearPagesCache() {
 		// delete all pages
 		File[] files = mCachePagesDir.listFiles();
-		for (File f : files) {
-			f.delete();
+
+		if (files != null) {
+			for (File f : files) {
+				f.delete();
+			}
 		}
 
 		// delete directory

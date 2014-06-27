@@ -36,6 +36,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
@@ -44,7 +45,9 @@ public class ComicsHelpers {
 	static Bitmap resizeThumbnail(Bitmap bitmap) {
 		if (bitmap == null || bitmap.getWidth() == 0 || bitmap.getHeight() == 0) return null;
 
-		if (bitmap.getHeight() == ComicsParameters.sThumbnailRescaledHeight) return bitmap.copy(bitmap.getConfig(), true);
+		final Bitmap.Config config = bitmap.getConfig();
+
+		if (bitmap.getHeight() == ComicsParameters.sThumbnailRescaledHeight) return bitmap.copy(config != null ? config:Config.RGB_565, true);
 
 		final Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * ComicsParameters.sThumbnailRescaledHeight / bitmap.getHeight(), ComicsParameters.sThumbnailRescaledHeight, true);
 
@@ -56,7 +59,9 @@ public class ComicsHelpers {
 	static Bitmap cropThumbnail(Bitmap bitmap) {
 		if (bitmap == null) return null;
 
-		if (bitmap.getWidth() <= ComicsParameters.THUMBNAIL_HEIGHT && bitmap.getHeight() <= ComicsParameters.THUMBNAIL_HEIGHT) return bitmap.copy(bitmap.getConfig(), true);
+		final Bitmap.Config config = bitmap.getConfig();
+
+		if (bitmap.getWidth() <= ComicsParameters.THUMBNAIL_HEIGHT && bitmap.getHeight() <= ComicsParameters.THUMBNAIL_HEIGHT) return bitmap.copy(config != null ? config:Config.RGB_565, true);
 
 		final Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getWidth()), Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getHeight()));
 		bitmap.recycle();

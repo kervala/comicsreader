@@ -289,8 +289,10 @@ public class ComicsParameters {
 		
 		int size = 0;
 		
-		for(File file: files) {
-			size += file.length();
+		if (files != null) {
+			for(File file: files) {
+				size += file.length();
+			}
 		}
 		
 		return size;
@@ -330,8 +332,10 @@ public class ComicsParameters {
 				// delete all pages thumbnails
 				File[] files = dir.listFiles();
 
-				for (File file : files) {
-					file.delete();
+				if (files != null) {
+					for (File file : files) {
+						file.delete();
+					}
 				}
 
 				// delete directory
@@ -343,8 +347,10 @@ public class ComicsParameters {
 	public static void clearCurrentAlbumDirectory() {
 		// delete all cached pages
 		File[] files = ComicsParameters.sCacheCurrentAlbumDirectory.listFiles();
-		for (File f : files) {
-			f.delete();
+		if (files != null) {
+			for (File f : files) {
+				f.delete();
+			}
 		}
 	}
 }
