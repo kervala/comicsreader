@@ -151,8 +151,8 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 		// read all entries
 		while (RARReadHeader(handle, &header) == 0)
 		{
-			// add file to list only if not a directory
-			if ((header.Flags & LHD_DIRECTORY) != LHD_DIRECTORY) list.addString(header.FileName);
+			// add file to list only if not a directory and not NULL
+			if ((header.Flags & LHD_DIRECTORY) == 0 && header.FileName) list.addString(header.FileName);
 
 			// skip entry content
 			int result = RARProcessFile(handle, RAR_SKIP, NULL, NULL);
@@ -165,7 +165,7 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 
 		RARCloseArchive(handle);
 
-		size_t count = list.size();
+		int count = (int)list.size();
 
 		if (count > 0)
 		{
@@ -174,10 +174,21 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 			Strings *tmp = &list;
 		
 			int i = 0;
-		
-			while(tmp)
+
+			// don't put more strings than allocated
+			while(tmp && i < count)
 			{
-				env->SetObjectArrayElement(ret, i++, env->NewStringUTF(tmp->getString()));
+				const char *str = tmp->getString();
+
+				if (str)
+				{
+					// if string is NULL, didn't increase list size
+					env->SetObjectArrayElement(ret, i++, env->NewStringUTF(str));
+				}
+				else
+				{
+					LOGE("NULL filename returned for item %d", i);
+				}
 
 				tmp = tmp->getNext();
 			}
@@ -369,5 +380,15 @@ JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeTests(JNIEnv 
 	wcscat(buffer, str2);
 
 	LOGI("wcscat returned %ls %d", buffer, (int)unrar_wcslen(buffer));
+
+	Strings list;
+
+	list.addString(NULL);
+	list.addString("12345");
+	list.addString("12345\012345");
+	list.addString("");
+	list.addString(NULL);
+
+	LOGI("Strings size() returned %d and should be 3", (int)list.size());
 #endif
 }

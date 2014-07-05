@@ -18,7 +18,7 @@
  */
 
 #include "strings.h"
- 
+
 Strings::Strings()
 {
 	setString(NULL);
@@ -61,6 +61,9 @@ size_t Strings::size()
 
 void Strings::addString(const char *str)
 {
+	// don't do anything if str is NULL
+	if (str == NULL) return;
+
 	if (m_str == NULL)
 	{
 		allocateString(str);
