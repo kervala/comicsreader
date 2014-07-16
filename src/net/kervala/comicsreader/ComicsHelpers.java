@@ -50,8 +50,7 @@ public class ComicsHelpers {
 		if (bitmap.getHeight() == ComicsParameters.sThumbnailRescaledHeight) return bitmap.copy(config != null ? config:Config.RGB_565, true);
 
 		final Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * ComicsParameters.sThumbnailRescaledHeight / bitmap.getHeight(), ComicsParameters.sThumbnailRescaledHeight, true);
-
-		if (bitmap != null && bitmap != newBitmap) bitmap.recycle();
+		if (bitmap != newBitmap) bitmap.recycle();
 
 		return newBitmap;
 	}
@@ -64,7 +63,7 @@ public class ComicsHelpers {
 		if (bitmap.getWidth() <= ComicsParameters.THUMBNAIL_HEIGHT && bitmap.getHeight() <= ComicsParameters.THUMBNAIL_HEIGHT) return bitmap.copy(config != null ? config:Config.RGB_565, true);
 
 		final Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getWidth()), Math.min(ComicsParameters.THUMBNAIL_HEIGHT, bitmap.getHeight()));
-		bitmap.recycle();
+		if (bitmap != croppedBitmap) bitmap.recycle();
 
 		return croppedBitmap;
 	}

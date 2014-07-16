@@ -491,7 +491,7 @@ public class Album {
 
 			// good quality resize
 			tmp = Bitmap.createScaledBitmap(tmpRaw, size1.dstWidth, size1.dstHeight, true);
-			tmpRaw.recycle();
+			if (tmp != tmpRaw && tmp != null) tmpRaw.recycle();
 
 			canvas.drawBitmap(tmp, 0, 0, null);
 			tmp.recycle();
@@ -507,7 +507,7 @@ public class Album {
 
 			// good quality resize
 			tmp = Bitmap.createScaledBitmap(tmpRaw, size2.dstWidth, size2.dstHeight, true);
-			tmpRaw.recycle();
+			if (tmp != tmpRaw && tmp != null) tmpRaw.recycle();
 
 			canvas.drawBitmap(tmp, size1.dstWidth, 0, null);
 			tmp.recycle();
@@ -660,6 +660,8 @@ public class Album {
 	}
 
 	protected void updateBuffer(int page) {
+		if (page < 0 || page >= mPages.length) return;
+	
 		if (!mPages[page].loadBufferFromCache()) {
 			mPages[page].buffer = getBytes(page);
 

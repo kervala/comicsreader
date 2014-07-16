@@ -48,7 +48,7 @@ public class DownloadAlbumTask extends AsyncTask<String, Integer, String> {
 	protected void onPreExecute() {
 		mActivity.get().showProgressAlbum(mItem.getText(), mItem.getSize());
 	}
-	
+
 	@Override
 	protected String doInBackground(String... params) {
 		String error = null;

@@ -165,6 +165,8 @@ public class AlbumPage {
 	}
 
 	public void updateBitmapDstSize(int width, int height) {
+		if (bitmapSize == null) return;
+	
 		// use some parameters from Album
 		int scale = AlbumParameters.scale;
 		boolean fitToScreen = AlbumParameters.fitToScreen;
@@ -289,7 +291,7 @@ public class AlbumPage {
 				e.printStackTrace();
 			}
 
-			if (bitmapRaw != null && bitmap != bitmapRaw) bitmapRaw.recycle();
+			if (bitmap != bitmapRaw) bitmapRaw.recycle();
 		}
 
 		return res;
@@ -328,7 +330,7 @@ public class AlbumPage {
 			e.printStackTrace();
 		}
 
-		if (bitmapRaw != null && bitmapRaw != thumbnail) bitmapRaw.recycle();
+		if (bitmapRaw != thumbnail) bitmapRaw.recycle();
 
 		return res;
 	}
