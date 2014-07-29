@@ -454,27 +454,27 @@ public class Album {
 	}
 	
 	public boolean updateDoublePage(int page, int width, int height) {
-		if (page < 0 || page >= numPages) return false;
+		if (page < 0 || (page+1 >= numPages)) return false;
 
 		updateBuffer(page);
 		updateBuffer(page+1);
-		
+
 		mPages[page].updateSrcSize();
 		mPages[page+1].updateSrcSize();
-		
+
 		// compute new sizes based on aspect ratio and scales
 		mPages[page].updateBitmapDstSize(width, height);
 		mPages[page+1].updateBitmapDstSize(width, height);
-		
+
 		// read sizes of 2 pages
 		final AlbumPage.Size size1 = mPages[page].bitmapSize;
 		final AlbumPage.Size size2 = mPages[page+1].bitmapSize;
 
 		if (size1 == null || size2 == null) return false;
-		
+
 		Bitmap bitmap = null;
 		Bitmap tmp = null;
-		
+
 		try {
 			// create a new bitmap with the size of the 2 bitmaps
 			bitmap = Bitmap.createBitmap(size1.dstWidth + size2.dstWidth, Math.max(size1.dstHeight, size2.dstHeight), AlbumParameters.highQuality ? Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565);
@@ -587,7 +587,7 @@ public class Album {
 		}
 		}
 
-		if (AlbumParameters.doublePage && page > 0) {
+		if (AlbumParameters.doublePage && page > 0 && (page+1) < numPages) {
 			return updateDoublePage(page, divideByTwo ? width/2:width, height);
 		} else {
 			updateBuffer(page);

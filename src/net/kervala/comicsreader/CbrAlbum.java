@@ -102,7 +102,7 @@ public class CbrAlbum extends Album {
 				mFiles.add(filename);
 			}
 		}
-		
+
 		if (mFiles.isEmpty()) return false;
 
 		// generate a title from filename
