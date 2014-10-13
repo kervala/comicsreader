@@ -61,7 +61,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	static final int DIALOG_ERROR = 4;
 	static final int DIALOG_ALBUM = 5;
 	static final int DIALOG_FULLSCREEN = 6;
-	
+
 	static final int REQUEST_PREFERENCES = 0;
 	static final int REQUEST_BOOKMARK = 2;
 	

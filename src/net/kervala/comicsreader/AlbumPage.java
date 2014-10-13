@@ -93,7 +93,7 @@ public class AlbumPage {
 	 */
 	public Bitmap getPageRaw(int scale) {
 		if (buffer == null) return null;
-		
+
 		if (sAbortLoading) {
 			sAbortLoading = false;
 			return null;
@@ -112,7 +112,7 @@ public class AlbumPage {
 		} else {
 			options.inPreferredConfig = Bitmap.Config.RGB_565;
 		}
-		
+
 		Bitmap b = null;
 
 		try {
@@ -121,16 +121,16 @@ public class AlbumPage {
 
 			if (b == null) {
 				Log.e(ComicsParameters.APP_TAG, "BitmapFactory.decodeByteArray returned null for " + mFilename + " size = " + String.valueOf(buffer.length));
-				
+
 				saveBufferToCache();
-				
+
 				Log.d(ComicsParameters.APP_TAG, "File " + mFilename + " saved in temporary directory under namme " + mCacheFilename + " to check it");
 			}
 		} catch (OutOfMemoryError e) {
 			Log.e(ComicsParameters.APP_TAG, "OutOfMemory while decoding bitmap " + mFilename + ": " + e.toString());
 			return null;
 		}
-		
+
 /*
 		// TODO: check for Android version, 2.2 should need that
 		if (mHighQuality && bitmap != null) {

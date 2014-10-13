@@ -87,9 +87,6 @@ public class NaturalOrderComparator implements Comparator<String> {
 
 			ca = charAt(a, ia);
 			cb = charAt(b, ib);
-			
-			// 00 c00.jpg
-			// 003
 
 			// skip over leading spaces
 			while (Character.isSpaceChar(ca)) {
@@ -190,7 +187,7 @@ public class NaturalOrderComparator implements Comparator<String> {
 
 		// compare to CRC32 of the right result
 		long value = crc.getValue();
-		
+
 		if (value == 0x1305F4AEl) {
 			Log.d("ComicsReader", "Result is right for " + files.toString());
 		} else {

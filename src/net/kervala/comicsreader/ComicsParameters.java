@@ -96,7 +96,9 @@ public class ComicsParameters {
 	public static void release() {
 		--sReferences;
 
-		if (sReferences < 1) releaseBitmaps();
+		if (sReferences < 1) {
+			releaseBitmaps();
+		}
 	}
 	
 	public static void initPackageInfo(Context context) {
