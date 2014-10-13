@@ -24,7 +24,7 @@ bool ReadTextFile(
   }
 
   File SrcFile;
-  if (FileName!=NULL && *FileName!=0)
+  if (*FileName!=0)
   {
     bool OpenCode=AbortOnError ? SrcFile.WOpen(FileName):SrcFile.Open(FileName,0);
 
