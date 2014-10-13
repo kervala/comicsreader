@@ -25,7 +25,7 @@
   android:orientation="vertical"
   >
     <TextView
-      android:text="TextView"
+      android:text="@string/no_data"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:id="@+id/title"

@@ -27,7 +27,7 @@
     <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="Text"
+      android:text="@string/no_data"
       android:textAppearance="?android:attr/textAppearanceMedium"
       android:id="@+id/bookmarks_item_name"
       android:lines="1"
@@ -35,7 +35,7 @@
     <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="Text"
+      android:text="@string/no_data"
       android:textAppearance="?android:attr/textAppearanceSmall"
       android:id="@+id/bookmarks_item_url"
       android:lines="1"

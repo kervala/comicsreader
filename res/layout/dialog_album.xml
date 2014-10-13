@@ -30,6 +30,7 @@
       android:layout_height="wrap_content"
       android:src="@drawable/placeholder"
       android:layout_gravity="center_horizontal"
+      android:contentDescription="@string/thumbnail"
     />
     <TextView
       android:id="@+id/dialog_album_title"

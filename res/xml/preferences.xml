@@ -23,9 +23,9 @@
         android:key="preference_category_view"
         android:title="@string/preference_category_view" >
         <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/items_zoom_labels"
-            android:entryValues="@array/items_zoom_values"
+            android:defaultValue="@string/preference_zoom_default"
+            android:entries="@array/preference_zoom_labels"
+            android:entryValues="@array/preference_zoom_values"
             android:key="preference_zoom"
             android:summary="@string/preference_zoom_summary"
             android:title="@string/preference_zoom_label" />
@@ -52,27 +52,26 @@
             android:title="@string/preference_fast_scroll_label" />
 
         <ListPreference
-            android:defaultValue="5000"
+            android:defaultValue="@string/preference_overlay_duration_default"
             android:entries="@array/preference_overlay_duration_names"
             android:entryValues="@array/preference_overlay_duration_values"
             android:key="preference_overlay_duration"
             android:summary="@string/preference_overlay_duration_summary"
             android:title="@string/preference_overlay_duration_label" />
         <ListPreference
-            android:defaultValue="1"
+            android:defaultValue="@string/preference_edges_resistance_default"
             android:entries="@array/preference_edges_resistance_names"
             android:entryValues="@array/preference_edges_resistance_values"
             android:key="preference_edges_resistance"
             android:summary="@string/preference_edges_resistance_summary"
             android:title="@string/preference_edges_resistance_label" />
         <ListPreference
-            android:defaultValue="2"
+            android:defaultValue="@string/preference_page_transition_speed_default"
             android:entries="@array/preference_page_transition_speed_names"
             android:entryValues="@array/preference_page_transition_speed_values"
             android:key="preference_page_transition_speed"
             android:summary="@string/preference_page_transition_speed_summary"
             android:title="@string/preference_page_transition_speed_label" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="preference_reading_direction"
@@ -81,7 +80,7 @@
         <CheckBoxPreference
             android:key="preference_auto_rotate"
             android:title="@string/preference_auto_rotate_label"
-            android:summary="@string/preference_auto_rotate_summary"/>
+            android:summary="@string/preference_auto_rotate_summary" android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:key="preference_category_advanced"
@@ -93,9 +92,9 @@
             android:title="@string/preference_high_quality_label" />
 
         <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/items_sample_labels"
-            android:entryValues="@array/items_sample_values"
+            android:defaultValue="@string/preference_sample_default"
+            android:entries="@array/preference_sample_labels"
+            android:entryValues="@array/preference_sample_values"
             android:key="preference_sample"
             android:summary="@string/preference_sample_summary"
             android:title="@string/preference_sample_label" />
