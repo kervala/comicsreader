@@ -28,6 +28,10 @@
 #include "version.hpp"
 #include "dll.hpp"
 
+//#define USE_DIRECTBYTEBUFFER
+
+static jclass stringClass = NULL;
+
 #define  LOG_TAG    "libunrar-jni"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
@@ -60,11 +64,33 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	JNIEnv* env;
 	if (vm->GetEnv((void**) &env, JNI_VERSION_1_6) != JNI_OK) return -1;
 
+	jclass c = env->FindClass("java/lang/String");
+
+	if (c == NULL)
+	{
+		LOGE("Can't find class java.lang.String");
+	}
+	else
+	{
+		stringClass = (jclass)env->NewGlobalRef(c);
+
+		// release local reference to String class
+		env->DeleteLocalRef(c);
+	}
+
 	return JNI_VERSION_1_6;
 }
 
-void JNI_OnUnload(JavaVM *, void *)
+void JNI_OnUnload(JavaVM *vm, void *reserved)
 {
+	JNIEnv* env;
+	if (vm->GetEnv((void**) &env, JNI_VERSION_1_6) != JNI_OK) return;
+
+	if (stringClass == NULL) return;
+
+	env->DeleteGlobalRef(stringClass);
+
+	stringClass = NULL;
 }
 
 void displayError(int error, const char *filename)
@@ -132,7 +158,20 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 {
 	jobjectArray ret = NULL;
 
+	if (stringClass == NULL)
+	{
+		LOGE("String class is NULL");
+
+		return ret;
+	}
+
 	const char *filename = env->GetStringUTFChars(jFilename, NULL);
+
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe();
+		return ret;
+	}
 
 	RAROpenArchiveData data;
 	memset(&data, 0, sizeof(RAROpenArchiveData));
@@ -152,7 +191,7 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 		// read all entries
 		while (RARReadHeader(handle, &header) == 0)
 		{
-			LOGD("Found %s", header.FileName);
+//			LOGD("Found %s", header.FileName);
 
 			// add file to list only if not a directory and not NULL
 			if ((header.Flags & LHD_DIRECTORY) == 0 && header.FileName) list.addString(header.FileName);
@@ -170,43 +209,61 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 
 		int count = (int)list.size();
 
-		LOGD("Found %d pages", count);
+//		LOGD("Found %d pages", count);
 
 		if (count > 0)
 		{
-			ret = (jobjectArray)env->NewObjectArray(count, env->FindClass("java/lang/String"), NULL);
+			ret = (jobjectArray)env->NewObjectArray(count, stringClass, NULL);
 
-			Strings *tmp = &list;
-		
-			int i = 0;
-
-			// don't put more strings than allocated
-			while(tmp && i < count)
+			if (env->ExceptionCheck())
 			{
-				const char *str = tmp->getString();
+				env->ExceptionDescribe();
+			}
+			else
+			{
+				Strings *tmp = &list;
 
-				if (str)
+				int i = 0;
+
+				// don't put more strings than allocated
+				while(tmp && i < count)
 				{
-					// create a jstring from a UTF-8 string
-					// TODO: fix Modified UTF-8 format
-					jstring newStr = env->NewStringUTF(str);
+					const char *str = tmp->getString();
 
-					if (newStr)
+					if (str)
 					{
-						// if string is NULL, don't increase list size
-						env->SetObjectArrayElement(ret, i++, newStr);
+						// create a jstring from a UTF-8 string
+						// TODO: fix Modified UTF-8 format
+						jstring newStr = env->NewStringUTF(str);
+
+						if (env->ExceptionCheck())
+						{
+							env->ExceptionDescribe();
+							break;
+						}
+						else if (newStr)
+						{
+							// if string is NULL, don't increase list size
+							env->SetObjectArrayElement(ret, i++, newStr);
+
+							if (env->ExceptionCheck())
+							{
+								env->ExceptionDescribe();
+								break;
+							}
+						}
+						else
+						{
+							LOGE("NewStringUTF returned NULL for %s", str);
+						}
 					}
 					else
 					{
-						LOGE("NewStringUTF returned NULL for %s", str);
+						LOGE("NULL filename returned for item %d", i);
 					}
-				}
-				else
-				{
-					LOGE("NULL filename returned for item %d", i);
-				}
 
-				tmp = tmp->getNext();
+					tmp = tmp->getNext();
+				}
 			}
 		}
 	}
@@ -222,18 +279,46 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 
 class Buffer
 {
-	public:
-
-	Buffer(size_t size)
+public:
+	Buffer(JNIEnv *env, size_t size)
 	{
 		m_position = 0;
+		m_env = env;
+
+		if (size < 1)
+		{
+			m_buffer = NULL;
+			m_size = 0;
+
+			LOGE("Unable to allocate less than 1 byte");
+			return;
+		}
+
+		// allocates a new Java buffer
+#ifdef USE_DIRECTBYTEBUFFER
+		m_buffer = new uint8_t[size];
+#else
+		m_buffer = env->NewByteArray(size);
+
+		if (env->ExceptionCheck())
+		{
+			m_size = 0;
+			m_buffer = NULL;
+			m_env->ExceptionDescribe();
+			return;
+		}
+
+		if (m_buffer == NULL)
+		{
+			LOGE("Unable to allocate %d bytes in Java", (int)size);
+		}
+#endif
+
 		m_size = size;
-		m_address = new unsigned char[m_size];
 	}
 
 	~Buffer()
 	{
-		if (m_address) delete [] m_address;
 	}
 
 	void appendBytes(unsigned char *addr, size_t size)
@@ -243,19 +328,56 @@ class Buffer
 
 		if (size > 0)
 		{
-			memcpy(m_address + m_position, addr, size);
+#ifdef USE_DIRECTBYTEBUFFER
+			memcpy(m_buffer + m_position, addr, size);
+#else
+			// copy C++ buffer data to Java buffer
+			m_env->SetByteArrayRegion(m_buffer, m_position, size, (jbyte *)addr);
+
+			if (m_env->ExceptionCheck())
+			{
+				m_env->ExceptionDescribe();
+				return;
+			}
+#endif
+
 			m_position += size;
 		}
 	}
 
-	unsigned char* getAddress() const { return m_address; }
+	void release()
+	{
+		if (m_buffer)
+		{
+			m_env->DeleteLocalRef(m_buffer);
+
+			m_buffer = NULL;
+		}
+	}
+
+#ifndef USE_DIRECTBYTEBUFFER
+	jbyteArray getBuffer() const { return m_buffer; }
+#endif
+
 	size_t getSize() const { return m_size; }
 
-	private:
+#ifdef USE_DIRECTBYTEBUFFER
+	jobject getByteBuffer()
+	{
+		return m_env->NewDirectByteBuffer(m_buffer, m_size);
+	}
+#endif
 
-	unsigned char *m_address;
+private:
+#ifdef USE_DIRECTBYTEBUFFER
+	uint8_t *m_buffer;
+#else
+	jbyteArray m_buffer;
+#endif
+
 	size_t m_size;
 	size_t m_position;
+	JNIEnv *m_env;
 };
 
 int CALLBACK callbackData(UINT msg, LPARAM UserData, LPARAM P1, LPARAM P2)
@@ -275,7 +397,41 @@ JNIEXPORT jbyteArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetData
 	jbyteArray ret = NULL;
 
 	const char *filename = env->GetStringUTFChars(jFilename, NULL);
+
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe();
+		return ret;
+	}
+
+	if (filename == NULL)
+	{
+		LOGE("Unable to get filename C string");
+		return ret;
+	}
+
 	const char *entry = env->GetStringUTFChars(jEntry, NULL);
+
+	if (env->ExceptionCheck())
+	{
+		LOGE("Unable to get entry C string: %p", entry);
+
+		// release previous string because it succeeded
+		env->ReleaseStringUTFChars(jFilename, filename);
+
+		env->ExceptionDescribe();
+
+		return ret;
+	}
+
+	if (entry == NULL)
+	{
+		// release previous string because it succeeded
+		env->ReleaseStringUTFChars(jFilename, filename);
+
+		LOGE("Unable to get entry C string");
+		return ret;
+	}
 
 	RAROpenArchiveData data;
 	memset(&data, 0, sizeof(RAROpenArchiveData));
@@ -299,31 +455,29 @@ JNIEXPORT jbyteArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetData
 				if (header.UnpSize > 0)
 				{
 					// set buffer related variables
-					Buffer buffer(header.UnpSize);
-
-					// set buffer callback
-					RARSetCallback(handle, callbackData, (LPARAM)&buffer);
-
-					// don't use RAR_EXTRACT because files will be extracted in current directory
-					int result = RARProcessFile(handle, RAR_TEST, NULL, NULL);
-
-					if (result)
+					Buffer buffer(env, header.UnpSize);
+					
+					if (buffer.getBuffer() == NULL)
 					{
-						LOGE("Unable to process %s, error: %d", header.FileName, result);
+						LOGE("Error while allocating %d bytes", (int)header.UnpSize);
 					}
 					else
 					{
-						// allocates a new Java buffer
-						ret = env->NewByteArray(buffer.getSize());
+						// set buffer callback
+						RARSetCallback(handle, callbackData, (LPARAM)&buffer);
 
-						if (ret == NULL)
+						// don't use RAR_EXTRACT because files will be extracted in current directory
+						int result = RARProcessFile(handle, RAR_TEST, NULL, NULL);
+
+						if (result)
 						{
-							LOGE("Unable to allocate %d bytes in Java", (int)buffer.getSize());
+							buffer.release();
+
+							LOGE("Unable to process %s, error: %d", header.FileName, result);
 						}
 						else
 						{
-							// copy C++ buffer data to Java buffer
-							env->SetByteArrayRegion(ret, 0, buffer.getSize(), (jbyte *)buffer.getAddress());
+							ret = buffer.getBuffer();
 						}
 					}
 				}
@@ -423,4 +577,12 @@ JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeTests(JNIEnv 
 
 	LOGI("Strings size() returned %d and should be 3", (int)list.size());
 #endif
+}
+
+JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeInit(JNIEnv *env, jclass)
+{
+}
+
+JNIEXPORT void JNICALL Java_net_kervala_comicsreader_RarFile_nativeDestroy(JNIEnv *env, jclass)
+{
 }
