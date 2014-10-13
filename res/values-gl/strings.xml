@@ -7,8 +7,8 @@
   <string name="about_version">Versión: %s</string>
   <string name="about_revision">Revisión: %s</string>
   <string name="about_build_date">Data de compilación: %s</string>
-  <string name="licenses_waiting">Por favor, agarda mentres están a cargar as licenzas...</string>
-  <string name="album_downloading">A descargar \"%s\"...</string>
+  <string name="licenses_waiting">Por favor, agarda mentres están a cargar as licenzas…</string>
+  <string name="album_downloading">A descargar \"%s\"…</string>
   <string name="app_name">Comics Reader</string>
   <string name="bookmark_help">Podes indicar un directorio local comezando por un / (por exemplo:  /Pictures ou /Download), ou un URL (caso de dominio.gal/comics/index.xml). Se omites o prefixo http://, engadirase automaticamente se non comeza cun /. Véxase a axuda para saber máis sobre álbums remotos.</string>
   <string name="bookmark_title">Título</string>
@@ -34,7 +34,7 @@
   <string name="dialog_album_title">Título</string>
   <string name="dialog_confirm_title">Confirmar</string>
   <string name="dialog_error_title">Erro</string>
-  <string name="dialog_progress_browser_message">Por favor, agarda mentes está a cargar...</string>
+  <string name="dialog_progress_browser_message">Por favor, agarda mentes está a cargar…</string>
   <string name="error_no_album_loaded">Ningún ficheiro seleccionado. Por favor, usa o menú para escoller un ficheiro.</string>
   <string name="error_no_connection_available">Sen conexión á internet dispoñible.</string>
   <string name="error_no_external_storage">Non se atopar ningún almacenamento externo</string>

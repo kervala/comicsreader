@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="icon">Icono</string>
   <string name="about">Acerca de</string>
   <string name="about_license">Esta aplicación se publica bajo licencia GPLv3:</string>
   <string name="about_unrar_version">Version UNRAR: %s</string>
@@ -91,4 +92,9 @@
   <string name="preference_page_transition_speed_summary">Velocidad usada para la animación de paso a página previa/siguiente</string>
   <string name="preference_reading_direction_label">Dirección de lectura de derecha a izquierda</string>
   <string name="preference_reading_direction_summary">Deslice el dedo a la izquierda para ir a la siguiente página</string>
+  <string name="preference_auto_rotate_label">Orientación automática</string>
+  <string name="preference_auto_rotate_summary">(Experimental) Cambia la orientación de la pantalla para adaptarse mejor a cada página</string>
+  <string name="no_data">Sin datos</string>
+  <string name="fullscreen_notice">Por favor desplácese de arriba a abajo para ver el menú de opciones y salir del modo de pantalla completa.</string>
+  <string name="quit">Salir</string>
 </resources>

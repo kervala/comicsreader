@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="icon">Ikona</string>
-  <string name="about">O ...</string>
+  <string name="about">O…</string>
   <string name="about_license">Ta aplikacja jest opublikowana zgodnie z licenją GPLv3:</string>
   <string name="about_unrar_version">Wersja UnRAR: %s</string>
   <string name="about_version">Wersja: %s</string>
   <string name="about_revision">Korekta: %s</string>
   <string name="about_build_date">Data stworzenia: %s</string>
-  <string name="licenses_waiting">Proszę czekać, trwa aktualizacja licencji...</string>
-  <string name="album_downloading">Pobieranie \"%s\"...</string>
+  <string name="licenses_waiting">Proszę czekać, trwa aktualizacja licencji…</string>
+  <string name="album_downloading">Pobieranie \"%s\"…</string>
   <string name="app_name">Comics Reader</string>
   <string name="bookmark_help">Możesz użyć absolutnej ścieżki zaczynającej się od / (np /Pobrane czy /Obrazy) lub adresu url (np. domain.com/comics/index.xml). Żeby dowiedzieć się więcej sprawdź \"Pomoc\" podmenu \"Zdalne albumy\".</string>
   <string name="bookmark_title">Tytuł</string>
@@ -34,7 +34,7 @@
   <string name="dialog_album_title">Tytuł</string>
   <string name="dialog_confirm_title">Potwierdź</string>
   <string name="dialog_error_title">Błąd</string>
-  <string name="dialog_progress_browser_message">Proszę czekać trwa ładowanie...</string>
+  <string name="dialog_progress_browser_message">Proszę czekać trwa ładowanie…</string>
   <string name="error_no_album_loaded">Nie wybrano pliku. Proszę użyć menu w celu wybrania pliku.</string>
   <string name="error_no_connection_available">Brak połączenia z siecią.</string>
   <string name="error_no_external_storage">Nie można znaleźć zewnętrzej pamięci.</string>

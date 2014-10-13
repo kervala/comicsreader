@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="icon">İkon</string>
   <string name="about">Hakkında</string>
   <string name="about_license">Bu uygulama GPLv3 lisansı kapsamında yayınlanmıştır:</string>
   <string name="about_unrar_version">UnRAR sürümü: %s</string>
@@ -84,6 +85,7 @@
   <string name="password">Parola</string>
   <string name="remember_password">Parolayı hatırla</string>
   <string name="contributors_label">İştirak edenler:</string>
+  <string name="contributors">- Jules Blok (sayfa numaralarının doğal sıralanması ve otomatik yöneltme)\n- ultrapeer (Türkçe tercüme ve Fransızca imla hata düzeltmeleri)\n- Zufre (İspanyolca tercüme)\n- Transifex\'de Kathjal (İtalyanca tercüme)\n- Transifex\'de Shark103 (Lehçe tercüme)\n- Transifex\'de Xesusmosquera (Galiçyaca tercüme)\n- Transifex\'de Evropi (Yunanca tercüme)\n- Anonim (Rusça tercüme)\n- Transifex\'de Marcelo Ghelman (Portekizce tercüme)</string>
   <string name="browser_album_title">Başlıksız</string>
   <string name="preference_edges_resistance_label">Kenarların direnci</string>
   <string name="preference_edges_resistance_summary">Sayfa çevrimi öncesi direnç</string>
@@ -91,4 +93,9 @@
   <string name="preference_page_transition_speed_summary">Sonraki/önceki sayfaya geçiş animasyonu hızı</string>
   <string name="preference_reading_direction_label">Sağdan sola okuma yönü</string>
   <string name="preference_reading_direction_summary">Sonraki sayfaya geçmek için sağdan sola kaydırın</string>
+  <string name="preference_auto_rotate_label">Otomatik yöneltme</string>
+  <string name="preference_auto_rotate_summary">(Deneysel) Her sayfaya en iyi sığacak şekilde ekran yönünü değiştirir</string>
+  <string name="no_data">Hiçbir veri yok</string>
+  <string name="fullscreen_notice">Tam ekran kipinden çıkıp seçenekler menüsünü görüntülemek için yukarıdan aşağıya doğru kaydırın.</string>
+  <string name="quit">Çık</string>
 </resources>

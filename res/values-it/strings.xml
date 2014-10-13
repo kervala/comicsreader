@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="icon">Icona</string>
-  <string name="about">About</string>
+  <string name="about">Info</string>
   <string name="about_license">Questa applicazione è rilasciata sotto la licenza GPLv3:</string>
   <string name="about_unrar_version">Versione unRAR: %s</string>
   <string name="about_version">Versione: %s</string>
   <string name="about_revision">Revisione: %s</string>
-  <string name="about_build_date">Data del build: %s</string>
-  <string name="licenses_waiting">Per favore, attendi mentre vengono aggiornate le licenze...</string>
-  <string name="album_downloading">Scaricamento \"%s\"...</string>
+  <string name="about_build_date">Data di build: %s</string>
+  <string name="licenses_waiting">Per favore, attendi mentre vengono aggiornate le licenze…</string>
+  <string name="album_downloading">Scaricamento \"%s\"…</string>
   <string name="app_name">Comics Reader</string>
   <string name="bookmark_help">Puoi inserire sia un percorso assoluto che inizia con / (come /Immagini o /Download), oppure un URL (ad esempio dominio.com/comics/index.xml). Se ometti il prefisso http://, sarà aggiunto in automatico nel caso in cui l\'indirizzo non inizia per /. Consulta \"Guida\" per ulteriori dettagli sugli \"Album remoti\".</string>
   <string name="bookmark_title">Titolo</string>
@@ -34,7 +34,7 @@
   <string name="dialog_album_title">Titolo</string>
   <string name="dialog_confirm_title">Conferma</string>
   <string name="dialog_error_title">Errore</string>
-  <string name="dialog_progress_browser_message">Per favore attendere il caricamento...</string>
+  <string name="dialog_progress_browser_message">Per favore attendere il caricamento…</string>
   <string name="error_no_album_loaded">Nessun file selezionato. Utilizza il menu per scegliere un file.</string>
   <string name="error_no_connection_available">Nessuna connessione Internet disponibile.</string>
   <string name="error_no_external_storage">Impossibile trovare memoria esterna.</string>
@@ -53,7 +53,7 @@
   <string name="preference_category_advanced">Impostazioni avanzate</string>
   <string name="preference_category_cache">Cache</string>
   <string name="preference_category_view">Visualizza</string>
-  <string name="preference_clear_cache_albums">Svuota gli album</string>
+  <string name="preference_clear_cache_albums">Elimina album</string>
   <string name="preference_clear_cache_albums_summary">Cancella tutti gli album remoti scaricati nella cache</string>
   <string name="preference_clear_cache_albums_toast">Tutti gli album remoti sono stati cancellati</string>
   <string name="preference_clear_cache_thumbnails">Cancella le anteprime</string>
@@ -85,6 +85,7 @@
   <string name="password">Password</string>
   <string name="remember_password">Ricorda password</string>
   <string name="contributors_label">Hanno contribuito:</string>
+  <string name="contributors">- Jules Blok (implementazione dell\'ordinamento dei numeri di pagina e dell\'auto-rotazione)\n- ultrapeer (traduzione in Turco e correzione di errori in Francese)\n- Zufre (traduzione in Spagnolo)\n- Kathjal via Transifex (traduzione in Italiano)\n- Shark103 via Transifex (traduzione in Polacco)\n- Xesusmosquera via Transifex (traduzione in Galiziano)\n- Evropi via Transifex (traduzione in Greco)\n- Anonymous (traduzione in Russo)\n- Marcelo Ghelman via Transifex (traduzione in Portoghese)</string>
   <string name="browser_album_title">Nessun titolo</string>
   <string name="preference_edges_resistance_label">Resistenza degli angoli</string>
   <string name="preference_edges_resistance_summary">Resistenza nel voltare la pagina</string>
@@ -92,4 +93,9 @@
   <string name="preference_page_transition_speed_summary">Velocità utilizzata per l\'animazione di transizione alla pagina precedente/successiva</string>
   <string name="preference_reading_direction_label">Direzione di lettura da destra a sinistra</string>
   <string name="preference_reading_direction_summary">Trascina a sinistra per girare pagina</string>
+  <string name="preference_auto_rotate_label">Orientamento automatico</string>
+  <string name="preference_auto_rotate_summary">(Sperimentale) Modifica l\'orientamento dello schermo per adattarsi meglio alla pagina</string>
+  <string name="no_data">Nessun dato</string>
+  <string name="fullscreen_notice">Scorri dall\'alto al basso per mostrare il menù delle opzioni e uscire dalla modalità a schermo intero.</string>
+  <string name="quit">Esci</string>
 </resources>

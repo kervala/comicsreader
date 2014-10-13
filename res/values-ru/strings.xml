@@ -7,7 +7,7 @@
   <string name="about_version">Версия: %s</string>
   <string name="about_revision">Ревизия: %s</string>
   <string name="about_build_date">Дата сборки: %s</string>
-  <string name="licenses_waiting">Ждите, идет обновление лицензий...</string>
+  <string name="licenses_waiting">Ждите, идет обновление лицензий…</string>
   <string name="album_downloading">Загрузка \"%s\"…</string>
   <string name="app_name">Comics Reader</string>
   <string name="bookmark_help">Вы можете ввести абсолютный путь к папке, начинающийся с / (например,  /Pictures или /Download), или URL (например, domain.com/comics/index.xml). Если Вы пропустите префикс http://, он будет добавлен автоматически, если путь начинается не с /. Смотрите справку для детальной информации об \"Удаленных альбомах\".</string>
@@ -34,7 +34,7 @@
   <string name="dialog_album_title">Заголовок</string>
   <string name="dialog_confirm_title">Подтвердить</string>
   <string name="dialog_error_title">Ошибка</string>
-  <string name="dialog_progress_browser_message">Идет загрузка, ждите...</string>
+  <string name="dialog_progress_browser_message">Идет загрузка, ждите…</string>
   <string name="error_no_album_loaded">Файл не выбран. Выберите файл через меню.</string>
   <string name="error_no_connection_available">Интернет-подключение недоступно.</string>
   <string name="error_no_external_storage">Не найден внешний носитель</string>

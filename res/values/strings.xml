@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="icon">Icon</string>
-  <string name="version">2.0</string>
-  <string name="revision"></string>
-  <string name="build_date"></string>
+  <string name="version" translatable="false">2.0</string>
+  <string name="revision" translatable="false">dev</string>
+  <string name="build_date" translatable="false">dev</string>
   <string name="about">About</string>
-  <string name="about_author">© 2011–2014 Kervala</string>
+  <string name="about_author" translatable="false">© 2011–2014 Kervala</string>
   <string name="about_license">This application is published under GPLv3 licence:</string>
-  <string name="about_support">http://code.google.com/p/android-comicsreader/</string>
+  <string name="about_support" translatable="false">http://code.google.com/p/android-comicsreader/</string>
   <string name="about_unrar_version">UnRAR version: %s</string>
   <string name="about_version">Version: %s</string>
   <string name="about_revision">Revision: %s</string>
@@ -76,10 +76,13 @@
   <string name="preference_high_quality_summary">Warning! This can descrease smoothness and use more memory</string>
   <string name="preference_overlay_duration_label">Page number</string>
   <string name="preference_overlay_duration_summary">Duration to display the page number</string>
+  <string name="preference_overlay_duration_default" translatable="false">5000</string>
   <string name="preference_sample_label">Forced image scale</string>
   <string name="preference_sample_summary">Scale to apply at loading time on an image to save memory</string>
+  <string name="preference_sample_default" translatable="false">0</string>
   <string name="preference_zoom_label">Zoom</string>
   <string name="preference_zoom_summary">Mode to scale pages</string>
+  <string name="preference_zoom_default" translatable="false">1</string>
   <string name="preference_category_misc">Misc</string>
   <string name="preference_about">About ComicsReader</string>
   <string name="preference_about_summary">Version and 3rd party licenses</string>
@@ -94,8 +97,10 @@
   <string name="browser_album_title">No title</string>
   <string name="preference_edges_resistance_label">Edges resistance</string>
   <string name="preference_edges_resistance_summary">Resistance before switching page</string>
+  <string name="preference_edges_resistance_default" translatable="false">1</string>
   <string name="preference_page_transition_speed_label">Page transition speed</string>
   <string name="preference_page_transition_speed_summary">Speed used for next/previous page transition animation</string>
+  <string name="preference_page_transition_speed_default" translatable="false">2</string>
   <string name="preference_reading_direction_label">Right to left reading direction</string>
   <string name="preference_reading_direction_summary">Swipe to the left to switch to next page</string>
   <string name="preference_auto_rotate_label">Automatic orientation</string>
@@ -103,4 +108,5 @@
   <string name="no_data">No data</string>
   <string name="fullscreen_notice">Please scroll from top to bottom to display options menu and leave fullscreen mode.</string>
   <string name="quit">Quit</string>
+  <string name="thumbnail">Thumbnail</string>
 </resources>

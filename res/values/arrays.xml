@@ -18,7 +18,7 @@
  *
 -->
 <resources>
-    <string-array name="items_zoom_labels">
+    <string-array name="preference_zoom_labels">
         <item>Fit to width</item>
         <item>Fit to height</item>
         <item>Fit all</item>
@@ -26,7 +26,7 @@
         <item>50%</item>
         <item>25%</item>
     </string-array>
-    <string-array name="items_zoom_values">
+    <string-array name="preference_zoom_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -34,13 +34,13 @@
         <item>5</item>
         <item>6</item>
     </string-array>
-    <string-array name="items_sample_labels">
+    <string-array name="preference_sample_labels">
         <item>Auto</item>
         <item>100%</item>
         <item>50%</item>
         <item>25%</item>
     </string-array>
-    <string-array name="items_sample_values">
+    <string-array name="preference_sample_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -53,7 +53,7 @@
         <item>10 seconds</item>
         <item>Indefinite</item>
     </string-array>
-    <string-array name="preference_overlay_duration_values">
+    <string-array name="preference_overlay_duration_values" translatable="false">
         <item>-1</item>
         <item>2000</item>
         <item>5000</item>
@@ -66,7 +66,7 @@
         <item>Medium</item>
         <item>Strong</item>
     </string-array>
-    <string-array name="preference_edges_resistance_values">
+    <string-array name="preference_edges_resistance_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -77,7 +77,7 @@
         <item>Medium</item>
         <item>Fast</item>
     </string-array>
-    <string-array name="preference_page_transition_speed_values">
+    <string-array name="preference_page_transition_speed_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>

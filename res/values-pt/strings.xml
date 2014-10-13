@@ -85,6 +85,7 @@
   <string name="password">Senha</string>
   <string name="remember_password">Lembrar senha</string>
   <string name="contributors_label">Contribuidores:</string>
+  <string name="contributors">- Jules Blok (implementação de ordenação natural de números de páginas e rotação automática)\n- ultrapeer (tradução para turco e correção gramatical de francês)\n- Zufre (tradução para espanhol)\n- Kathjal on Transifex (tradução para italiano)\n- Shark103 on Transifex (tradução para polonês)\n- Xesusmosquera on Transifex (tradução para galego)\n- Evropi on Transifex (tradução para grego)\n- Anonymous (tradução para russo)\n- Marcelo Ghelman on Transifex (tradução para português do Brasil)</string>
   <string name="browser_album_title">Nenhum título</string>
   <string name="preference_edges_resistance_label">Resistência de bordas</string>
   <string name="preference_edges_resistance_summary">Resistência antes de mudar de página</string>
@@ -92,4 +93,9 @@
   <string name="preference_page_transition_speed_summary">Velocidade usada para animação de transição para página anterior/posterior</string>
   <string name="preference_reading_direction_label">Sentido de leitura da direita para esquerda</string>
   <string name="preference_reading_direction_summary">Deslize para a esquerda para mudar para a próxima página</string>
+  <string name="preference_auto_rotate_label">Orientação automática</string>
+  <string name="preference_auto_rotate_summary">(Experimental) Muda a orientação da tela para caber melhor cada página</string>
+  <string name="no_data">Sem dados</string>
+  <string name="fullscreen_notice">Deslize do topo para a base para mostrar o menu de opções e sair do modo tela cheia.</string>
+  <string name="quit">Sair</string>
 </resources>
