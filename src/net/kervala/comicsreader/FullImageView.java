@@ -305,12 +305,11 @@ public class FullImageView extends View {
 		if (mOffset == 0) {
 			mRectSrc.set(mRect.left, mRect.top, currRight, bottom);
 
-			//control added
-            if(AlbumParameters.rightToLeft)
-                canvas.drawBitmap(mCurrentBitmap, (mRect.right -mBitmapWidth), 0, null);
-            else
-                canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectSrc, null);
-				
+			if (AlbumParameters.rightToLeft) {
+				canvas.drawBitmap(mCurrentBitmap, mRect.right - mBitmapWidth, 0, null);
+			} else {
+				canvas.drawBitmap(mCurrentBitmap, mRectSrc, mRectSrc, null);
+			}
 		} else if (mOffset < 0) {
 			final int prevLeft = Math.max(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth()) + mOffset;
 			final int prevRight = Math.min(mRect.right, mPreviousBitmap == null ? mBitmapWidth:mPreviousBitmap.getWidth());
