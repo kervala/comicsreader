@@ -570,7 +570,15 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 	boolean openIntentFolder(Intent i) {
 		// check if current Intent was started from BrowserActivity
-		int requestCode = getIntent().getExtras().getInt("requestCode");
+		Intent intent = getIntent();
+		
+		int requestCode = 0;
+		
+		if (intent != null) {
+			final Bundle b = intent.getExtras();
+			
+			if (b != null) requestCode = b.getInt("requestCode");
+		}
 
 		if (requestCode != BrowserActivity.REQUEST_VIEWER) {
 			// start BrowserActivity if not already started
