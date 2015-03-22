@@ -44,9 +44,15 @@ public class AboutActivity extends Activity {
 		final TextView versionView = (TextView)findViewById(R.id.dialog_about_version);
 		versionView.setText(getString(R.string.about_version, ComicsParameters.sPackageVersion));
 
+		String rarVersion = RarFile.getVersion();
+
+		if (rarVersion == null) {
+			rarVersion = getString(R.string.unknown);
+		}
+
 		final TextView unrarVersionView = (TextView)findViewById(R.id.dialog_about_unrar_version);
-		unrarVersionView.setText(getString(R.string.about_unrar_version, RarFile.getVersion()));
-		
+		unrarVersionView.setText(getString(R.string.about_unrar_version, rarVersion));
+
 		String revision = getString(R.string.revision);
 
 		if ("".equals(revision)) {
