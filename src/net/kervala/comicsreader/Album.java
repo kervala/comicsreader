@@ -68,6 +68,9 @@ public class Album {
 	static final int ZOOM_100 = 4;
 	static final int ZOOM_50 = 5;
 	static final int ZOOM_25 = 6;
+	
+	static final int MINIMUM_READABLE_WIDTH = 900;
+	static final int MINIMUM_READABLE_HEIGHT = (int)(MINIMUM_READABLE_WIDTH * 1.40f);
 
 	public int maxBitmapsInMemory = 3;
 	public int maxBuffersInMemory = 6;
@@ -538,6 +541,7 @@ public class Album {
 
 		int screenWidth = ComicsParameters.sScreenWidth;
 		int screenHeight = ComicsParameters.sScreenHeight;
+
 		if (AlbumParameters.autoRotate && mPages[page].updateSrcSize()) {
 			// prepare image for automatic rotation
 			if (mPages[page].bitmapSize.srcWidth > mPages[page].bitmapSize.srcHeight &&
@@ -557,22 +561,33 @@ public class Album {
 
 		switch (AlbumParameters.zoom) {
 		case ZOOM_FIT_WIDTH: {
-			width = screenWidth;
-			if (AlbumParameters.doublePage) {
-				divideByTwo = true;
+			if (screenWidth < MINIMUM_READABLE_WIDTH) {
+				width = MINIMUM_READABLE_WIDTH;
+			} else {
+				width = screenWidth;
+
+				if (AlbumParameters.doublePage) {
+					divideByTwo = true;
+				}
 			}
 			break;
 		}
 		case ZOOM_FIT_HEIGHT: {
-			height = screenHeight;
+			height = Math.max(screenHeight, MINIMUM_READABLE_HEIGHT);
 			break;
 		}
 		case ZOOM_FIT_SCREEN: {
-			width = screenWidth;
-			if (AlbumParameters.doublePage) {
-				divideByTwo = true;
+			if (screenWidth < MINIMUM_READABLE_WIDTH) {
+				width = MINIMUM_READABLE_WIDTH;
+			} else {
+				width = screenWidth;
+
+				if (AlbumParameters.doublePage) {
+					divideByTwo = true;
+				}
 			}
-			height = screenHeight;
+
+			height = Math.max(screenHeight, MINIMUM_READABLE_HEIGHT);
 			break;
 		}
 		case ZOOM_50: {
