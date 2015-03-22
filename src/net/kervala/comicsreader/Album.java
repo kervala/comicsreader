@@ -233,6 +233,8 @@ public class Album {
 	}
 	
 	static String getExtension(String filename) {
+		if (filename == null) return "";
+
 		int pos = filename.lastIndexOf(".");
 
 		if (pos == -1) return "";
@@ -255,6 +257,8 @@ public class Album {
 	}
 	
 	public static boolean isValidImage(String filename) {
+		if (filename == null || filename.length() < 4) return false;
+
 		return isValidJpegImage(filename) || isValidPngImage(filename) || isValidGifImage(filename);
 	}
 	
@@ -379,6 +383,8 @@ public class Album {
 	}
 	
 	public Bitmap createPageThumbnail(int page) {
+		if (page < 0 || page >= mPages.length) return null;
+
 		File f = new File(mCachePagesDir, String.valueOf(page) + ".png");
 		if (f.exists() && f.length() > 0) return null;
 
@@ -386,7 +392,7 @@ public class Album {
 		if (!updateThumbnail(page)) return null;
 
 		Bitmap bitmap = mPages[page].thumbnail;
-		if (bitmap == null) return null;
+		if (bitmap == null || bitmap.isRecycled()) return null;
 
 		// if thumbnail can't be saved, continue
 		try {
@@ -459,8 +465,7 @@ public class Album {
 	public boolean updateDoublePage(int page, int width, int height) {
 		if (page < 0 || (page+1 >= numPages)) return false;
 
-		updateBuffer(page);
-		updateBuffer(page+1);
+		if (!updateBuffer(page) || !updateBuffer(page+1)) return false;
 
 		mPages[page].updateSrcSize();
 		mPages[page+1].updateSrcSize();
@@ -532,9 +537,13 @@ public class Album {
 	}
 	
 	public boolean updatePage(int page) {
-		Log.d(ComicsParameters.APP_TAG, "updatePage " + String.valueOf(page));
+		if (BuildConfig.DEBUG) {
+			Log.d(ComicsParameters.APP_TAG, "updatePage " + String.valueOf(page));
+		}
 
 		if (ComicsParameters.sScreenWidth < 1 || ComicsParameters.sScreenHeight < 1) return false;
+
+		if (page < 0 || page >= mPages.length) return false;
 
 		// already updated
 		if (mPages[page].bitmap != null) return false;
@@ -605,9 +614,7 @@ public class Album {
 		if (AlbumParameters.doublePage && page > 0 && (page+1) < numPages) {
 			return updateDoublePage(page, divideByTwo ? width/2:width, height);
 		} else {
-			updateBuffer(page);
-
-			if (!mPages[page].updateBitmap(width, height)) return false;
+			if (!updateBuffer(page) || !mPages[page].updateBitmap(width, height)) return false;
 		}
 
 //		debugMemory();
@@ -674,14 +681,14 @@ public class Album {
 		AlbumPage.sAbortLoading = false;
 	}
 
-	protected void updateBuffer(int page) {
-		if (page < 0 || page >= mPages.length) return;
-	
+	protected boolean updateBuffer(int page) {
 		if (!mPages[page].loadBufferFromCache()) {
-			mPages[page].buffer = getBytes(page);
+			 byte[] data = getBytes(page);
 
 			// exit because we didn't succeed to load buffer
-			if (mPages[page].buffer == null) return;
+			if (data == null) return false;
+			
+			mPages[page].buffer = data;
 
 			Log.d(ComicsParameters.APP_TAG, "Loaded buffer for page " + String.valueOf(page));
 		} else {
@@ -690,31 +697,43 @@ public class Album {
 
 		if (page < mFirstBufferPageNumber) mFirstBufferPageNumber = page;
 		if (page > mLastBufferPageNumber) mLastBufferPageNumber = page;
+
+		return true;
 	}
 
 	public boolean updateThumbnail(int page) {
-		updateBuffer(page);
-		
-		return mPages[page].updateThumbnail();
+		if (page < 0 || page >= mPages.length) return false;
+
+		return updateBuffer(page) && mPages[page].updateThumbnail();
 	}
 	
 	public boolean hasPageBitmap(int page) {
+		if (page < 0 || page >= mPages.length) return false;
+
 		return mPages[page].bitmap != null;
 	}
 	
 	public Bitmap getPageThumbnail(int page) {
+		if (page < 0 || page >= mPages.length) return null;
+
 		return mPages[page].thumbnail;
 	}
 
 	public Bitmap getPageBitmap(int page) {
+		if (page < 0 || page >= mPages.length) return null;
+
 		return mPages[page].bitmap;
 	}
 
 	public int getPageWidth(int page) {
+		if (page < 0 || page >= mPages.length) return 0;
+
 		return mPages[page].bitmapSize.dstWidth;
 	}
 
 	public int getPageHeight(int page) {
+		if (page < 0 || page >= mPages.length) return 0;
+
 		return mPages[page].bitmapSize.dstHeight;
 	}
 	
