@@ -251,6 +251,8 @@ JNIEXPORT jobjectArray JNICALL Java_net_kervala_comicsreader_RarFile_nativeGetEn
 								env->ExceptionDescribe();
 								break;
 							}
+
+							env->DeleteLocalRef(newStr);
 						}
 						else
 						{
