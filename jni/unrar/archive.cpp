@@ -236,6 +236,7 @@ bool Archive::IsArchive(bool EnableBroken)
   {
     SaveFilePos SavePos(*this);
     int64 SaveCurBlockPos=CurBlockPos,SaveNextBlockPos=NextBlockPos;
+    HEADER_TYPE SaveCurHeaderType=CurHeaderType;
 
     while (ReadHeader()!=0)
     {
@@ -252,6 +253,7 @@ bool Archive::IsArchive(bool EnableBroken)
     }
     CurBlockPos=SaveCurBlockPos;
     NextBlockPos=SaveNextBlockPos;
+    CurHeaderType=SaveCurHeaderType;
   }
   if (!Volume || FirstVolume)
     unrar_wcscpy(FirstVolumeName,FileName);
