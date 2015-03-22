@@ -63,7 +63,7 @@ public class AboutActivity extends Activity {
 		if ("".equals(buildDate)) {
 			buildDate = "local";
 		}
-		
+
 		final TextView buildDateView = (TextView)findViewById(R.id.dialog_about_build_date);
 		buildDateView.setText(getString(R.string.about_build_date, buildDate));
 
@@ -71,8 +71,8 @@ public class AboutActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 		final TextView view = (TextView)findViewById(R.id.licenses);
-		view.setTextSize((float)dm.widthPixels * 0.75f * dm.density / 80.f);
-		
+		view.setTextSize(dm.widthPixels * 0.75f * dm.density / 80.f);
+
 		// licenses loading in a thread
 		new LoadLicensesTask().execute("COMICSREADER", "UNRAR");
 	}
@@ -81,9 +81,9 @@ public class AboutActivity extends Activity {
 		@Override
 		protected SpannableStringBuilder doInBackground(String... licenses) {
 			SpannableStringBuilder result = new SpannableStringBuilder();
-			
+
 			int count = licenses.length;
-			
+
 			for(int i = 0; i < count; ++i) {
 				appendLicense(result, licenses[i]);
 			}
@@ -97,10 +97,10 @@ public class AboutActivity extends Activity {
 			view.setText(result);
 		}
 	}
-	
+
 	private boolean appendLicense(SpannableStringBuilder str, String license) {
 		String filename = "LICENSE_" + license;
-		
+
 		InputStream input = null;
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -110,13 +110,13 @@ public class AboutActivity extends Activity {
 
 			int count = 0;
 			byte data[] = new byte[2048];
-			
+
 			// copy file content
 			while ((count = input.read(data)) != -1) {
 				byteArrayOutputStream.write(data, 0, count);
 			}
 
-			str.append(Html.fromHtml("<br/><br/><h1>" + license + "</h1>")); 
+			str.append(Html.fromHtml("<br/><br/><h1>" + license + "</h1>"));
 			str.append(byteArrayOutputStream.toString());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -127,10 +127,10 @@ public class AboutActivity extends Activity {
 		} finally {
 			closeStream(input);
 		}
-		
+
 		return true;
 	}
-	
+
 	void closeStream(Closeable stream) {
 		if (stream == null) return;
 
