@@ -57,7 +57,7 @@ public class AboutActivity extends Activity {
 
 		if ("".equals(revision)) {
 			revision = "local";
-		} else {
+		} else if (revision.length() > 16){
 			revision = revision.substring(0, 16);
 		}
 
