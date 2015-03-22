@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.util.Log;
+
 public class RarFile {
 	protected String mName;
 	protected List<String> mEntries = new ArrayList<String>();
@@ -93,7 +95,15 @@ public class RarFile {
 	}
 
 	public byte [] getBytes(String entry) {
-		return sLoaded ? nativeGetData(mName, entry):null;
+		if (!sLoaded) return null;
+
+		try {
+			return nativeGetData(mName, entry);
+		} catch(OutOfMemoryError e) {
+			Log.e(ComicsParameters.APP_TAG, "Out of memory while getting file " + entry + " from " + mName);
+		}
+
+		return null;
 	}
 
 	public String getName() {
