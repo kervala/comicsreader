@@ -1,6 +1,6 @@
 /*
  * ComicsReader is an Android application to read comics
- * Copyright (C) 2011-2013 Cedric OCHS
+ * Copyright (C) 2011-2015 Cedric OCHS
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
