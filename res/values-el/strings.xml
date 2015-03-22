@@ -62,17 +62,17 @@
   <string name="preference_double_page_label">Λειτουργία δύο σελίδων</string>
   <string name="preference_double_page_summary">Εμφανίζει δύο σελίδες στην οθόνη την ίδια στιγμή</string>
   <string name="preference_fast_scroll_label">Γρήγορη κύλιση</string>
-  <string name="preference_fast_scroll_summary">Ενεργοποιεί τον αντίχειρα που μπορεί να συρθεί για να μετακινηθείτε γρήγορα μέσα από καθε σελίδα</string>
+  <string name="preference_fast_scroll_summary">Ενεργοποιεί τον αντίχειρα που μπορεί να συρθεί για να μετακινηθείτε γρήγορα στη λίστα</string>
   <string name="preference_fit_to_screen_label">Προσαρμογή στην οθόνη</string>
   <string name="preference_fit_to_screen_summary">Μεγεθύνει την εικόνα αν είναι μικρότερη από την ανάλυση της οθόνης</string>
   <string name="preference_full_screen_label">Πλήρης οθόνη</string>
-  <string name="preference_full_screen_summary">Απόκρυψη της γραμμής κατάστασης αν είναι δυνατό</string>
+  <string name="preference_full_screen_summary">Αποκρύπτει την γραμμή κατάστασης αν είναι δυνατό</string>
   <string name="preference_high_quality_label">Χρώματα 32-bit</string>
   <string name="preference_high_quality_summary">Προσοχή! Μπορεί να μειώσουν ομαλότητα κίνησης και να αυξήσουν τη χρήση μνήμης</string>
   <string name="preference_overlay_duration_label">Αριθμός σελίδας</string>
   <string name="preference_overlay_duration_summary">Διάρκεια που θα εμφανίζεται ο αριθμός της σελίδας</string>
   <string name="preference_sample_label">Αναγκάστε την εικόνα να παει σε κλίμακα</string>
-  <string name="preference_sample_summary">Βάλτε σε κλίμακα για να εφαρμοστεί κατά το χρόνο φόρτωσης για μια εικόνα και ετσι να εξοικονομήσετε χώρο στη μνήμη</string>
+  <string name="preference_sample_summary">Κλίμακα που ια εφαρμογεί κατά τον χρόνο φόρτωσης για μια εικόνα ώστε να εξοικονομηθεί χώρος στη μνήμη</string>
   <string name="preference_zoom_label">Μεγέθυνση</string>
   <string name="preference_zoom_summary">Λειτουργία για κλιμακοποίηση σελιδών</string>
   <string name="preference_category_misc">Λοιπά</string>
@@ -85,12 +85,12 @@
   <string name="password">Κωδικός</string>
   <string name="remember_password">Απομνημόνευση κωδικού</string>
   <string name="contributors_label">Συνεισφέροντες:</string>
-  <string name="contributors">- Jules Blok (φυσική διάταξη των αριθμών σελίδας και την εφαρμογή αυτόματης εναλλαγής) \n- ultrapeer (Τούρκικα μετάφραση και τη γαλλική typos) \n- Zufre (ισπανική μετάφραση) \n- Kathjal στο Transifex (ιταλική μετάφραση) \n- Shark103 στο Transifex (πολωνική μετάφραση) \n- Xesusmosquera στο Transifex (μετάφραση Γαλικίας) \n- Evropi στο Transifex (ελληνική μετάφραση) \n- Ανώνυμος (ρωσική μετάφραση) \n- Marcelo Ghelman στο Transifex (πορτογαλική μετάφραση)</string>
+  <string name="contributors">- Jules Blok (φυσική διάταξη των αριθμών σελίδας και την εφαρμογή αυτόματης εναλλαγής) \n- ultrapeer (τουρκική μετάφραση και typos για γαλλική) \n- Zufre (ισπανική μετάφραση) \n- Kathjal στο Transifex (ιταλική μετάφραση) \n- Shark103 στο Transifex (πολωνική μετάφραση) \n- Xesusmosquera στο Transifex (μετάφραση Γαλικίας) \n- Evropi στο Transifex (ελληνική μετάφραση) \n- Ανώνυμος (ρωσική μετάφραση) \n- Marcelo Ghelman στο Transifex (πορτογαλική μετάφραση)</string>
   <string name="browser_album_title">Χωρίς τίτλο</string>
   <string name="preference_edges_resistance_label">Αντίσταση άκρων</string>
   <string name="preference_edges_resistance_summary">Αντίσταση σε κινείσεις αλλαγής σελίδας</string>
   <string name="preference_page_transition_speed_label">Ταχύτητα εναλλαγής σελιδών</string>
-  <string name="preference_page_transition_speed_summary">Η ταχύτητα για το εφέ κίνησης κατα εναλλαγή στην επόμενη/προηγούμενη σελίδα</string>
+  <string name="preference_page_transition_speed_summary">Η ταχύτητα για το εφέ κίνησης κατα πρόοδο στην επόμενη/προηγούμενη σελίδα</string>
   <string name="preference_reading_direction_label">Κατεύθυνση ανάγνωσης από αριστερά προς δεξιά</string>
   <string name="preference_reading_direction_summary">Κάντε κίνηση προς τα αριστερά για να μεταβείτε στην επόμενη σελίδα</string>
   <string name="preference_auto_rotate_label">Αυτόματη αλλαγή προσανατολισμού της οθόνης.</string>
@@ -98,4 +98,5 @@
   <string name="no_data">Δεν υπάρχουν δεδομένα</string>
   <string name="fullscreen_notice">Παρακαλώ αγγίξτε από πάνω προς τα κάτω για να εμφανίσετε το μενού επιλογών και να αφήσετε την λειτουργία πλήρους οθόνης.</string>
   <string name="quit">\'Εξοδος</string>
+  <string name="thumbnail">Μικρογραφία</string>
 </resources>

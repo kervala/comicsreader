@@ -98,4 +98,5 @@
   <string name="no_data">Hiçbir veri yok</string>
   <string name="fullscreen_notice">Tam ekran kipinden çıkıp seçenekler menüsünü görüntülemek için yukarıdan aşağıya doğru kaydırın.</string>
   <string name="quit">Çık</string>
+  <string name="thumbnail">Küçük resim</string>
 </resources>

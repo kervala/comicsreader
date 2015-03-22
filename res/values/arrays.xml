@@ -82,4 +82,14 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="preference_device_orientation_names">
+        <item>Auto</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
+    </string-array>
+    <string-array name="preference_device_orientation_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
