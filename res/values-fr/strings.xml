@@ -98,4 +98,5 @@
   <string name="no_data">Aucune donnée</string>
   <string name="fullscreen_notice">Veuillez scroller de haut en bas pour afficher le menu des options et quitter le mode plein écran.</string>
   <string name="quit">Quitter</string>
+  <string name="thumbnail">Vignette</string>
 </resources>

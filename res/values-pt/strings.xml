@@ -16,7 +16,7 @@
   <string name="bookmarks">Favoritos</string>
   <string name="bookmarks_add">Adicionar</string>
   <string name="bookmarks_edit">Editar</string>
-  <string name="bookmarks_help">Mantenha pressionado sobre um favorito para o editar ou apagar.</string>
+  <string name="bookmarks_help">Mantenha pressionado sobre um favorito para editar ou apagar.</string>
   <string name="bookmarks_load">Carregar</string>
   <string name="bookmarks_remove">Remover</string>
   <string name="bookmarks_title">Gerenciador de favoritos</string>
@@ -52,7 +52,7 @@
   <string name="pages">Ir para página</string>
   <string name="preference_category_advanced">Configurações avançadas</string>
   <string name="preference_category_cache">Cache</string>
-  <string name="preference_category_view">Ver</string>
+  <string name="preference_category_view">Visualização</string>
   <string name="preference_clear_cache_albums">Limpar álbuns</string>
   <string name="preference_clear_cache_albums_summary">Apaga do cache todos os álbuns remotos baixados</string>
   <string name="preference_clear_cache_albums_toast">Todos os álbuns baixados foram limpos</string>
@@ -66,7 +66,7 @@
   <string name="preference_fit_to_screen_label">Ajustar à tela</string>
   <string name="preference_fit_to_screen_summary">Aumenta a imagem se for menor que a resolução da tela</string>
   <string name="preference_full_screen_label">Tela cheia</string>
-  <string name="preference_full_screen_summary">Ocultar a barra de status, se possível</string>
+  <string name="preference_full_screen_summary">Oculta a barra de status, se possível</string>
   <string name="preference_high_quality_label">Cores de 32 bits</string>
   <string name="preference_high_quality_summary">Alerta! Isto pode diminuir a suavidade e usar mais memória</string>
   <string name="preference_overlay_duration_label">Número da página</string>
@@ -75,7 +75,7 @@
   <string name="preference_sample_summary">Escala a aplicar a uma imagem quando carregar para economizar memória</string>
   <string name="preference_zoom_label">Zoom</string>
   <string name="preference_zoom_summary">Modo de escalar páginas</string>
-  <string name="preference_category_misc">Vários</string>
+  <string name="preference_category_misc">Outros</string>
   <string name="preference_about">Sobre o ComicsReader</string>
   <string name="preference_about_summary">Versão e licenças de terceiros</string>
   <string name="previous_page">Página anterior</string>
@@ -86,11 +86,11 @@
   <string name="remember_password">Lembrar senha</string>
   <string name="contributors_label">Contribuidores:</string>
   <string name="contributors">- Jules Blok (implementação de ordenação natural de números de páginas e rotação automática)\n- ultrapeer (tradução para turco e correção gramatical de francês)\n- Zufre (tradução para espanhol)\n- Kathjal on Transifex (tradução para italiano)\n- Shark103 on Transifex (tradução para polonês)\n- Xesusmosquera on Transifex (tradução para galego)\n- Evropi on Transifex (tradução para grego)\n- Anonymous (tradução para russo)\n- Marcelo Ghelman on Transifex (tradução para português do Brasil)</string>
-  <string name="browser_album_title">Nenhum título</string>
+  <string name="browser_album_title">Sem título</string>
   <string name="preference_edges_resistance_label">Resistência de bordas</string>
   <string name="preference_edges_resistance_summary">Resistência antes de mudar de página</string>
-  <string name="preference_page_transition_speed_label">Velocidade de transição de páginas</string>
-  <string name="preference_page_transition_speed_summary">Velocidade usada para animação de transição para página anterior/posterior</string>
+  <string name="preference_page_transition_speed_label">Velocidade de transição de página</string>
+  <string name="preference_page_transition_speed_summary">Velocidade usada para animação de transição de página anterior/próxima</string>
   <string name="preference_reading_direction_label">Sentido de leitura da direita para esquerda</string>
   <string name="preference_reading_direction_summary">Deslize para a esquerda para mudar para a próxima página</string>
   <string name="preference_auto_rotate_label">Orientação automática</string>
@@ -98,4 +98,5 @@
   <string name="no_data">Sem dados</string>
   <string name="fullscreen_notice">Deslize do topo para a base para mostrar o menu de opções e sair do modo tela cheia.</string>
   <string name="quit">Sair</string>
+  <string name="thumbnail">Miniatura</string>
 </resources>

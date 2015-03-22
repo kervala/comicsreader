@@ -1,47 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- * ComicsReader is an Android application to read comics
- * Copyright (C) 2011-2013 Cedric OCHS
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
--->
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string-array name="items_zoom_labels">
-        <item>Genişliğe uyarla</item>
-        <item>Yüksekliğe uyarla</item>
-        <item>Ekrana uyarla</item>
-        <item>100%</item>
-        <item>50%</item>
-        <item>25%</item>
-    </string-array>
-    <string-array name="preference_overlay_duration_names">
-        <item>Hiçbir zaman</item>
-        <item>2 saniye</item>
-        <item>5 saniye</item>
-        <item>10 saniye</item>
-        <item>Belirtilmemiş</item>
-    </string-array>
-    <string-array name="preference_edges_resistance_names">
-        <item>Yok</item>
-        <item>Zayıf</item>
-        <item>Orta</item>
-        <item>Yüksek</item>
-    </string-array>
-    <string-array name="preference_page_transition_speed_names">
-        <item>Yavaş</item>
-        <item>Orta</item>
-        <item>Hızlı</item>
-    </string-array>
+  <string-array name="preference_overlay_duration_names">
+    <item>Hiçbir zaman</item>
+    <item>2 saniye</item>
+    <item>5 saniye</item>
+    <item>10 saniye</item>
+    <item>Belirtilmemiş</item>
+  </string-array>
+  <string-array name="preference_edges_resistance_names">
+    <item>Yok</item>
+    <item>Zayıf</item>
+    <item>Orta</item>
+    <item>Yüksek</item>
+  </string-array>
+  <string-array name="preference_page_transition_speed_names">
+    <item>Yavaş</item>
+    <item>Orta</item>
+    <item>Hızlı</item>
+  </string-array>
 </resources>

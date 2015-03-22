@@ -98,4 +98,5 @@
   <string name="no_data">Nessun dato</string>
   <string name="fullscreen_notice">Scorri dall\'alto al basso per mostrare il menù delle opzioni e uscire dalla modalità a schermo intero.</string>
   <string name="quit">Esci</string>
+  <string name="thumbnail">Miniatura</string>
 </resources>

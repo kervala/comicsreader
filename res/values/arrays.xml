@@ -1,95 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
- * ComicsReader is an Android application to read comics
- * Copyright (C) 2011-2013 Cedric OCHS
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
--->
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string-array name="preference_zoom_labels">
-        <item>Fit to width</item>
-        <item>Fit to height</item>
-        <item>Fit all</item>
-        <item>100%</item>
-        <item>50%</item>
-        <item>25%</item>
-    </string-array>
-    <string-array name="preference_zoom_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
-    <string-array name="preference_sample_labels">
-        <item>Auto</item>
-        <item>100%</item>
-        <item>50%</item>
-        <item>25%</item>
-    </string-array>
-    <string-array name="preference_sample_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="preference_overlay_duration_names">
-        <item>Never</item>
-        <item>2 seconds</item>
-        <item>5 seconds</item>
-        <item>10 seconds</item>
-        <item>Indefinite</item>
-    </string-array>
-    <string-array name="preference_overlay_duration_values" translatable="false">
-        <item>-1</item>
-        <item>2000</item>
-        <item>5000</item>
-        <item>10000</item>
-        <item>0</item>
-    </string-array>
-    <string-array name="preference_edges_resistance_names">
-        <item>None</item>
-        <item>Weak</item>
-        <item>Medium</item>
-        <item>Strong</item>
-    </string-array>
-    <string-array name="preference_edges_resistance_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-    <string-array name="preference_page_transition_speed_names">
-        <item>Slow</item>
-        <item>Medium</item>
-        <item>Fast</item>
-    </string-array>
-    <string-array name="preference_page_transition_speed_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-    <string-array name="preference_device_orientation_names">
-        <item>Auto</item>
-        <item>Portrait</item>
-        <item>Landscape</item>
-    </string-array>
-    <string-array name="preference_device_orientation_values" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
+  <string-array name="preference_zoom_labels">
+    <item>Fit to width</item>
+    <item>Fit to height</item>
+    <item>Fit all</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_zoom_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+  </string-array>
+  <string-array name="preference_sample_labels">
+    <item>Auto</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_sample_values" translatable="false">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>4</item>
+  </string-array>
+  <string-array name="preference_overlay_duration_names">
+    <item>Never</item>
+    <item>2 seconds</item>
+    <item>5 seconds</item>
+    <item>10 seconds</item>
+    <item>Indefinite</item>
+  </string-array>
+  <string-array name="preference_overlay_duration_values" translatable="false">
+    <item>-1</item>
+    <item>2000</item>
+    <item>5000</item>
+    <item>10000</item>
+    <item>0</item>
+  </string-array>
+  <string-array name="preference_edges_resistance_names">
+    <item>None</item>
+    <item>Weak</item>
+    <item>Medium</item>
+    <item>Strong</item>
+  </string-array>
+  <string-array name="preference_edges_resistance_values" translatable="false">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="preference_page_transition_speed_names">
+    <item>Slow</item>
+    <item>Medium</item>
+    <item>Fast</item>
+  </string-array>
+  <string-array name="preference_page_transition_speed_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+  <string-array name="preference_device_orientation_names">
+    <item>Auto</item>
+    <item>Portrait</item>
+    <item>Landscape</item>
+  </string-array>
+  <string-array name="preference_device_orientation_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
 </resources>
