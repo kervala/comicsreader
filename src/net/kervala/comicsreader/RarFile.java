@@ -120,7 +120,7 @@ public class RarFile {
 			System.loadLibrary("unrar-jni");
 			sLoaded = true;
 		} catch (UnsatisfiedLinkError e) {
-			e.printStackTrace();
+			Log.e(ComicsParameters.APP_TAG, "Unrar library can't be loaded, RAR support is disabled");
 		}
 	}
 }
