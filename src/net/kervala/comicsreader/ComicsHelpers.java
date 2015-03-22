@@ -233,9 +233,11 @@ public class ComicsHelpers {
 			e.printStackTrace();
 			return false;
 		} finally {
-			try {
-				input.close();
-			} catch (IOException e) {
+			if (input != null) {
+				try {
+					 input.close();
+				} catch (IOException e) {
+				}
 			}
 		}
 		
