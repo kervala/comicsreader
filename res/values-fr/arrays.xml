@@ -1,5 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string-array name="preference_zoom_labels">
+    <item>Adapter à la largeur</item>
+    <item>Adapter à la hauteur</item>
+    <item>Adapter à l\'écran</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_sample_labels">
+    <item>Auto</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
   <string-array name="preference_overlay_duration_names">
     <item>Jamais</item>
     <item>2 secondes</item>
@@ -17,5 +31,10 @@
     <item>Lente</item>
     <item>Moyenne</item>
     <item>Rapide</item>
+  </string-array>
+  <string-array name="preference_device_orientation_names">
+    <item>Auto</item>
+    <item>Portrait</item>
+    <item>Paysage</item>
   </string-array>
 </resources>
