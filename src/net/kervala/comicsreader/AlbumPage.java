@@ -87,7 +87,6 @@ public class AlbumPage {
 	/**
 	 * Load a page from stream
 	 * 
-	 * @param page Page to process
 	 * @param scale Scale to apply on page size
 	 * @return Bitmap representing this page
 	 */
