@@ -3,6 +3,7 @@
   <string name="icon">Icon</string>
   <string name="about">Über</string>
   <string name="about_license">Diese Anwendung steht unter der GPLv3-Lizenz:</string>
+  <string name="about_translator">English translation by Kervala</string>
   <string name="about_unrar_version">UnRAR-Version: %s</string>
   <string name="about_version">Version: %s</string>
   <string name="about_revision">Revision: %s</string>
