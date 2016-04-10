@@ -475,16 +475,11 @@ bool UtfToWide(const char *Src,wchar *Dest,size_t DestSize)
   return Success;
 }
 
-bool UnkToWide(const char *Src,wchar *Dest,size_t DestSize)
-{
-	// TODO: don't know what to do there
-	return UtfToWide(Src, Dest, DestSize);
-}
 
 int wcsicomp(const wchar *s1,const wchar *s2)
 {
 #ifdef _WIN_ALL
-  return CompareStringW(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,-1,s2,-1)-2;
+  return CompareString(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,-1,s2,-1)-2;
 #else
   while (true)
   {

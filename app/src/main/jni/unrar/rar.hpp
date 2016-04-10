@@ -88,7 +88,7 @@
 
 
 #ifdef _ANDROID
-//#include "GUI/rarjni.hpp"
+#include "rarjni.hpp"
 #endif
 
 #endif
