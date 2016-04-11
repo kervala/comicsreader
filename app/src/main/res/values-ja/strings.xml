@@ -3,7 +3,7 @@
   <string name="icon">アイコン</string>
   <string name="about">アプリについて</string>
   <string name="about_license">このアプリケーションは GPLv3 ライセンスの下で公開されています:</string>
-  <string name="about_translator">Japanese translation by Naofumi</string>
+  <string name="about_translator">Naofumi による日本語翻訳</string>
   <string name="about_unrar_version">UnRAR バージョン: %s</string>
   <string name="about_version">バージョン: %s</string>
   <string name="about_revision">リビジョン: %s</string>
@@ -86,6 +86,20 @@
   <string name="password">パスワード</string>
   <string name="remember_password">パスワードを保存する</string>
   <string name="contributors_label">貢献者:</string>
+  <string name="contributors">
+- Jules Blok (自然な順序のページ番号と自動回転の実装)\n
+- エストニア語翻訳: Rivo \"Eraser\" Zängov\n
+- ガリシア語翻訳: Xesusmosquera\n
+- ドイツ語翻訳: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+- ギリシャ語翻訳: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+- イタリア語翻訳: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+- 日本語翻訳: Naofumi\n
+- 韓国語翻訳: Jang \"palindrom615\"\n
+- ポーランド語翻訳: Jan \"Shark103\" Bielak\n
+- ポルトガル語翻訳: Marcelo Ghelman\n
+- ロシア語翻訳: 匿名, aiz1, deliium\n
+- スペイン語翻訳: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+- トルコ語翻訳: ultrapeer, Mauron</string>
   <string name="browser_album_title">タイトルはありません</string>
   <string name="preference_edges_resistance_label">エッジの抵抗</string>
   <string name="preference_edges_resistance_summary">ページを切り替える前に抵抗します</string>
@@ -99,4 +113,5 @@
   <string name="fullscreen_notice">オプションメニューの表示、全画面モードを終了するには、上から下にスクロールしてください。</string>
   <string name="quit">終了</string>
   <string name="thumbnail">サムネイル</string>
+  <string name="unknown">不明</string>
 </resources>
