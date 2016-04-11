@@ -1,5 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string-array name="preference_zoom_labels">
+    <item>Genişliğe sığdır</item>
+    <item>Yüksekliğe sığdır</item>
+    <item>Tümüne sığdır</item>
+    <item>%100</item>
+    <item>%50</item>
+    <item>%25</item>
+  </string-array>
+  <string-array name="preference_sample_labels">
+    <item>Otomatik</item>
+    <item>%100</item>
+    <item>%50</item>
+    <item>%25</item>
+  </string-array>
   <string-array name="preference_overlay_duration_names">
     <item>Hiçbir zaman</item>
     <item>2 saniye</item>
@@ -17,5 +31,10 @@
     <item>Yavaş</item>
     <item>Orta</item>
     <item>Hızlı</item>
+  </string-array>
+  <string-array name="preference_device_orientation_names">
+    <item>Otomatik</item>
+    <item>Portre</item>
+    <item>Manzara</item>
   </string-array>
 </resources>

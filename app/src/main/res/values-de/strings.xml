@@ -3,7 +3,7 @@
   <string name="icon">Icon</string>
   <string name="about">Über</string>
   <string name="about_license">Diese Anwendung steht unter der GPLv3-Lizenz:</string>
-  <string name="about_translator">English translation by Kervala</string>
+  <string name="about_translator">German translation by Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund and Creepers Swankin</string>
   <string name="about_unrar_version">UnRAR-Version: %s</string>
   <string name="about_version">Version: %s</string>
   <string name="about_revision">Revision: %s</string>
@@ -86,7 +86,6 @@
   <string name="password">Passwort</string>
   <string name="remember_password">Passwort speichern</string>
   <string name="contributors_label">Mitwirkende:</string>
-  <string name="contributors">- Jules Blok (natürliche Reihung der Seitenzahlen und Implementierung der Autorotation)\n- ultrapeer (Türkische Übersetzung und Französische Tippfehler)\n- Zufre (Spanisehe Übersetzung)\n- Kathjal auf Transifex (Italienische Übersetzung)\n- Shark103 auf Transifex (Polmische Übersetzung)\n- Xesusmosquera auf Transifex (Galicische Übersetzung)\n- Evropi auf Transifex (Griechische Übersetzung)\n- Anonymous (Russische Übersetzung)\n- Marcelo Ghelman auf Transifex (Portugiesische Übersetzung)</string>
   <string name="browser_album_title">Kein Titel</string>
   <string name="preference_edges_resistance_label">Kanten-Widerstand</string>
   <string name="preference_edges_resistance_summary">Widerstand vor dem Umblättern</string>

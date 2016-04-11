@@ -3,6 +3,7 @@
   <string name="icon">アイコン</string>
   <string name="about">アプリについて</string>
   <string name="about_license">このアプリケーションは GPLv3 ライセンスの下で公開されています:</string>
+  <string name="about_translator">Japanese translation by Naofumi</string>
   <string name="about_unrar_version">UnRAR バージョン: %s</string>
   <string name="about_version">バージョン: %s</string>
   <string name="about_revision">リビジョン: %s</string>
@@ -85,7 +86,6 @@
   <string name="password">パスワード</string>
   <string name="remember_password">パスワードを保存する</string>
   <string name="contributors_label">貢献者:</string>
-  <string name="contributors">- Jules Blok (ページ番号の自然な順序と自動回転の実装)\n- ultrapeer (トルコ語翻訳、フランス語翻訳)\n- Zufre (スペイン語翻訳)\n- Kathjal Transifexより (イタリア語翻訳)\n- Shark103 Transifexより (ポーランド語翻訳)\n- Xesusmosquera Transifexより (ガリシア語翻訳)\n- Evropi Transifexより (ギリシャ語翻訳)\n- 匿名 (ロシア語翻訳)\n- Marcelo Ghelman Transifexより (ポルトガル語翻訳)</string>
   <string name="browser_album_title">タイトルはありません</string>
   <string name="preference_edges_resistance_label">エッジの抵抗</string>
   <string name="preference_edges_resistance_summary">ページを切り替える前に抵抗します</string>

@@ -2,10 +2,10 @@
 <resources>
   <string name="icon">Icon</string>
   <string name="about">About</string>
-  <string name="about_author" translatable="false">© 2011–2015 Kervala</string>
+  <string name="about_author" translatable="false">© 2011–2016 Kervala</string>
   <string name="about_license">This application is published under GPLv3 licence:</string>
   <string name="about_support" translatable="false">http://dev.kervala.net/projects/comicsreader/</string>
-  <string name="about_translator">English translation by Kervala</string>
+  <string name="about_translator">English translation by Cédric \"Kervala\" OCHS</string>
   <string name="about_unrar_version">UnRAR version: %s</string>
   <string name="about_version">Version: %s</string>
   <string name="about_revision">Revision: %s</string>
@@ -91,7 +91,21 @@
   <string name="password">Password</string>
   <string name="remember_password">Remember password</string>
   <string name="contributors_label">Contributors:</string>
-  <string name="contributors">- Jules Blok (natural ordering of page numbers and auto-rotation implementation)\n- ultrapeer (Turkish translation and French typos)\n- Zufre (Spanish translation)\n- Kathjal on Transifex (Italian translation)\n- Shark103 on Transifex (Polish translation)\n- Xesusmosquera on Transifex (Galician translation)\n- Evropi on Transifex (Greek translation)\n- Anonymous (Russian translation)\n- Marcelo Ghelman on Transifex (Portuguese translation)</string>
+  <string name="contributors">
+    - Jules Blok (natural ordering of page numbers and auto-rotation implementation)\n
+    - Estonian translation: Rivo \"Eraser\" Zängov\n
+    - Galician translation: Xesusmosquera\n
+    - German translation: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - Greek translation: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - Italian translation: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - Japanese translation: Naofumi\n
+    - Korean translation: Jang \"palindrom615\"\n
+    - Polish translation: Jan \"Shark103\" Bielak\n
+    - Portuguese translation: Marcelo Ghelman\n
+    - Russian translation: Anonymous, aiz1, deliium\n
+    - Spanish translation: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - Turkish translation: ultrapeer, Mauron\n
+  </string>
   <string name="browser_album_title">No title</string>
   <string name="preference_edges_resistance_label">Edges resistance</string>
   <string name="preference_edges_resistance_summary">Resistance before switching page</string>
