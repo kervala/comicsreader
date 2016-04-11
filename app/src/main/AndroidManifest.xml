@@ -27,10 +27,6 @@
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
-    <uses-sdk
-        android:minSdkVersion="4"
-        android:targetSdkVersion="20" />
-
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -42,7 +38,9 @@
     <application
         android:name="ComicsApplication"
         android:icon="@drawable/icon"
-        android:label="@string/app_name" android:largeHeap="true" android:hardwareAccelerated="true">
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:hardwareAccelerated="true">
         <activity
             android:name="ViewerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
