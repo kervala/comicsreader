@@ -10,7 +10,7 @@ FileHandle JniOpenFile(const wchar *filename)
 	__android_log_print(ANDROID_LOG_DEBUG, "unrar", "JniOpenFile");
 #endif
 
-	return NULL;
+	return FILE_BAD_HANDLE;
 }
 
 bool JniCharToWide(const char *Src, wchar *Dest, size_t DestSize, bool unk)
