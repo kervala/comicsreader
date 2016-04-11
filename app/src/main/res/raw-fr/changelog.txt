@@ -2,7 +2,7 @@ Version 2.2
 
 - Noms des traducteurs dans A propos...
 - Ajout de nouvelles traductions
-- Ne pas redimentionner une page sous une taille spécifique
+- Ne pas redimensionner une page sous une taille spécifique
 - Correction de plantages liés à la mémoire
 - Conversion du projet pour Android Studio
 
