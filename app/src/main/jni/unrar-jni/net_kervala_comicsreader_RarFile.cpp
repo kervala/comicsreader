@@ -78,6 +78,12 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 		env->DeleteLocalRef(c);
 	}
 
+#ifdef __arm__
+	LOGI("Loading unrar ARM library");
+#else
+	LOGI("Loading unrar non-ARM library");
+#endif
+	
 	return JNI_VERSION_1_6;
 }
 
