@@ -112,10 +112,6 @@ public class ComicsParameters {
 			e.printStackTrace();
 		}
 
-		if (sPackageVersion == null) {
-			sPackageVersion = context.getString(R.string.version);
-		}
-
 		PackageManager pm = context.getPackageManager();
 
 		try {

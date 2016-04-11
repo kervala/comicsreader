@@ -53,17 +53,6 @@ public class AboutActivity extends Activity {
 		final TextView unrarVersionView = (TextView)findViewById(R.id.dialog_about_unrar_version);
 		unrarVersionView.setText(getString(R.string.about_unrar_version, rarVersion));
 
-		String revision = getString(R.string.revision);
-
-		if ("".equals(revision)) {
-			revision = "local";
-		} else if (revision.length() > 16){
-			revision = revision.substring(0, 16);
-		}
-
-		final TextView revisionView = (TextView)findViewById(R.id.dialog_about_revision);
-		revisionView.setText(getString(R.string.about_revision, revision));
-
 		String buildDate = getString(R.string.build_date);
 
 		if ("".equals(buildDate)) {
