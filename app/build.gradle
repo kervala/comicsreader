@@ -1,90 +1,166 @@
-apply plugin: 'com.android.model.application'
-model {
-    android {
-        compileSdkVersion = 23
-        buildToolsVersion = '23.0.3'
+import org.apache.tools.ant.taskdefs.condition.Os
 
-        ndk {
-            moduleName = "unrar-jni"
-            cppFlags.add("-I" + file("src/main/jni/unrar").absolutePath)
-            cppFlags.add("-Wall")
-            cppFlags.add("-DNOFILECREATE")
-            cppFlags.add("-DGUI")
-            cppFlags.add("-DSILENT")
-            cppFlags.add("-DNOVOLUME")
-            cppFlags.add("-DRARDLL")
-            cppFlags.add("-DUNRAR")
-            cppFlags.add("-DRAR_NOCRYPT")
-            cppFlags.add("-D_FILE_OFFSET_BITS=64")
-            cppFlags.add("-D_LARGEFILE_SOURCE")
-            cppFlags.add("-fvisibility=hidden")
-            cppFlags.add("-fexceptions")
-            ldFlags.add("-Wl,--as-needed")
+apply plugin: 'com.android.application'
 
-            ldLibs.addAll(["log"])
-            stl = "gnustl_static"
-        }
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
 
-        sources {
-            main {
-                jni {
-                    source {
-                        exclude "**/arccmt.cpp", "**/blake2sp.cpp",
-                                "**/blake2s_sse.cpp", "**/coder.cpp",
-                                "**/consio.cpp", "**/crypt1.cpp",
-                                "**/crypt2.cpp", "**/crypt3.cpp",
-                                "**/crypt5.cpp",
-                                "**/filcreat.cpp", "**/hardlinks.cpp",
-                                "**/list.cpp", "**/model.cpp",
-                                "**/rarvmtbl.cpp", "**/recvol.cpp",
-                                "**/recvol3.cpp", "**/recvol5.cpp",
-                                "**/suballoc.cpp", "**/threadmisc.cpp",
-                                "**/uicommon.cpp", "**/uisilent.cpp",
-                                "**/uiconsole.cpp", "**/ulinks.cpp",
-                                "**/unpack15.cpp", "**/unpack20.cpp",
-                                "**/unpack30.cpp", "**/unpack50.cpp",
-                                "**/unpack50frag.cpp", "**/unpack50mt.cpp",
-                                "**/unpackinline.cpp", "**/uowners.cpp",
-                                "**/win32acl.cpp", "**/win32lnk.cpp",
-                                "**/win32stm.cpp"
-                    }
-                }
-            }
-        }
+    sourceSets.main.jni.srcDirs = [] // disable automatic ndk-build call
+    sourceSets.main.jniLibs.srcDir 'src/main/libs'
 
-        productFlavors {
-            // for detailed abiFilter descriptions, refer to "Supported ABIs" @
-            // https://developer.android.com/ndk/guides/abis.html#sa
-            create("arm") {
-                ndk.abiFilters.add("armeabi")
-            }
-
-            create("arm7") {
-                ndk.abiFilters.add("armeabi-v7a")
-            }
-
-            create("x86") {
-                ndk.abiFilters.add("x86")
-            }
-
-            create("mips") {
-                ndk.abiFilters.add("mips")
-            }
-
-            create("all") {
-                ndk.abiFilters.add("armeabi")
-                ndk.abiFilters.add("armeabi-v7a")
-                ndk.abiFilters.add("x86")
-                ndk.abiFilters.add("mips")
-            }
-        }
-
-        defaultConfig.with {
-            applicationId = 'net.kervala.comicsreader'
-            minSdkVersion.apiLevel = 4
-            targetSdkVersion.apiLevel = 23
-            versionCode = 1
-            versionName = "1.4"
+    signingConfigs {
+        release {
+            storeFile file(getAndroidKeystore())
+            storePassword getAndroidStorePassword()
+            keyAlias getAndroidKeyAlias()
+            keyPassword getAndroidKeyPassword()
         }
     }
+
+    defaultConfig {
+        applicationId 'net.kervala.comicsreader'
+        minSdkVersion 4
+        targetSdkVersion 23
+        versionCode 1
+        versionName "2.2." + getHgRevision()
+        signingConfig signingConfigs.release
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "build_date", getDate()
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            minifyEnabled false
+            jniDebuggable true
+            resValue "string", "build_date", getDate()
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+// call regular ndk-build(.cmd) script from app directory
+task ndkBuildDebug(type: Exec) {
+    workingDir file('src/main')
+    commandLine getNdkBuildCmd(), 'NDK_DEBUG=1', 'V=1'
+}
+
+task ndkBuildRelease(type: Exec) {
+    workingDir file('src/main')
+    commandLine getNdkBuildCmd(), 'NDK_DEBUG=0', 'V=1'
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> if (compileTask.name.endsWith("DebugJavaWithJavac")) {
+        compileTask.dependsOn ndkBuildDebug
+    } else if (compileTask.name.endsWith("ReleaseJavaWithJavac")) {
+        compileTask.dependsOn ndkBuildRelease
+    }
+}
+
+task cleanNative(type: Exec) {
+    workingDir file('src/main')
+    commandLine getNdkBuildCmd(), 'V=1', 'clean'
+}
+
+clean.dependsOn cleanNative
+
+// create a file "version.txt" in "app" folder with current version
+task generateVersion() << {
+    file('build/version.txt').text = android.defaultConfig.versionName
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn generateVersion
+}
+
+def getNdkDir() {
+    if (System.env.NDK_ROOT != null)
+        return System.env.NDK_ROOT
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def ndkdir = properties.getProperty('ndk.dir', null)
+    if (ndkdir == null)
+        throw new GradleException("NDK location not found. Define location with ndk.dir in the local.properties file or with an ANDROID_NDK_ROOT environment variable.")
+
+    return ndkdir
+}
+
+def getNdkBuildCmd() {
+    def ndkbuild = getNdkDir() + "/ndk-build"
+    if (Os.isFamily(Os.FAMILY_WINDOWS))
+        ndkbuild += ".cmd"
+
+    return ndkbuild
+}
+
+def getHgRevision() {
+    def os = new ByteArrayOutputStream()
+    exec {
+        commandLine 'hg', 'tip', '--template', '{rev}'
+        standardOutput = os;
+    }
+
+    return os.toString()
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy-MM-dd HH:mm:ss')
+    return formattedDate
+}
+
+def getAndroidKeystore() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('ant.properties').newDataInputStream())
+    def keystore = properties.getProperty('key.store', null)
+    if (keystore == null)
+        throw new GradleException("Keystore location not found. Define location with key.store in the ant.properties file.")
+
+    return keystore
+}
+
+def getAndroidStorePassword() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('ant.properties').newDataInputStream())
+    def password = properties.getProperty('key.store.password', null)
+    if (password == null)
+        throw new GradleException("Keystore password not found. Define location with key.store.password in the ant.properties file.")
+
+    return password
+}
+
+def getAndroidKeyAlias() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('ant.properties').newDataInputStream())
+    def keyalias = properties.getProperty('key.alias', null)
+    if (keyalias == null)
+        throw new GradleException("Key alias not found. Define location with key.alias in the ant.properties file.")
+
+    return keyalias
+}
+
+def getAndroidKeyPassword() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('ant.properties').newDataInputStream())
+    def password = properties.getProperty('key.alias.password', null)
+    if (password == null)
+        throw new GradleException("Key alias password not found. Define location with key.alias.password in the ant.properties file.")
+
+    return password
 }
