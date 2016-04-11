@@ -1,3 +1,11 @@
+Version 2.2
+
+- Translators names in About...
+- Added a lot of new translations
+- Don't resize a page under a specific size
+- Fixed craches related to memory
+- Converted project to Android Studio
+
 Version 2.0
 
 - Partnership with BDZ Mag (http://www.bdzmag.com/) and download "Pirate ta BD !" comics from bookmarks

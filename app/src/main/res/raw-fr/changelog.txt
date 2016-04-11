@@ -1,3 +1,11 @@
+Version 2.2
+
+- Noms des traducteurs dans A propos...
+- Ajout de nouvelles traductions
+- Ne pas redimentionner une page sous une taille spécifique
+- Correction de plantages liés à la mémoire
+- Conversion du projet pour Android Studio
+
 Version 2.0
 
 - Partenariat avec BDZ Mag (http://www.bdzmag.com/) et téléchargement des BDs de "Pirate ta BD !" à partir des favoris
