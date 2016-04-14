@@ -32,6 +32,12 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
+            android:key="preference_use_minimum_size"
+            android:summary="@string/preference_use_minimum_size_summary"
+            android:title="@string/preference_use_minimum_size_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:key="preference_double_page"
             android:summary="@string/preference_double_page_summary"
             android:title="@string/preference_double_page_label" />

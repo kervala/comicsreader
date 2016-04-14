@@ -35,6 +35,7 @@ public class AlbumParameters {
 	static public int edgesResistance = 1;
 	static public int pageTransitionSpeed = 2;
 	static public boolean autoRotate = false;
+	static public boolean useMinimumSize = false;
 	
 	static public boolean getAlbumPreferences(Context context) {
 		boolean oldHighQuality = highQuality;
@@ -45,7 +46,8 @@ public class AlbumParameters {
 		boolean oldFullScreen = fullScreen;
 		int oldZoom = zoom;
 		boolean oldAutoRotate = autoRotate;
-		
+		boolean oldUseMinimumSize = useMinimumSize;
+
 		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		highQuality = prefs.getBoolean("preference_high_quality", false);
 		fullScreen = prefs.getBoolean("preference_full_screen", false);
@@ -58,6 +60,7 @@ public class AlbumParameters {
 		pageTransitionSpeed = Integer.parseInt(prefs.getString("preference_page_transition_speed", "2"));
 		rightToLeft = prefs.getBoolean("preference_reading_direction", false);
 		autoRotate = prefs.getBoolean("preference_auto_rotate", false);
+		useMinimumSize = prefs.getBoolean("preference_use_minimum_size", false);
 
 		switch(pageTransitionSpeed) {
 			case 1:
@@ -77,6 +80,7 @@ public class AlbumParameters {
 		return oldHighQuality != highQuality ||	oldfitToScreen != fitToScreen ||
 			oldScale != scale || oldRightToLeft != rightToLeft ||
 			oldDoublePage != doublePage || oldFullScreen != fullScreen ||
-			oldZoom != zoom || oldAutoRotate != autoRotate;
+			oldZoom != zoom || oldAutoRotate != autoRotate ||
+			oldUseMinimumSize != useMinimumSize;
 	}
 }

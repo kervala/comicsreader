@@ -115,4 +115,6 @@
   <string name="quit">Quitter</string>
   <string name="thumbnail">Vignette</string>
   <string name="unknown">inconnue</string>
+  <string name="preference_use_minimum_size_label">Utiliser une taille minimum</string>
+  <string name="preference_use_minimum_size_summary">Ne pas redimensionner une page sous une certaine taille pour une meilleure lisibilité</string>
 </resources>

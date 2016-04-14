@@ -122,4 +122,6 @@
   <string name="quit">Quit</string>
   <string name="thumbnail">Thumbnail</string>
   <string name="unknown">unknown</string>
+  <string name="preference_use_minimum_size_label">Use minimum size</string>
+  <string name="preference_use_minimum_size_summary">Don\'t resize a page under a specific size for a better readability</string>
 </resources>

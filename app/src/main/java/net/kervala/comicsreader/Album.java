@@ -582,7 +582,7 @@ public class Album {
 
 		switch (AlbumParameters.zoom) {
 		case ZOOM_FIT_WIDTH: {
-			if (screenWidth < MINIMUM_READABLE_WIDTH) {
+			if (AlbumParameters.useMinimumSize && screenWidth < MINIMUM_READABLE_WIDTH) {
 				width = MINIMUM_READABLE_WIDTH;
 			} else {
 				width = screenWidth;
@@ -594,11 +594,15 @@ public class Album {
 			break;
 		}
 		case ZOOM_FIT_HEIGHT: {
-			height = Math.max(screenHeight, MINIMUM_READABLE_HEIGHT);
+			if (AlbumParameters.useMinimumSize) {
+				height = Math.max(screenHeight, MINIMUM_READABLE_HEIGHT);
+			} else {
+				height = screenHeight;
+			}
 			break;
 		}
 		case ZOOM_FIT_SCREEN: {
-			if (screenWidth < MINIMUM_READABLE_WIDTH) {
+			if (AlbumParameters.useMinimumSize && screenWidth < MINIMUM_READABLE_WIDTH) {
 				width = MINIMUM_READABLE_WIDTH;
 			} else {
 				width = screenWidth;
@@ -608,7 +612,12 @@ public class Album {
 				}
 			}
 
-			height = Math.max(screenHeight, MINIMUM_READABLE_HEIGHT);
+			if (AlbumParameters.useMinimumSize) {
+				height = Math.max(screenHeight, MINIMUM_READABLE_HEIGHT);
+			} else {
+				height = screenHeight;
+			}
+
 			break;
 		}
 		case ZOOM_50: {
