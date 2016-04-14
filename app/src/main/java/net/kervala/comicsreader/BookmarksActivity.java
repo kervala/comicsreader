@@ -177,7 +177,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		if (mCursor.moveToPosition(mPosition)) {
 			String url = mCursor.getString(2);
 			
-			Uri uri = null;
+			Uri uri;
 			
 			if (url.startsWith("/")) {
 				uri = Uri.fromFile(new File(url));

@@ -95,7 +95,7 @@ public class AlbumThread extends HandlerThread {
 	}
 
 	public void setAlbumPageCallback(AlbumPageCallback callback) {
-		mCallback = new WeakReference<AlbumPageCallback>(callback);
+		mCallback = new WeakReference<>(callback);
 	}
 
 	@Override

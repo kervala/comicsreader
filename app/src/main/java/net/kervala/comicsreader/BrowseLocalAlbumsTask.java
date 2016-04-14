@@ -34,7 +34,7 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 	private ArrayList<ThumbnailItem> mItems;
 	
 	public BrowseLocalAlbumsTask(BrowserActivity activity, File directory) {
-		mActivity = new WeakReference<BrowserActivity>(activity);
+		mActivity = new WeakReference<>(activity);
 		mDirectory = directory;
 	}
 
@@ -46,9 +46,9 @@ public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 
 	@Override
 	protected String doInBackground(Void... params) {
-		mItems = new ArrayList<ThumbnailItem>();
+		mItems = new ArrayList<>();
 		
-		List<ThumbnailItem> files = new ArrayList<ThumbnailItem>();
+		List<ThumbnailItem> files = new ArrayList<>();
 
 		String error = null;
 

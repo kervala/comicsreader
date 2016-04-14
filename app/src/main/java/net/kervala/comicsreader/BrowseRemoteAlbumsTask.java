@@ -44,7 +44,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 	private ArrayList<ThumbnailItem> mItems;
 
 	public BrowseRemoteAlbumsTask(BrowserActivity activity, String url) {
-		mActivity = new WeakReference<BrowserActivity>(activity);
+		mActivity = new WeakReference<>(activity);
 		mUrl = url;
 	}
 	
@@ -56,7 +56,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 	
 	private boolean parseJson(String json) {
 		try {
-			mItems = new ArrayList<ThumbnailItem>();
+			mItems = new ArrayList<>();
 			
 			JSONObject main = new JSONObject(json);
 			

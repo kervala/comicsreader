@@ -37,7 +37,7 @@ public class AlbumsIndexHandler extends DefaultHandler {
 	private StringBuilder mBuilder = new StringBuilder();
 	
 	public AlbumsIndexHandler() {
-		mItems = new ArrayList<ThumbnailItem>();
+		mItems = new ArrayList<>();
 	}
 	
 	public ArrayList<ThumbnailItem> getItems() {

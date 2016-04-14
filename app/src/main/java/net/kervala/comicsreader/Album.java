@@ -499,30 +499,42 @@ public class Album {
 
 			// good quality resize
 			tmp = Bitmap.createScaledBitmap(tmpRaw, size1.dstWidth, size1.dstHeight, true);
-			if (tmp != tmpRaw && tmp != null) tmpRaw.recycle();
 
-			canvas.drawBitmap(tmp, 0, 0, null);
-			tmp.recycle();
+			if (tmp != null) {
+				// don't recycle if using the same bitmap
+				if (tmp != tmpRaw) tmpRaw.recycle();
 
-			// get second page
-			tmpRaw = mPages[page+1].getPageRaw(size2.dstScale);
-
-			if (tmpRaw == null) {
-				bitmap.recycle();
+				canvas.drawBitmap(tmp, 0, 0, null);
 				tmp.recycle();
-				return false;
+
+				// get second page
+				tmpRaw = mPages[page+1].getPageRaw(size2.dstScale);
+
+				if (tmpRaw == null) {
+					bitmap.recycle();
+					tmp.recycle();
+					return false;
+				}
+
+				// good quality resize
+				tmp = Bitmap.createScaledBitmap(tmpRaw, size2.dstWidth, size2.dstHeight, true);
+
+				if (tmp != null) {
+					// don't recycle if using the same bitmap
+					if (tmp != tmpRaw) tmpRaw.recycle();
+
+					canvas.drawBitmap(tmp, size1.dstWidth, 0, null);
+					tmp.recycle();
+
+					mPages[page].bitmap = bitmap;
+
+					return true;
+				} else {
+					Log.w(ComicsParameters.APP_TAG, "Bitmap.createScaledBitmap returned null");
+				}
+			} else {
+				Log.w(ComicsParameters.APP_TAG, "Bitmap.createScaledBitmap returned null");
 			}
-
-			// good quality resize
-			tmp = Bitmap.createScaledBitmap(tmpRaw, size2.dstWidth, size2.dstHeight, true);
-			if (tmp != tmpRaw && tmp != null) tmpRaw.recycle();
-
-			canvas.drawBitmap(tmp, size1.dstWidth, 0, null);
-			tmp.recycle();
-
-			mPages[page].bitmap = bitmap;
-
-			return true;
 		} catch(OutOfMemoryError e) {
 			Log.e(ComicsParameters.APP_TAG, "Out of memory while assembling a double page");
 		} catch (Exception e) {

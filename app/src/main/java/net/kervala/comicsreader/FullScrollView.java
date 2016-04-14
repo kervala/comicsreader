@@ -1206,9 +1206,7 @@ public class FullScrollView extends FrameLayout {
 						- getPaddingTop(), child.getHeight());
 				scrollTo(scrollX, scrollY);
 			} else {
-				int scrollX = x;
-				int scrollY = y;
-				scrollTo(scrollX, scrollY);
+				scrollTo(x, y);
 			}
 			if (oldX != getScrollX() || oldY != getScrollY()) {
 				onScrollChanged(getScrollX(), getScrollY(), oldX, oldY);

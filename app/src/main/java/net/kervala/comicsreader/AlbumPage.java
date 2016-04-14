@@ -112,7 +112,7 @@ public class AlbumPage {
 			options.inPreferredConfig = Bitmap.Config.RGB_565;
 		}
 
-		Bitmap b = null;
+		Bitmap b;
 
 		try {
 			// get bitmap from buffer

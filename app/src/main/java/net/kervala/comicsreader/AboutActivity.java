@@ -77,10 +77,8 @@ public class AboutActivity extends Activity {
 		protected SpannableStringBuilder doInBackground(String... licenses) {
 			SpannableStringBuilder result = new SpannableStringBuilder();
 
-			int count = licenses.length;
-
-			for(int i = 0; i < count; ++i) {
-				appendLicense(result, licenses[i]);
+			for (String license : licenses) {
+				appendLicense(result, license);
 			}
 
 			return result;
@@ -103,7 +101,7 @@ public class AboutActivity extends Activity {
 			// open stream
 			input = getAssets().open(filename, AssetManager.ACCESS_BUFFER);
 
-			int count = 0;
+			int count;
 			byte data[] = new byte[2048];
 
 			// copy file content

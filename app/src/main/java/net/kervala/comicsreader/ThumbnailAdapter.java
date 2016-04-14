@@ -35,7 +35,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class ThumbnailAdapter extends BaseAdapter {
-	private final Stack<ThumbnailItem> mQueue = new Stack<ThumbnailItem>();
+	private final Stack<ThumbnailItem> mQueue = new Stack<>();
 	private final List<ThumbnailItem> mItems;
 	private final WeakReference<Handler> mHandler;
 	private final LayoutInflater mInflater;
@@ -47,7 +47,7 @@ public class ThumbnailAdapter extends BaseAdapter {
 	public ThumbnailAdapter(Context context, Handler handler, ArrayList<ThumbnailItem> items, int resItem) {
 		mItems = items;
 		mItemsCount = items.size();
-		mHandler = new WeakReference<Handler>(handler);
+		mHandler = new WeakReference<>(handler);
 		mResItem = resItem;
 		mInit = true;
 
@@ -201,7 +201,7 @@ public class ThumbnailAdapter extends BaseAdapter {
 								msg.setData(bundle);
 								mHandler.get().sendMessage(msg);
 							}
-						} else {
+//						} else {
 							// an error occurred, put to queue again
 //							addItem(item);
 						}

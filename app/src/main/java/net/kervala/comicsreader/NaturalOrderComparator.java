@@ -73,11 +73,11 @@ public class NaturalOrderComparator implements Comparator<String> {
 	}
 
 	public static int compareStrings(String o1, String o2) {
-		String a = o1.toString();
-		String b = o2.toString();
+		String a = o1;
+		String b = o2;
 
 		int ia = 0, ib = 0;
-		int nza = 0, nzb = 0;
+		int nza, nzb;
 		char ca, cb;
 		int result;
 
@@ -158,7 +158,7 @@ public class NaturalOrderComparator implements Comparator<String> {
 	}
 
 	static void testCases() {
-		List<String> files = new ArrayList<String>();
+		List<String> files = new ArrayList<>();
 
 		files.add("v01f.jpg");
 		files.add("0.jpg");
@@ -188,7 +188,7 @@ public class NaturalOrderComparator implements Comparator<String> {
 		// compare to CRC32 of the right result
 		long value = crc.getValue();
 
-		if (value == 0x1305F4AEl) {
+		if (value == 0x1305F4AEL) {
 			Log.d("ComicsReader", "Result is right for " + files.toString());
 		} else {
 			Log.d("ComicsReader", "Result is wrong (" + String.valueOf(value) + ") for " + files.toString());

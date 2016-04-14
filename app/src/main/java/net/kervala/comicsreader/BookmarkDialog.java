@@ -43,7 +43,7 @@ public class BookmarkDialog extends Dialog implements View.OnClickListener {
 	public BookmarkDialog(Context context, Handler handler) {
 		super(context);
 		
-		mHandler = new WeakReference<Handler>(handler);
+		mHandler = new WeakReference<>(handler);
 
 		Window window = getWindow();
 		

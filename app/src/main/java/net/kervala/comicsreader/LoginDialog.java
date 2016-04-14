@@ -44,7 +44,7 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
 	public LoginDialog(Context context, Handler handler) {
 		super(context);
 		
-		mHandler = new WeakReference<Handler>(handler);
+		mHandler = new WeakReference<>(handler);
 
 		Window window = getWindow();
 		

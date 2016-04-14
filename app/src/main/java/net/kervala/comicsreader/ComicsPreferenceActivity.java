@@ -38,9 +38,9 @@ public class ComicsPreferenceActivity extends PreferenceActivity implements OnPr
 
 		addPreferencesFromResource(R.xml.preferences);
 
-		mClearThumbnails = (Preference)findPreference("preference_clear_cache_thumbnails");
-		mClearAlbums = (Preference)findPreference("preference_clear_cache_albums");
-		mAbout = (Preference)findPreference("preference_about");
+		mClearThumbnails = findPreference("preference_clear_cache_thumbnails");
+		mClearAlbums = findPreference("preference_clear_cache_albums");
+		mAbout = findPreference("preference_about");
 
 		if (mClearThumbnails != null) {
 			mClearThumbnails.setOnPreferenceClickListener(this);

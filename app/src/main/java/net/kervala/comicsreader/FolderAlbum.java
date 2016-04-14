@@ -94,7 +94,7 @@ public class FolderAlbum extends Album {
 	}
 
 	static String getTitle(String filename) {
-		String title = null;
+		String title;
 		
 		// generate a title from filename
 		int first = filename.lastIndexOf("/");

@@ -36,7 +36,7 @@ public class DownloadAlbumTask extends AsyncTask<String, Integer, String> {
 	private boolean mCancelled = false;
 	
 	public DownloadAlbumTask(BrowserActivity activity, BrowserItem item) {
-		mActivity = new WeakReference<BrowserActivity>(activity);
+		mActivity = new WeakReference<>(activity);
 		mItem = item;
 	}
 	

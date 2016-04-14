@@ -21,6 +21,7 @@ package net.kervala.comicsreader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 import net.kervala.comicsreader.AlbumThread.AlbumPageCallback;
 import android.app.Activity;
@@ -230,7 +231,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		}
 
 		// small hack because on my CM 9 tablet navigation bar don't hide
-		if (!ComicsParameters.sIsCyanogenMod) mImageView.setFullScreen(mFullScreen);
+		if (!ComicsParameters.sIsCyanogenMod && mImageView != null) mImageView.setFullScreen(mFullScreen);
 
 		if (!ComicsParameters.sHasMenuKey && !ComicsParameters.sFullScreenNoticeDisplayed) {
 			showDialog(DIALOG_FULLSCREEN);
@@ -295,7 +296,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		case DIALOG_PAGES:
 			Dialog dialog = super.onCreateDialog(id);
 
-			if (dialog == null && mAlbumThread.isValid() && id == DIALOG_PAGES) {
+			if (dialog == null && mAlbumThread.isValid()) {
 				dialog = new PagesDialog(this);
 			}
 
@@ -565,7 +566,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		if (!getActionBarVisible()) mOverlay.show(String.valueOf(page) + "/" + String.valueOf(pages), duration);
 
-		setActionBarTitle(String.format("%s - %d/%d", mAlbumThread.album.title, page, pages));
+		setActionBarTitle(String.format(Locale.US, "%s - %d/%d", mAlbumThread.album.title, page, pages));
 	}
 
 	boolean openIntentFolder(Intent i) {

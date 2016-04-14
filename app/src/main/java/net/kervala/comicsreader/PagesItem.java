@@ -29,7 +29,7 @@ public class PagesItem extends ThumbnailItem {
 
 	public PagesItem(Context context, int index, Album album) {
 		this.index = index;
-		mAlbum = new WeakReference<Album>(album);
+		mAlbum = new WeakReference<>(album);
 		mText = String.valueOf(index+1);
 		mThumbPosition = THUMB_POSITION_BOTTOM;
 	}
