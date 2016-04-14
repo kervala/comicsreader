@@ -3,7 +3,7 @@
   <string name="icon">Ícone</string>
   <string name="about">Sobre</string>
   <string name="about_license">Esta aplicação é publicada sob a licença GPLv3:</string>
-  <string name="about_translator">Portuguese translation by Marcelo Ghelman</string>
+  <string name="about_translator">Tradução para português por Marcelo Ghelman</string>
   <string name="about_unrar_version">Versão do UnRAR: %s</string>
   <string name="about_version">Versão: %s</string>
   <string name="about_revision">Revisão: %s</string>
@@ -86,6 +86,21 @@
   <string name="password">Senha</string>
   <string name="remember_password">Lembrar senha</string>
   <string name="contributors_label">Contribuidores:</string>
+  <string name="contributors">
+    - Jules Blok (ordenação natural de números de páginas e implementação de rotação automática)\n
+    - Tradução para estoniano: Rivo \"Eraser\" Zängov\n
+    - Tradução para galego: Xesusmosquera\n
+    - Tradução para alemão: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - Tradução para grego: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - Tradução para italiano: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - Tradução para japonês: Naofumi\n
+    - Tradução para coreano: Jang \"palindrom615\"\n
+    - Tradução para polonês: Jan \"Shark103\" Bielak\n
+    - Tradução para português: Marcelo Ghelman\n
+    - Tradução para russo: Anonymous, aiz1, deliium\n
+    - Tradução para espanhol: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - Tradução para turco: ultrapeer, Mauron\n
+    </string>
   <string name="browser_album_title">Sem título</string>
   <string name="preference_edges_resistance_label">Resistência de bordas</string>
   <string name="preference_edges_resistance_summary">Resistência antes de mudar de página</string>
@@ -99,4 +114,5 @@
   <string name="fullscreen_notice">Deslize do topo para a base para mostrar o menu de opções e sair do modo tela cheia.</string>
   <string name="quit">Sair</string>
   <string name="thumbnail">Miniatura</string>
+  <string name="unknown">desconhecido</string>
 </resources>
