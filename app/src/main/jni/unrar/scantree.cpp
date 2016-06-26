@@ -17,6 +17,8 @@ ScanTree::ScanTree(StringList *FileMasks,RECURSE_MODE Recurse,bool GetLinks,SCAN
   Errors=0;
   *ErrArcName=0;
   Cmd=NULL;
+  ErrDirList=NULL;
+  ErrDirSpecPathLength=NULL;
 }
 
 
@@ -169,7 +171,7 @@ bool ScanTree::GetFilteredMask()
 
   wchar Filter[NM];
   // Convert path\dir*\ to *\dir filter to search for 'dir' in all 'path' subfolders.
-  wcscpy(Filter,L"*");
+  unrar_wcscpy(Filter,L"*");
   AddEndSlash(Filter,ASIZE(Filter));
   // SlashPos might point or not point to path separator for masks like 'dir*', '\dir*' or 'd:dir*'
   wchar *WildName=IsPathDiv(CurMask[SlashPos]) || IsDriveDiv(CurMask[SlashPos]) ? CurMask+SlashPos+1 : CurMask+SlashPos;
@@ -467,6 +469,10 @@ void ScanTree::ScanError(bool &Error)
 
   if (Error)
   {
+    if (ErrDirList!=NULL)
+      ErrDirList->AddString(CurMask);
+    if (ErrDirSpecPathLength!=NULL)
+      ErrDirSpecPathLength->Push((uint)SpecPathLength);
     wchar FullName[NM];
     // This conversion works for wildcard masks too.
     ConvertNameToFull(CurMask,FullName,ASIZE(FullName));

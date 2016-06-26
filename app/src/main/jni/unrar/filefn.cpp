@@ -337,11 +337,11 @@ void CalcFileSum(File *SrcFile,uint *CRC32,byte *Blake2,uint Threads,int64 Size,
 {
   SaveFilePos SavePos(*SrcFile);
 #ifndef SILENT
-  int64 FileLength=SrcFile->FileLength();
+  int64 FileLength=Size==INT64NDF ? SrcFile->FileLength() : Size;
 #endif
 
 #ifndef GUI
-  if ((Flags & (CALCFSUM_SHOWTEXT|CALCFSUM_SHOWALL))!=0)
+  if ((Flags & (CALCFSUM_SHOWTEXT|CALCFSUM_SHOWPERCENT))!=0)
 #endif
     uiMsg(UIEVENT_FILESUMSTART);
 
@@ -357,6 +357,7 @@ void CalcFileSum(File *SrcFile,uint *CRC32,byte *Blake2,uint Threads,int64 Size,
   HashBlake2.Init(HASH_BLAKE2,Threads);
 
   int64 BlockCount=0;
+  int64 TotalRead=0;
   while (true)
   {
     size_t SizeToRead;
@@ -367,14 +368,20 @@ void CalcFileSum(File *SrcFile,uint *CRC32,byte *Blake2,uint Threads,int64 Size,
     int ReadSize=SrcFile->Read(&Data[0],SizeToRead);
     if (ReadSize==0)
       break;
+    TotalRead+=ReadSize;
 
     if ((++BlockCount & 0xf)==0)
     {
 #ifndef SILENT
+      if ((Flags & CALCFSUM_SHOWPROGRESS)!=0)
+        uiExtractProgress(TotalRead,FileLength,TotalRead,FileLength);
+      else
+      {
 #ifndef GUI
-      if ((Flags & CALCFSUM_SHOWALL)!=0)
+        if ((Flags & CALCFSUM_SHOWPERCENT)!=0)
 #endif
-        uiMsg(UIEVENT_FILESUMPROGRESS,ToPercent(BlockCount*int64(BufSize),FileLength));
+          uiMsg(UIEVENT_FILESUMPROGRESS,ToPercent(TotalRead,FileLength));
+      }
 #endif
       Wait();
     }
@@ -388,7 +395,7 @@ void CalcFileSum(File *SrcFile,uint *CRC32,byte *Blake2,uint Threads,int64 Size,
       Size-=ReadSize;
   }
 #ifndef GUI
-  if ((Flags & CALCFSUM_SHOWALL)!=0)
+  if ((Flags & CALCFSUM_SHOWPERCENT)!=0)
 #endif
     uiMsg(UIEVENT_FILESUMEND);
 
