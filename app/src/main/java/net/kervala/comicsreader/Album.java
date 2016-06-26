@@ -257,9 +257,8 @@ public class Album {
 	}
 	
 	public static boolean isValidImage(String filename) {
-		if (filename == null || filename.length() < 4) return false;
-
-		return isValidJpegImage(filename) || isValidPngImage(filename) || isValidGifImage(filename);
+		return !(filename == null || filename.length() < 4 || filename.startsWith(".") || filename.contains("/.")) &&
+				(isValidJpegImage(filename) || isValidPngImage(filename) || isValidGifImage(filename));
 	}
 	
 	public Album() {
