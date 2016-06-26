@@ -22,10 +22,8 @@ package net.kervala.comicsreader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import android.content.Context;
@@ -92,7 +90,7 @@ public class ComicsParameters {
 
 		++sReferences;
 	}
-	
+
 	public static void release() {
 		--sReferences;
 
@@ -122,9 +120,8 @@ public class ComicsParameters {
 			sIsCyanogenMod = (Boolean)hasSystemFeature.invoke(pm, "com.cyanogenmod.android");
 		} catch (NoSuchMethodException e) {
 			Log.e(ComicsParameters.APP_TAG, "Method hasSystemFeature doesn't exist");
-		} catch (IllegalAccessException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
+			Log.e(ComicsParameters.APP_TAG, "Error when getting method hasSystemFeature");
 		}
 	}
 	
@@ -157,9 +154,8 @@ public class ComicsParameters {
 				sHasMenuKey = (Boolean)hasPermanentMenuKey.invoke(config);
 			} catch (NoSuchMethodException e) {
 				Log.e(ComicsParameters.APP_TAG, "Method hasPermanentMenuKey doesn't exist");
-			} catch (IllegalAccessException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
+				Log.e(ComicsParameters.APP_TAG, "Error when getting method hasPermanentMenuKey");
 			}
 		}
 	}
@@ -176,7 +172,7 @@ public class ComicsParameters {
 			try {
 				BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(buildPropFile)));
 
-				String line = null;
+				String line;
 
 				while((line = in.readLine()) != null) {
 					if (line.startsWith("ro.build.characteristics")) {
@@ -184,12 +180,12 @@ public class ComicsParameters {
 
 						if (tokens.length > 1) {
 							tokens = tokens[1].split(",");
-							
-							for(int i = 0; i < tokens.length; ++i) {
-								if ("tablet".equalsIgnoreCase(tokens[i])) {
+
+							for (String token : tokens) {
+								if ("tablet".equalsIgnoreCase(token)) {
 									sDeviceType = "tablet";
 									break;
-								} else if ("phone".equalsIgnoreCase(tokens[i])) {
+								} else if ("phone".equalsIgnoreCase(token)) {
 									sDeviceType = "phone";
 									break;
 								}
@@ -201,8 +197,8 @@ public class ComicsParameters {
 				}
 
 				in.close();
-			} catch (FileNotFoundException e) {
 			} catch (IOException e) {
+				Log.e(ComicsParameters.APP_TAG, "Error when reading /system/build.prop");
 			}
 		}
 
@@ -264,22 +260,30 @@ public class ComicsParameters {
 		sCacheDirectory = new File(sExternalDirectory, "/Android/data/" + sPackageName + "/cache");
 
 		// create root cache directory
-		if (!sCacheDirectory.exists()) sCacheDirectory.mkdirs();
+		if (!sCacheDirectory.exists() && !sCacheDirectory.mkdirs()) {
+			Log.e(APP_TAG, "Unable to create " + sCacheDirectory + "directory");
+		}
 		
 		sCacheCurrentAlbumDirectory = new File(sCacheDirectory, "current");
 
 		// create current album cache directory
-		if (!sCacheCurrentAlbumDirectory.exists()) sCacheCurrentAlbumDirectory.mkdirs();
+		if (!sCacheCurrentAlbumDirectory.exists() && !sCacheCurrentAlbumDirectory.mkdirs()) {
+			Log.e(APP_TAG, "Unable to create " + sCacheCurrentAlbumDirectory + "directory");
+		}
 
 		sCoversDirectory = new File(sCacheDirectory, "covers");
 
 		// create covers directory
-		if (!sCoversDirectory.exists()) sCoversDirectory.mkdirs();
+		if (!sCoversDirectory.exists() && !sCoversDirectory.mkdirs()) {
+			Log.e(APP_TAG, "Unable to create " + sCoversDirectory + "directory");
+		}
 
 		sPagesDirectory = new File(sCacheDirectory, "pages");
 
 		// create pages directory
-		if (!sPagesDirectory.exists()) sPagesDirectory.mkdirs();
+		if (!sPagesDirectory.exists() && !sPagesDirectory.mkdirs()) {
+			Log.e(APP_TAG, "Unable to create " + sPagesDirectory + "directory");
+		}
 	}
 
 	public static int getDownloadedSize() {
@@ -302,7 +306,9 @@ public class ComicsParameters {
 			for(File file: files) {
 				// don't delete current open album
 				if (!file.getAbsolutePath().equals(ComicsParameters.sCurrentOpenAlbum)) {
-					file.delete();
+					if (!file.delete()) {
+						Log.e(APP_TAG, "Unable to delete " + file.getAbsolutePath());
+					}
 				}
 			}
 		}
@@ -316,8 +322,10 @@ public class ComicsParameters {
 	public static void clearAllCoversCache() {
 		final File[] files = ComicsParameters.sCoversDirectory.listFiles();
 		if (files != null) {
-			for (File f : files) {
-				f.delete();
+			for (File file : files) {
+				if (!file.delete()) {
+					Log.e(APP_TAG, "Unable to delete " + file.getAbsolutePath());
+				}
 			}
 		}
 	}
@@ -332,12 +340,16 @@ public class ComicsParameters {
 
 				if (files != null) {
 					for (File file : files) {
-						file.delete();
+						if (!file.delete()) {
+							Log.e(APP_TAG, "Unable to delete " + file.getAbsolutePath());
+						}
 					}
 				}
 
 				// delete directory
-				dir.delete();
+				if (dir.delete()) {
+					Log.e(APP_TAG, "Unable to delete " + dir.getAbsolutePath());
+				}
 			}
 		}
 	}
@@ -346,8 +358,10 @@ public class ComicsParameters {
 		// delete all cached pages
 		File[] files = ComicsParameters.sCacheCurrentAlbumDirectory.listFiles();
 		if (files != null) {
-			for (File f : files) {
-				f.delete();
+			for (File file : files) {
+				if (!file.delete()) {
+					Log.e(APP_TAG, "Unable to delete " + file.getAbsolutePath());
+				}
 			}
 		}
 	}

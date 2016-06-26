@@ -57,7 +57,6 @@ public class CbzAlbum extends Album {
 				}
 
 				ifs.close();
-			} catch (FileNotFoundException e) {
 			} catch (IOException e) {
 			}
 		}

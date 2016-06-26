@@ -266,11 +266,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 	}
 
 	public boolean openLastFolder() {
-		if (browseFolder(mLastUrl)) {
-			return true;
-		}
-
-		return false;
+		return browseFolder(mLastUrl);
 	}
 
 	public boolean openLastFile() {
@@ -387,7 +383,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 	}
 	
 	private String getDefaultDirectory() {
-		String folder = null;
+		String folder;
 		String state = Environment.getExternalStorageState();
 
 		// a SD card is mounted, use it
@@ -465,10 +461,8 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 
 			ok = true;
 		}
-		
-		if (!ok) return false;
 
-		return true;
+		return ok;
 	}
 	
 	public void resetAdapter() {

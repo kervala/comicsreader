@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -91,6 +92,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 				inflater.inflate(R.menu.bookmarks_menu_context, menu);
 			}
 		} catch (ClassCastException e) {
+			Log.e(ComicsParameters.APP_TAG, "Unable to inflate menu");
 		}
 	}
 
