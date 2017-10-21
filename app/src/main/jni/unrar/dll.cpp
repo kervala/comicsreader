@@ -221,10 +221,10 @@ int PASCAL RARReadHeaderEx(HANDLE hArcData,struct RARHeaderDataEx *D)
       else
         return Code;
     }
-    unrar_wcsncpy(D->ArcNameW,Data->Arc.FileName,ASIZE(D->ArcNameW));
+    wcsncpy(D->ArcNameW,Data->Arc.FileName,ASIZE(D->ArcNameW));
     WideToChar(D->ArcNameW,D->ArcName,ASIZE(D->ArcName));
 
-    unrar_wcsncpy(D->FileNameW,hd->FileName,ASIZE(D->FileNameW));
+    wcsncpy(D->FileNameW,hd->FileName,ASIZE(D->FileNameW));
     WideToChar(D->FileNameW,D->FileName,ASIZE(D->FileName));
 #ifdef _WIN_ALL
     CharToOemA(D->FileName,D->FileName);
@@ -253,6 +253,17 @@ int PASCAL RARReadHeaderEx(HANDLE hArcData,struct RARHeaderDataEx *D)
       D->UnpVer=Data->Arc.FileHead.UnpVer;
     D->FileCRC=hd->FileHash.CRC32;
     D->FileTime=hd->mtime.GetDos();
+    
+    uint64 MRaw=hd->mtime.GetWin();
+    D->MtimeLow=(uint)MRaw;
+    D->MtimeHigh=(uint)(MRaw>>32);
+    uint64 CRaw=hd->ctime.GetWin();
+    D->CtimeLow=(uint)CRaw;
+    D->CtimeHigh=(uint)(CRaw>>32);
+    uint64 ARaw=hd->atime.GetWin();
+    D->AtimeLow=(uint)ARaw;
+    D->AtimeHigh=(uint)(ARaw>>32);
+
     D->Method=hd->Method+0x30;
     D->FileAttr=hd->FileAttr;
     D->CmtSize=0;
@@ -350,14 +361,14 @@ int PASCAL ProcessFile(HANDLE hArcData,int Operation,char *DestPath,char *DestNa
 
       if (DestPathW!=NULL)
       {
-        unrar_wcsncpy(Data->Cmd.ExtrPath,DestPathW,ASIZE(Data->Cmd.ExtrPath));
+        wcsncpy(Data->Cmd.ExtrPath,DestPathW,ASIZE(Data->Cmd.ExtrPath));
         AddEndSlash(Data->Cmd.ExtrPath,ASIZE(Data->Cmd.ExtrPath));
       }
 
       if (DestNameW!=NULL)
         wcsncpyz(Data->Cmd.DllDestName,DestNameW,ASIZE(Data->Cmd.DllDestName));
 
-      unrar_wcscpy(Data->Cmd.Command,Operation==RAR_EXTRACT ? L"X":L"T");
+      wcscpy(Data->Cmd.Command,Operation==RAR_EXTRACT ? L"X":L"T");
       Data->Cmd.Test=Operation!=RAR_EXTRACT;
       bool Repeat=false;
       Data->Extract.ExtractCurrentFile(Data->Arc,Data->HeaderSize,Repeat);

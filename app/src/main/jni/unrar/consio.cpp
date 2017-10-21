@@ -4,12 +4,11 @@
 static MESSAGE_TYPE MsgStream=MSG_STDOUT;
 static RAR_CHARSET RedirectCharset=RCH_DEFAULT;
 
+#ifndef SILENT
 const int MaxMsgSize=2*NM+2048;
-
-#ifdef _WIN_ALL
-static bool StdoutRedirected=false,StderrRedirected=false,StdinRedirected=false;
 #endif
 
+static bool StdoutRedirected=false,StderrRedirected=false,StdinRedirected=false;
 
 #ifdef _WIN_ALL
 static bool IsRedirected(DWORD nStdHandle)
@@ -79,8 +78,11 @@ static void cvt_wprintf(FILE *dest,const wchar *fmt,va_list arglist)
     {
       // Avoid Unicode for redirect in Windows, it does not work with pipes.
       safebuf char MsgA[MaxMsgSize];
-      WideToChar(Msg,MsgA,ASIZE(MsgA));
-      if (RedirectCharset!=RCH_ANSI)
+      if (RedirectCharset==RCH_UTF8)
+        WideToUtf(Msg,MsgA,ASIZE(MsgA));
+      else
+        WideToChar(Msg,MsgA,ASIZE(MsgA));
+      if (RedirectCharset==RCH_DEFAULT || RedirectCharset==RCH_OEM)
         CharToOemA(MsgA,MsgA); // Console tools like 'more' expect OEM encoding.
 
       // We already converted \n to \r\n above, so we use WriteFile instead
@@ -200,7 +202,7 @@ bool GetConsolePassword(UIPASSWORD_TYPE Type,const wchar *FileName,SecPassword *
       eprintf(St(MReAskPsw));
       wchar CmpStr[MAXPASSWORD];
       GetPasswordText(CmpStr,ASIZE(CmpStr));
-      if (*CmpStr==0 || unrar_wcscmp(PlainPsw,CmpStr)!=0)
+      if (*CmpStr==0 || wcscmp(PlainPsw,CmpStr)!=0)
       {
         eprintf(St(MNotMatchPsw));
         cleandata(PlainPsw,sizeof(PlainPsw));
@@ -280,7 +282,7 @@ int Ask(const wchar *AskStr)
   {
     wchar *CurItem=Item[NumItems];
     wcsncpyz(CurItem,NextItem+1,ASIZE(Item[0]));
-    wchar *EndItem=unrar_wcschr(CurItem,'_');
+    wchar *EndItem=wcschr(CurItem,'_');
     if (EndItem!=NULL)
       *EndItem=0;
     int KeyPos=0,CurKey;
@@ -344,7 +346,7 @@ void OutComment(const wchar *Comment,size_t Size)
   {
     wchar Msg[MaxOutSize+1];
     size_t CopySize=Min(MaxOutSize,Size-I);
-    unrar_wcsncpy(Msg,Comment+I,CopySize);
+    wcsncpy(Msg,Comment+I,CopySize);
     Msg[CopySize]=0;
     mprintf(L"%s",Msg);
   }

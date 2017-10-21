@@ -29,8 +29,8 @@ void StringList::AddString(const wchar *Str)
     Str=L"";
 
   size_t PrevSize=StringData.Size();
-  StringData.Add(unrar_wcslen(Str)+1);
-  unrar_wcscpy(&StringData[PrevSize],Str);
+  StringData.Add(wcslen(Str)+1);
+  wcscpy(&StringData[PrevSize],Str);
 
   StringsCount++;
 }
@@ -92,7 +92,7 @@ bool StringList::GetString(wchar **Str)
   }
 
   wchar *CurStr=&StringData[CurPos];
-  CurPos+=unrar_wcslen(CurStr)+1;
+  CurPos+=wcslen(CurStr)+1;
   if (Str!=NULL)
     *Str=CurStr;
 
@@ -116,7 +116,7 @@ bool StringList::Search(const wchar *Str,bool CaseSensitive)
   while (GetString(&CurStr))
   {
     if (Str!=NULL && CurStr!=NULL)
-      if ((CaseSensitive ? unrar_wcscmp(Str,CurStr):wcsicomp(Str,CurStr))!=0)
+      if ((CaseSensitive ? wcscmp(Str,CurStr):wcsicomp(Str,CurStr))!=0)
         continue;
     Found=true;
     break;

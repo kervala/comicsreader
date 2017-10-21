@@ -2,7 +2,7 @@
 
 wchar* PointToName(const wchar *Path)
 {
-  for (int I=(int)unrar_wcslen(Path)-1;I>=0;I--)
+  for (int I=(int)wcslen(Path)-1;I>=0;I--)
     if (IsPathDiv(Path[I]))
       return (wchar*)&Path[I+1];
   return (wchar*)((*Path && IsDriveDiv(Path[1])) ? Path+2:Path);
@@ -11,7 +11,7 @@ wchar* PointToName(const wchar *Path)
 
 wchar* PointToLastChar(const wchar *Path)
 {
-  size_t Length=unrar_wcslen(Path);
+  size_t Length=wcslen(Path);
   return (wchar*)(Length>0 ? Path+Length-1:Path);
 }
 
@@ -33,8 +33,8 @@ wchar* ConvertPath(const wchar *SrcPath,wchar *DestPath)
       s+=2;
     if (s[0]=='\\' && s[1]=='\\')
     {
-      const wchar *Slash=unrar_wcschr(s+2,'\\');
-      if (Slash!=NULL && (Slash=unrar_wcschr(Slash+1,'\\'))!=NULL)
+      const wchar *Slash=wcschr(s+2,'\\');
+      if (Slash!=NULL && (Slash=wcschr(Slash+1,'\\'))!=NULL)
         s=Slash+1;
     }
     for (const wchar *t=s;*t!=0;t++)
@@ -58,7 +58,7 @@ wchar* ConvertPath(const wchar *SrcPath,wchar *DestPath)
     // so we use the temporary buffer for copying.
     wchar TmpStr[NM];
     wcsncpyz(TmpStr,DestPtr,ASIZE(TmpStr));
-    unrar_wcscpy(DestPath,TmpStr);
+    wcscpy(DestPath,TmpStr);
   }
   return (wchar *)DestPtr;
 }
@@ -162,9 +162,9 @@ int GetPathDisk(const wchar *Path)
 
 void AddEndSlash(wchar *Path,size_t MaxLength)
 {
-  size_t Length=unrar_wcslen(Path);
+  size_t Length=wcslen(Path);
   if (Length>0 && Path[Length-1]!=CPATHDIVIDER && Length+1<MaxLength)
-    unrar_wcscat(Path,SPATHDIVIDER);
+    wcscat(Path,SPATHDIVIDER);
 }
 
 
@@ -186,7 +186,7 @@ void GetFilePath(const wchar *FullName,wchar *Path,size_t MaxLength)
   if (MaxLength==0)
     return;
   size_t PathLength=Min(MaxLength-1,size_t(PointToName(FullName)-FullName));
-  unrar_wcsncpy(Path,FullName,PathLength);
+  wcsncpy(Path,FullName,PathLength);
   Path[PathLength]=0;
 }
 
@@ -309,7 +309,7 @@ void GetConfigName(const wchar *Name,wchar *FullName,size_t MaxSize,bool CheckEx
 wchar* GetVolNumPart(const wchar *ArcName)
 {
   // Pointing to last name character.
-  const wchar *ChPtr=ArcName+unrar_wcslen(ArcName)-1;
+  const wchar *ChPtr=ArcName+wcslen(ArcName)-1;
 
   // Skipping the archive extension.
   while (!IsDigit(*ChPtr) && ChPtr>ArcName)
@@ -328,7 +328,7 @@ wchar* GetVolNumPart(const wchar *ArcName)
     {
       // Validate the first numeric part only if it has a dot somewhere 
       // before it.
-      wchar *Dot=unrar_wcschr(PointToName(ArcName),'.');
+      wchar *Dot=wcschr(PointToName(ArcName),'.');
       if (Dot!=NULL && Dot<NumPtr)
         ChPtr=NumPtr;
       break;
@@ -348,8 +348,8 @@ void NextVolumeName(wchar *ArcName,uint MaxLength,bool OldNumbering)
     ChPtr=GetExt(ArcName);
   }
   else
-    if ((ChPtr[1]==0 && unrar_wcslen(ArcName)<MaxLength-3) || wcsicomp(ChPtr+1,L"exe")==0 || wcsicomp(ChPtr+1,L"sfx")==0)
-      unrar_wcscpy(ChPtr+1,L"rar");
+    if ((ChPtr[1]==0 && wcslen(ArcName)<MaxLength-3) || wcsicomp(ChPtr+1,L"exe")==0 || wcsicomp(ChPtr+1,L"sfx")==0)
+      wcscpy(ChPtr+1,L"rar");
   if (!OldNumbering)
   {
     ChPtr=GetVolNumPart(ArcName);
@@ -360,7 +360,7 @@ void NextVolumeName(wchar *ArcName,uint MaxLength,bool OldNumbering)
       ChPtr--;
       if (ChPtr<ArcName || !IsDigit(*ChPtr))
       {
-        for (wchar *EndPtr=ArcName+unrar_wcslen(ArcName);EndPtr!=ChPtr;EndPtr--)
+        for (wchar *EndPtr=ArcName+wcslen(ArcName);EndPtr!=ChPtr;EndPtr--)
           *(EndPtr+1)=*EndPtr;
         *(ChPtr+1)='1';
         break;
@@ -369,7 +369,7 @@ void NextVolumeName(wchar *ArcName,uint MaxLength,bool OldNumbering)
   }
   else
     if (!IsDigit(*(ChPtr+2)) || !IsDigit(*(ChPtr+3)))
-      unrar_wcscpy(ChPtr+2,L"00");
+      wcscpy(ChPtr+2,L"00");
     else
     {
       ChPtr+=3;
@@ -391,7 +391,7 @@ void NextVolumeName(wchar *ArcName,uint MaxLength,bool OldNumbering)
 bool IsNameUsable(const wchar *Name)
 {
 #ifndef _UNIX
-  if (Name[0] && Name[1] && unrar_wcschr(Name+2,':')!=NULL)
+  if (Name[0] && Name[1] && wcschr(Name+2,':')!=NULL)
     return false;
   for (const wchar *s=Name;*s!=0;s++)
   {
@@ -440,7 +440,7 @@ void MakeNameUsable(wchar *Name,bool Extended)
 {
   for (wchar *s=Name;*s!=0;s++)
   {
-    if (unrar_wcschr(Extended ? L"?*<>|\"":L"?*",*s)!=NULL || (Extended && (uint)*s<32))
+    if (wcschr(Extended ? L"?*<>|\"":L"?*",*s)!=NULL || (Extended && (uint)*s<32))
       *s='_';
 #ifndef _UNIX
     if (s-Name>1 && *s==':')
@@ -564,17 +564,17 @@ void GetPathRoot(const wchar *Path,wchar *Root,size_t MaxSize)
   else
     if (Path[0]=='\\' && Path[1]=='\\')
     {
-      const wchar *Slash=unrar_wcschr(Path+2,'\\');
+      const wchar *Slash=wcschr(Path+2,'\\');
       if (Slash!=NULL)
       {
         size_t Length;
-        if ((Slash=unrar_wcschr(Slash+1,'\\'))!=NULL)
+        if ((Slash=wcschr(Slash+1,'\\'))!=NULL)
           Length=Slash-Path+1;
         else
-          Length=unrar_wcslen(Path);
+          Length=wcslen(Path);
         if (Length>=MaxSize)
           Length=0;
-        unrar_wcsncpy(Root,Path,Length);
+        wcsncpy(Root,Path,Length);
         Root[Length]=0;
       }
     }
@@ -596,7 +596,7 @@ int ParseVersionFileName(wchar *Name,bool Truncate)
 }
 
 
-#if !defined(SFX_MODULE) && !defined(SETUP)
+#if !defined(SFX_MODULE)
 // Get the name of first volume. Return the leftmost digit of volume number.
 wchar* VolNameToFirstName(const wchar *VolName,wchar *FirstName,size_t MaxSize,bool NewNumbering)
 {
@@ -698,7 +698,7 @@ static void GenArcName(wchar *ArcName,const wchar *GenerateMask,uint ArcNumber,b
       // in this function.
       if (NCount<Digits)
       {
-        wmemmove(Mask+I+Digits,Mask+I+NCount,unrar_wcslen(Mask+I+NCount)+1);
+        wmemmove(Mask+I+Digits,Mask+I+NCount,wcslen(Mask+I+NCount)+1);
         wmemset(Mask+I,'N',Digits);
       }
       I+=Max(Digits,NCount)-1;
@@ -715,7 +715,7 @@ static void GenArcName(wchar *ArcName,const wchar *GenerateMask,uint ArcNumber,b
   wchar Ext[NM],*Dot=GetExt(ArcName);
   *Ext=0;
   if (Dot==NULL)
-    unrar_wcscpy(Ext,*PointToName(ArcName)==0 ? L".rar":L"");
+    wcscpy(Ext,*PointToName(ArcName)==0 ? L".rar":L"");
   else
   {
     wcsncpyz(Ext,Dot,ASIZE(Ext));
@@ -762,7 +762,7 @@ static void GenArcName(wchar *ArcName,const wchar *GenerateMask,uint ArcNumber,b
     }
     if (QuoteMode)
       continue;
-    const wchar *ChPtr=unrar_wcschr(MaskChars,toupperw(Mask[I]));
+    const wchar *ChPtr=wcschr(MaskChars,toupperw(Mask[I]));
     if (ChPtr!=NULL)
       CField[ChPtr-MaskChars]++;
    }
@@ -777,7 +777,7 @@ static void GenArcName(wchar *ArcName,const wchar *GenerateMask,uint ArcNumber,b
       QuoteMode=(Mask[I]=='{');
       continue;
     }
-    const wchar *ChPtr=unrar_wcschr(MaskChars,toupperw(Mask[I]));
+    const wchar *ChPtr=wcschr(MaskChars,toupperw(Mask[I]));
     if (ChPtr==NULL || QuoteMode)
     {
       DateText[J]=Mask[I];
@@ -795,7 +795,7 @@ static void GenArcName(wchar *ArcName,const wchar *GenerateMask,uint ArcNumber,b
       if (FieldPos==1 && toupperw(Mask[I+1])=='M' && toupperw(Mask[I+2])=='M')
       {
         wcsncpyz(DateText+J,GetMonthName(rlt.Month-1),ASIZE(DateText)-J);
-        J=unrar_wcslen(DateText);
+        J=wcslen(DateText);
         I+=2;
         continue;
       }
@@ -814,11 +814,11 @@ static void GenArcName(wchar *ArcName,const wchar *GenerateMask,uint ArcNumber,b
     AddEndSlash(NewName,ASIZE(NewName));
     wcsncatz(NewName,DateText,ASIZE(NewName));
     wcsncatz(NewName,PointToName(ArcName),ASIZE(NewName));
-    unrar_wcscpy(ArcName,NewName);
+    wcscpy(ArcName,NewName);
   }
   else
-    unrar_wcscat(ArcName,DateText);
-  unrar_wcscat(ArcName,Ext);
+    wcscat(ArcName,DateText);
+  wcscat(ArcName,Ext);
 }
 
 
@@ -865,7 +865,7 @@ wchar* GetWideName(const char *Name,const wchar *NameW,wchar *DestW,size_t DestS
   if (NameW!=NULL && *NameW!=0)
   {
     if (DestW!=NameW)
-      unrar_wcsncpy(DestW,NameW,DestSize);
+      wcsncpy(DestW,NameW,DestSize);
   }
   else
     if (Name!=NULL)
@@ -877,7 +877,7 @@ wchar* GetWideName(const char *Name,const wchar *NameW,wchar *DestW,size_t DestS
   if (DestSize>0)
     DestW[DestSize-1]=0;
 
-  return(DestW);
+  return DestW;
 }
 
 
@@ -892,15 +892,15 @@ bool GetWinLongPath(const wchar *Src,wchar *Dest,size_t MaxSize)
   const wchar *Prefix=L"\\\\?\\";
   const size_t PrefixLength=4;
   bool FullPath=IsDriveLetter(Src) && IsPathDiv(Src[2]);
-  size_t SrcLength=unrar_wcslen(Src);
+  size_t SrcLength=wcslen(Src);
   if (IsFullPath(Src)) // Paths in d:\path\name format.
   {
     if (IsDriveLetter(Src))
     {
       if (MaxSize<=PrefixLength+SrcLength)
         return false;
-      unrar_wcsncpy(Dest,Prefix,PrefixLength);
-      unrar_wcscpy(Dest+PrefixLength,Src);
+      wcsncpy(Dest,Prefix,PrefixLength);
+      wcscpy(Dest+PrefixLength,Src);
       return true;
     }
     else
@@ -908,9 +908,9 @@ bool GetWinLongPath(const wchar *Src,wchar *Dest,size_t MaxSize)
       {
         if (MaxSize<=PrefixLength+SrcLength+2)
           return false;
-        unrar_wcsncpy(Dest,Prefix,PrefixLength);
-        unrar_wcscpy(Dest+PrefixLength,L"UNC");
-        unrar_wcscpy(Dest+PrefixLength+3,Src+1);
+        wcsncpy(Dest,Prefix,PrefixLength);
+        wcscpy(Dest+PrefixLength,L"UNC");
+        wcscpy(Dest+PrefixLength+3,Src+1);
         return true;
       }
     // We may be here only if we modify IsFullPath in the future.
@@ -927,18 +927,18 @@ bool GetWinLongPath(const wchar *Src,wchar *Dest,size_t MaxSize)
     {
       if (MaxSize<=PrefixLength+SrcLength+2)
         return false;
-      unrar_wcsncpy(Dest,Prefix,PrefixLength);
-      unrar_wcsncpy(Dest+PrefixLength,CurDir,2); // Copy drive letter 'd:'.
-      unrar_wcscpy(Dest+PrefixLength+2,Src);
+      wcsncpy(Dest,Prefix,PrefixLength);
+      wcsncpy(Dest+PrefixLength,CurDir,2); // Copy drive letter 'd:'.
+      wcscpy(Dest+PrefixLength+2,Src);
       return true;
     }
     else  // Paths in path\name format.
     {
       AddEndSlash(CurDir,ASIZE(CurDir));
-      if (MaxSize<=PrefixLength+unrar_wcslen(CurDir)+SrcLength)
+      if (MaxSize<=PrefixLength+wcslen(CurDir)+SrcLength)
         return false;
-      unrar_wcsncpy(Dest,Prefix,PrefixLength);
-      unrar_wcscpy(Dest+PrefixLength,CurDir);
+      wcsncpy(Dest,Prefix,PrefixLength);
+      wcscpy(Dest+PrefixLength,CurDir);
 
       if (Src[0]=='.' && IsPathDiv(Src[1])) // Remove leading .\ in pathname.
         Src+=2;

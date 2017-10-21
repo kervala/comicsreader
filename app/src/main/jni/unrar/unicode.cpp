@@ -1,102 +1,5 @@
 #include "rar.hpp"
-
-#ifndef _ANDROID
 #define MBFUNCTIONS
-#else
-wchar_t* unrar_wcsncpy(wchar_t* destination, const wchar_t* source, size_t num)
-{
-	if (num != 0)
-	{
-		wchar_t *d = destination;
-		const wchar_t *s = source;
-
-		do
-		{
-			if ((*d++ = *s++) == L'\0')
-			{
-				/* NULL pad the remaining n-1 bytes */
-				while (--num != 0) *d++ = L'\0';
-				break;
-			}
-		}
-		while (--num != 0);
-	}
-
-	return destination;
-}
-
-int unrar_wcscmp(const wchar_t* wcs1, const wchar_t* wcs2)
-{
-	while (*wcs1 == *wcs2++) if (*wcs1++ == L'\0') return 0;
-
-	/* XXX assumes wchar_t = int */
-	return (*(const unsigned int *)wcs1 - *(const unsigned int *)--wcs2);
-}
-
-size_t unrar_wcslen(const wchar_t *str)
-{
-	const wchar_t *p;
-
-	p = str;
-	while (*p) ++p;
-
-	return p - str;
-}
-
-wchar_t *unrar_wcscpy(wchar_t *strDestination, const wchar_t *strSource)
-{
-	wchar_t *cp;
-
-	cp = strDestination;
-	while ((*cp++ = *strSource++) != L'\0');
-
-	return strDestination;
-}
-
-wchar_t *unrar_wcschr(const wchar_t *s, wchar_t c)
-{
-	const wchar_t *p = s;
-	do
-	{
-		if (*p == c)
-		{
-			/* LINTED interface specification */
-			return (wchar_t *) p;
-		}
-	}
-	while (*p++);
-
-	return NULL;
-}
-
-wchar_t *unrar_wcscat(wchar_t *s1, const wchar_t *s2)
-{
-	wchar_t *cp = s1;
-	while (*cp != L'\0') cp++;
-	while ((*cp++ = *s2++) != L'\0');
-
-	return s1;
-}
-
-int unrar_wcsncmp(const wchar_t *s1, const wchar_t *s2, size_t n)
-{
-	if (n == 0) return 0;
-
-	do
-	{
-		if (*s1 != *s2++)
-		{
-			/* XXX assumes wchar_t = int */
-			return (*(const unsigned int *)s1 - *(const unsigned int *)--s2);
-		}
-		if (*s1++ == 0) break;
-	}
-	while (--n != 0);
-
-	return 0;
-}
-
-#endif
 
 #if defined(_UNIX) && defined(MBFUNCTIONS)
 
@@ -124,7 +27,7 @@ bool WideToChar(const wchar *Src,char *Dest,size_t DestSize)
     RetCode=false;
 
 // wcstombs is broken in Android NDK r9.
-#elif defined(_APPLE) || defined(_ANDROID)
+#elif defined(_APPLE)
   WideToUtf(Src,Dest,DestSize);
 
 #elif defined(MBFUNCTIONS)
@@ -171,7 +74,7 @@ bool CharToWide(const char *Src,wchar *Dest,size_t DestSize)
     RetCode=false;
 
 // mbstowcs is broken in Android NDK r9.
-#elif defined(_APPLE) || defined(_ANDROID)
+#elif defined(_APPLE)
   UtfToWide(Src,Dest,DestSize);
 
 #elif defined(MBFUNCTIONS)
@@ -207,14 +110,14 @@ bool CharToWide(const char *Src,wchar *Dest,size_t DestSize)
 }
 
 
-#if defined(_UNIX) && defined(MBFUNCTIONS) && !defined(_ANDROID)
+#if defined(_UNIX) && defined(MBFUNCTIONS)
 // Convert and restore mapped inconvertible Unicode characters. 
 // We use it for extended ASCII names in Unix.
 bool WideToCharMap(const wchar *Src,char *Dest,size_t DestSize,bool &Success)
 {
   // String with inconvertible characters mapped to private use Unicode area
   // must have the mark code somewhere.
-  if (unrar_wcschr(Src,(wchar)MappedStringMark)==NULL)
+  if (wcschr(Src,(wchar)MappedStringMark)==NULL)
     return false;
 
   Success=true;
@@ -252,7 +155,7 @@ bool WideToCharMap(const wchar *Src,char *Dest,size_t DestSize,bool &Success)
 #endif
 
 
-#if defined(_UNIX) && defined(MBFUNCTIONS) && !defined(_ANDROID)
+#if defined(_UNIX) && defined(MBFUNCTIONS)
 // Convert and map inconvertible Unicode characters. 
 // We use it for extended ASCII names in Unix.
 void CharToWideMap(const char *Src,wchar *Dest,size_t DestSize,bool &Success)
@@ -457,7 +360,7 @@ bool UtfToWide(const char *Src,wchar *Dest,size_t DestSize)
       }
       if (Dest!=NULL)
 	  {
-        if (sizeof(*Dest)==2) // Use the surrogate pair for 2 byte Unicode.
+        if (sizeof(*Dest)==2) // Use the surrogate pair.
         {
           *(Dest++)=((d-0x10000)>>10)+0xd800;
           *(Dest++)=(d&0x3ff)+0xdc00;
@@ -476,10 +379,17 @@ bool UtfToWide(const char *Src,wchar *Dest,size_t DestSize)
 }
 
 
+// Source data can be both with and without UTF-8 BOM.
+bool IsTextUtf8(const char *Src)
+{
+  return UtfToWide(Src,NULL,0);
+}
+
+
 int wcsicomp(const wchar *s1,const wchar *s2)
 {
 #ifdef _WIN_ALL
-  return CompareString(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,-1,s2,-1)-2;
+  return CompareStringW(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,-1,s2,-1)-2;
 #else
   while (true)
   {
@@ -503,8 +413,8 @@ int wcsnicomp(const wchar *s1,const wchar *s2,size_t n)
   // If we specify 'n' exceeding the actual string length, CompareString goes
   // beyond the trailing zero and compares garbage. So we need to limit 'n'
   // to real string length.
-  size_t l1=Min(unrar_wcslen(s1)+1,n);
-  size_t l2=Min(unrar_wcslen(s2)+1,n);
+  size_t l1=Min(wcslen(s1)+1,n);
+  size_t l2=Min(wcslen(s2)+1,n);
   return CompareStringW(LOCALE_USER_DEFAULT,NORM_IGNORECASE|SORT_STRINGSORT,s1,(int)l1,s2,(int)l2)-2;
 #else
   if (n==0)
@@ -571,11 +481,11 @@ wchar* wcsupper(wchar *s)
 
 int toupperw(int ch)
 {
-#ifdef _WIN_ALL
+#if defined(_WIN_ALL)
   // CharUpper is more reliable than towupper in Windows, which seems to be
   // C locale dependent even in Unicode version. For example, towupper failed
   // to convert lowercase Russian characters.
-  return (int)CharUpper((wchar *)ch);
+  return (int)(INT_PTR)CharUpper((wchar *)(INT_PTR)ch);
 #else
   return towupper(ch);
 #endif
@@ -584,10 +494,10 @@ int toupperw(int ch)
 
 int tolowerw(int ch)
 {
-#ifdef _WIN_ALL
+#if defined(_WIN_ALL)
   // CharLower is more reliable than towlower in Windows.
   // See comment for towupper above.
-  return (int)CharLower((wchar *)ch);
+  return (int)(INT_PTR)CharLower((wchar *)(INT_PTR)ch);
 #else
   return towlower(ch);
 #endif
@@ -602,19 +512,23 @@ int atoiw(const wchar *s)
 
 int64 atoilw(const wchar *s)
 {
-  int sign=1;
+  bool sign=false;
   if (*s=='-')
   {
     s++;
-    sign=-1;
+    sign=true;
   }
-  int64 n=0;
+  // Use unsigned type here, since long string can overflow the variable
+  // and signed integer overflow is undefined behavior in C++.
+  uint64 n=0;
   while (*s>='0' && *s<='9')
   {
     n=n*10+(*s-'0');
     s++;
   }
-  return sign*n;
+  // Check int64(n)>=0 to avoid the signed overflow with undefined behavior
+  // when negating 0x8000000000000000.
+  return sign && int64(n)>=0 ? -int64(n) : int64(n);
 }
 
 

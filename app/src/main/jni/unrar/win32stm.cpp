@@ -20,12 +20,12 @@ void ExtractStreams20(Archive &Arc,const wchar *FileName)
   wchar StreamName[NM+2];
   if (FileName[0]!=0 && FileName[1]==0)
   {
-    unrar_wcscpy(StreamName,L".\\");
-    unrar_wcscpy(StreamName+2,FileName);
+    wcscpy(StreamName,L".\\");
+    wcscpy(StreamName+2,FileName);
   }
   else
-    unrar_wcscpy(StreamName,FileName);
-  if (unrar_wcslen(StreamName)+strlen(Arc.StreamHead.StreamName)>=ASIZE(StreamName) ||
+    wcscpy(StreamName,FileName);
+  if (wcslen(StreamName)+strlen(Arc.StreamHead.StreamName)>=ASIZE(StreamName) ||
       Arc.StreamHead.StreamName[0]!=':')
   {
     uiMsg(UIERROR_STREAMBROKEN,Arc.FileName,FileName);
@@ -87,7 +87,7 @@ void ExtractStreams(Archive &Arc,const wchar *FileName,bool TestMode)
   wchar FullName[NM+2];
   if (FileName[0]!=0 && FileName[1]==0)
   {
-    unrar_wcscpy(FullName,L".\\");
+    wcscpy(FullName,L".\\");
     wcsncpyz(FullName+2,FileName,ASIZE(FullName)-2);
   }
   else

@@ -34,7 +34,7 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
   Arc.Close();
 
   wchar NextName[NM];
-  unrar_wcscpy(NextName,Arc.FileName);
+  wcscpy(NextName,Arc.FileName);
   NextVolumeName(NextName,ASIZE(NextName),!Arc.NewNumbering);
 
 #if !defined(SFX_MODULE) && !defined(RARDLL)
@@ -42,7 +42,7 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
 #endif
   bool FailedOpen=false,OldSchemeTested=false;
 
-#if !defined(GUI) && !defined(SILENT)
+#if !defined(SILENT)
   // In -vp mode we force the pause before next volume even if it is present
   // and even if we are on the hard disk. It is important when user does not
   // want to process partially downloaded volumes preliminary.
@@ -67,12 +67,12 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
         // Checking for new style volumes renamed by user to old style
         // name format. Some users did it for unknown reason.
         wchar AltNextName[NM];
-        unrar_wcscpy(AltNextName,Arc.FileName);
+        wcscpy(AltNextName,Arc.FileName);
         NextVolumeName(AltNextName,ASIZE(AltNextName),true);
         OldSchemeTested=true;
         if (Arc.Open(AltNextName,OpenMode))
         {
-          unrar_wcscpy(NextName,AltNextName);
+          wcscpy(NextName,AltNextName);
           break;
         }
       }
@@ -93,13 +93,11 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
       }
 #endif
 
-#ifndef GUI
       if (!Cmd->VolumePause && !IsRemovable(NextName))
       {
         FailedOpen=true;
         break;
       }
-#endif
 #ifndef SILENT
       if (Cmd->AllYes || !uiAskNextVolume(NextName,ASIZE(NextName)))
 #endif
@@ -139,14 +137,12 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
     Arc.ConvertAttributes();
     Arc.Seek(Arc.NextBlockPos-Arc.FileHead.PackSize,SEEK_SET);
   }
-#ifndef GUI
   if (ShowFileName)
   {
     mprintf(St(MExtrPoints),Arc.FileHead.FileName);
     if (!Cmd->DisablePercentage)
       mprintf(L"     ");
   }
-#endif
   if (DataIO!=NULL)
   {
     if (HeaderType==HEAD_ENDARC)
@@ -190,11 +186,11 @@ bool DllVolChange(RAROptions *Cmd,wchar *NextName,size_t NameSize)
   if (Cmd->Callback!=NULL)
   {
     wchar OrgNextName[NM];
-    unrar_wcscpy(OrgNextName,NextName);
+    wcscpy(OrgNextName,NextName);
     if (Cmd->Callback(UCM_CHANGEVOLUMEW,Cmd->UserData,(LPARAM)NextName,RAR_VOL_ASK)==-1)
       DllVolAborted=true;
     else
-      if (unrar_wcscmp(OrgNextName,NextName)!=0)
+      if (wcscmp(OrgNextName,NextName)!=0)
         DllVolChanged=true;
       else
       {

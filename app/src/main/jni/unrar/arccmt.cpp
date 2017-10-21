@@ -1,3 +1,5 @@
+//static bool IsAnsiEscComment(const wchar *Data,size_t Size);
+
 bool Archive::GetComment(Array<wchar> *CmtData)
 {
   if (!MainComment)
@@ -5,7 +7,7 @@ bool Archive::GetComment(Array<wchar> *CmtData)
   SaveFilePos SavePos(*this);
 
 #ifndef SFX_MODULE
-  ushort CmtLength;
+  uint CmtLength;
   if (Format==RARFMT14)
   {
     Seek(SFXSize+SIZEOF_MAINHEAD14,SEEK_SET);
@@ -43,14 +45,14 @@ bool Archive::GetComment(Array<wchar> *CmtData)
   if ((Format==RARFMT14 && MainHead.PackComment) || (Format!=RARFMT14 && CommHead.Method!=0x30))
   {
     if (Format!=RARFMT14 && (CommHead.UnpVer < 15 || CommHead.UnpVer > VER_UNPACK || CommHead.Method > 0x35))
-      return(false);
+      return false;
     ComprDataIO DataIO;
     DataIO.SetTestMode(true);
     uint UnpCmtLength;
     if (Format==RARFMT14)
     {
 #ifdef RAR_NOCRYPT
-      return(false);
+      return false;
 #else
       UnpCmtLength=GetByte();
       UnpCmtLength+=(GetByte()<<8);
@@ -82,16 +84,20 @@ bool Archive::GetComment(Array<wchar> *CmtData)
       size_t UnpDataSize;
       DataIO.GetUnpackedData(&UnpData,&UnpDataSize);
 #ifdef _WIN_ALL
+      // If we ever decide to extend it to Android, we'll need to alloc
+      // 4x memory for OEM to UTF-8 output here.
       OemToCharBuffA((char *)UnpData,(char *)UnpData,(DWORD)UnpDataSize);
 #endif
       CmtData->Alloc(UnpDataSize+1);
       memset(CmtData->Addr(0),0,CmtData->Size()*sizeof(wchar));
-      CharToWide((char *)UnpData,CmtData->Addr(0),UnpDataSize);
-      CmtData->Alloc(unrar_wcslen(CmtData->Addr(0)));
+      CharToWide((char *)UnpData,CmtData->Addr(0),CmtData->Size());
+      CmtData->Alloc(wcslen(CmtData->Addr(0)));
     }
   }
   else
   {
+    if (CmtLength==0)
+      return false;
     Array<byte> CmtRaw(CmtLength);
     Read(&CmtRaw[0],CmtLength);
 
@@ -103,10 +109,12 @@ bool Archive::GetComment(Array<wchar> *CmtData)
     CmtData->Alloc(CmtLength+1);
     CmtRaw.Push(0);
 #ifdef _WIN_ALL
+    // If we ever decide to extend it to Android, we'll need to alloc
+    // 4x memory for OEM to UTF-8 output here.
     OemToCharA((char *)&CmtRaw[0],(char *)&CmtRaw[0]);
 #endif
     CharToWide((char *)&CmtRaw[0],CmtData->Addr(0),CmtLength);
-    CmtData->Alloc(unrar_wcslen(CmtData->Addr(0)));
+    CmtData->Alloc(wcslen(CmtData->Addr(0)));
   }
 #endif
   return CmtData->Size() > 0;
@@ -134,27 +142,25 @@ bool Archive::ReadCommentData(Array<wchar> *CmtData)
     {
       CharToWide((char *)&CmtRaw[0],CmtData->Addr(0),CmtData->Size());
     }
-  CmtData->Alloc(unrar_wcslen(CmtData->Addr(0))); // Set buffer size to actual comment length.
+  CmtData->Alloc(wcslen(CmtData->Addr(0))); // Set buffer size to actual comment length.
   return true;
 }
 
 
 void Archive::ViewComment()
 {
-#ifndef GUI
   if (Cmd->DisableComment)
     return;
   Array<wchar> CmtBuf;
-  if (GetComment(&CmtBuf))
+  if (GetComment(&CmtBuf)) // In GUI too, so "Test" command detects broken comments.
   {
     size_t CmtSize=CmtBuf.Size();
-    wchar *ChPtr=unrar_wcschr(&CmtBuf[0],0x1A);
+    wchar *ChPtr=wcschr(&CmtBuf[0],0x1A);
     if (ChPtr!=NULL)
       CmtSize=ChPtr-&CmtBuf[0];
     mprintf(L"\n");
     OutComment(&CmtBuf[0],CmtSize);
   }
-#endif
 }
 
 

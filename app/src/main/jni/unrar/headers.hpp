@@ -255,7 +255,7 @@ struct FileHeader:BlockHeader
 
   bool CmpName(const wchar *Name)
   {
-    return(unrar_wcscmp(FileName,Name)==0);
+    return(wcscmp(FileName,Name)==0);
   }
 
   FileHeader& operator = (FileHeader &hd);

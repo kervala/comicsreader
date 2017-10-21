@@ -24,7 +24,7 @@ bool CmpName(const wchar *Wildcard,const wchar *Name,int CmpMode)
 
   if (CmpMode!=MATCH_NAMES)
   {
-    size_t WildLength=unrar_wcslen(Wildcard);
+    size_t WildLength=wcslen(Wildcard);
     if (CmpMode!=MATCH_EXACT && CmpMode!=MATCH_EXACTPATH &&
         mwcsnicompc(Wildcard,Name,WildLength,ForceCase)==0)
     {
@@ -53,7 +53,7 @@ bool CmpName(const wchar *Wildcard,const wchar *Name,int CmpMode)
       else
         if (CmpMode==MATCH_SUBPATH || IsWildcard(Wildcard))
         {
-          if (*Path1 && mwcsnicompc(Path1,Path2,unrar_wcslen(Path1),ForceCase)!=0)
+          if (*Path1 && mwcsnicompc(Path1,Path2,wcslen(Path1),ForceCase)!=0)
             return(false);
         }
         else
@@ -97,13 +97,13 @@ bool match(const wchar *pattern,const wchar *string,bool ForceCase)
         {
           if (pattern[1]=='*' && pattern[2]==0)
             return(true);
-          const wchar *dot=unrar_wcschr(string,'.');
+          const wchar *dot=wcschr(string,'.');
           if (pattern[1]==0)
             return (dot==NULL || dot[1]==0);
           if (dot!=NULL)
           {
             string=dot;
-            if (wcspbrk(pattern,L"*?")==NULL && unrar_wcschr(string+1,'.')==NULL)
+            if (wcspbrk(pattern,L"*?")==NULL && wcschr(string+1,'.')==NULL)
               return(mwcsicompc(pattern+1,string+1,ForceCase)==0);
           }
         }
@@ -130,18 +130,18 @@ bool match(const wchar *pattern,const wchar *string,bool ForceCase)
 int mwcsicompc(const wchar *Str1,const wchar *Str2,bool ForceCase)
 {
   if (ForceCase)
-    return(unrar_wcscmp(Str1,Str2));
-  return(wcsicompc(Str1,Str2));
+    return wcscmp(Str1,Str2);
+  return wcsicompc(Str1,Str2);
 }
 
 
 int mwcsnicompc(const wchar *Str1,const wchar *Str2,size_t N,bool ForceCase)
 {
   if (ForceCase)
-    return(unrar_wcsncmp(Str1,Str2,N));
+    return wcsncmp(Str1,Str2,N);
 #if defined(_UNIX)
-  return(unrar_wcsncmp(Str1,Str2,N));
+  return wcsncmp(Str1,Str2,N);
 #else
-  return(wcsnicomp(Str1,Str2,N));
+  return wcsnicomp(Str1,Str2,N);
 #endif
 }

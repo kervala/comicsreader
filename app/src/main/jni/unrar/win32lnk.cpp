@@ -46,27 +46,29 @@ bool CreateReparsePoint(CommandData *Cmd,const wchar *Name,FileHeader *hd)
 
   wchar SubstName[NM];
   wcsncpyz(SubstName,hd->RedirName,ASIZE(SubstName));
-  size_t SubstLength=unrar_wcslen(SubstName);
+  size_t SubstLength=wcslen(SubstName);
 
   wchar PrintName[NM],*PrintNameSrc=SubstName,*PrintNameDst=PrintName;
-  bool WinPrefix=unrar_wcsncmp(PrintNameSrc,L"\\??\\",4)==0;
+  bool WinPrefix=wcsncmp(PrintNameSrc,L"\\??\\",4)==0;
   if (WinPrefix)
     PrintNameSrc+=4;
-  if (WinPrefix && unrar_wcsncmp(PrintNameSrc,L"UNC\\",4)==0)
+  if (WinPrefix && wcsncmp(PrintNameSrc,L"UNC\\",4)==0)
   {
     *(PrintNameDst++)='\\'; // Insert second \ in beginning of share name.
     PrintNameSrc+=3;
   }
-  unrar_wcscpy(PrintNameDst,PrintNameSrc);
+  wcscpy(PrintNameDst,PrintNameSrc);
 
-  size_t PrintLength=unrar_wcslen(PrintName);
+  size_t PrintLength=wcslen(PrintName);
 
   bool AbsPath=WinPrefix;
   // IsFullPath is not really needed here, AbsPath check is enough.
   // We added it just for extra safety, in case some Windows version would
   // allow to create absolute targets with SYMLINK_FLAG_RELATIVE.
+  // Use hd->FileName instead of Name, since Name can include the destination
+  // path as a prefix, which can confuse IsRelativeSymlinkSafe algorithm.
   if (!Cmd->AbsoluteLinks && (AbsPath || IsFullPath(hd->RedirName) ||
-      !IsRelativeSymlinkSafe(hd->FileName,hd->RedirName)))
+      !IsRelativeSymlinkSafe(Cmd,hd->FileName,Name,hd->RedirName)))
     return false;
 
 #ifndef NOFILECREATE
@@ -101,11 +103,11 @@ bool CreateReparsePoint(CommandData *Cmd,const wchar *Name,FileHeader *hd)
 
     rdb->MountPointReparseBuffer.SubstituteNameOffset=0;
     rdb->MountPointReparseBuffer.SubstituteNameLength=USHORT(SubstLength*sizeof(WCHAR));
-    unrar_wcscpy(rdb->MountPointReparseBuffer.PathBuffer,SubstName);
+    wcscpy(rdb->MountPointReparseBuffer.PathBuffer,SubstName);
 
     rdb->MountPointReparseBuffer.PrintNameOffset=USHORT((SubstLength+1)*sizeof(WCHAR));
     rdb->MountPointReparseBuffer.PrintNameLength=USHORT(PrintLength*sizeof(WCHAR));
-    unrar_wcscpy(rdb->MountPointReparseBuffer.PathBuffer+SubstLength+1,PrintName);
+    wcscpy(rdb->MountPointReparseBuffer.PathBuffer+SubstLength+1,PrintName);
   }
   else
     if (hd->RedirType==FSREDIR_WINSYMLINK || hd->RedirType==FSREDIR_UNIXSYMLINK)
@@ -122,11 +124,11 @@ bool CreateReparsePoint(CommandData *Cmd,const wchar *Name,FileHeader *hd)
 
       rdb->SymbolicLinkReparseBuffer.SubstituteNameOffset=0;
       rdb->SymbolicLinkReparseBuffer.SubstituteNameLength=USHORT(SubstLength*sizeof(WCHAR));
-      unrar_wcscpy(rdb->SymbolicLinkReparseBuffer.PathBuffer,SubstName);
+      wcscpy(rdb->SymbolicLinkReparseBuffer.PathBuffer,SubstName);
 
       rdb->SymbolicLinkReparseBuffer.PrintNameOffset=USHORT((SubstLength+1)*sizeof(WCHAR));
       rdb->SymbolicLinkReparseBuffer.PrintNameLength=USHORT(PrintLength*sizeof(WCHAR));
-      unrar_wcscpy(rdb->SymbolicLinkReparseBuffer.PathBuffer+SubstLength+1,PrintName);
+      wcscpy(rdb->SymbolicLinkReparseBuffer.PathBuffer+SubstLength+1,PrintName);
 
       rdb->SymbolicLinkReparseBuffer.Flags=AbsPath ? 0:SYMLINK_FLAG_RELATIVE;
     }
@@ -146,7 +148,10 @@ bool CreateReparsePoint(CommandData *Cmd,const wchar *Name,FileHeader *hd)
   { 
     CloseHandle(hFile);
     uiMsg(UIERROR_SLINKCREATE,UINULL,Name);
-    if (GetLastError()==ERROR_PRIVILEGE_NOT_HELD)
+
+    DWORD LastError=GetLastError();
+    if ((LastError==ERROR_ACCESS_DENIED || LastError==ERROR_PRIVILEGE_NOT_HELD) &&
+        !IsUserAdmin())
       uiMsg(UIERROR_NEEDADMIN);
     ErrHandler.SysErrMsg();
     ErrHandler.SetErrorCode(RARX_CREATE);

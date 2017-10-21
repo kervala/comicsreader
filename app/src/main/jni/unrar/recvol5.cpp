@@ -1,5 +1,3 @@
-#include "rar.hpp"
-
 static const uint MaxVolumes=65535;
 
 RecVolumes5::RecVolumes5(bool TestOnly)
@@ -138,7 +136,7 @@ void RecVolumes5::ProcessAreaRS(RecRSThreadData *td)
 bool RecVolumes5::Restore(RAROptions *Cmd,const wchar *Name,bool Silent)
 {
   wchar ArcName[NM];
-  unrar_wcsncpyz(ArcName,Name,ASIZE(ArcName));
+  wcsncpyz(ArcName,Name,ASIZE(ArcName));
 
   wchar *Num=GetVolNumPart(ArcName);
   while (Num>ArcName && IsDigit(*(Num-1)))
@@ -287,8 +285,8 @@ bool RecVolumes5::Restore(RAROptions *Cmd,const wchar *Name,bool Silent)
       Item->f->Close();
 
       wchar NewName[NM];
-      unrar_wcscpy(NewName,Item->Name);
-      unrar_wcscat(NewName,L".bad");
+      wcscpy(NewName,Item->Name);
+      wcscat(NewName,L".bad");
 
       uiMsg(UIMSG_BADARCHIVE,Item->Name);
       uiMsg(UIMSG_RENAMING,Item->Name,NewName);
@@ -319,10 +317,8 @@ bool RecVolumes5::Restore(RAROptions *Cmd,const wchar *Name,bool Silent)
 
 
   int64 ProcessedSize=0;
-#ifndef GUI
   int LastPercent=-1;
   mprintf(L"     ");
-#endif
 
   // Even though we already preliminary calculated missing volume number,
   // let's do it again now, when we have the final and exact information.
@@ -414,7 +410,7 @@ bool RecVolumes5::Restore(RAROptions *Cmd,const wchar *Name,bool Silent)
 
   delete[] ValidFlags;
   delete[] Data;
-#if !defined(GUI) && !defined(SILENT)
+#if !defined(SILENT)
   if (!Cmd->DisablePercentage)
     mprintf(L"\b\b\b\b100%%");
   if (!Silent && !Cmd->DisableDone)
@@ -493,10 +489,8 @@ void RecVolumes5::Test(RAROptions *Cmd,const wchar *Name)
     }
     if (!uiStartFileExtract(VolName,false,true,false))
       return;
-#ifndef GUI
     mprintf(St(MExtrTestFile),VolName);
     mprintf(L"     ");
-#endif
     bool Valid=false;
     uint RecNum=ReadHeader(&CurFile,FoundRecVolumes==0);
     if (RecNum!=0)
@@ -510,9 +504,7 @@ void RecVolumes5::Test(RAROptions *Cmd,const wchar *Name)
 
     if (Valid)
     {
-#ifndef GUI
       mprintf(L"%s%s ",L"\b\b\b\b\b ",St(MOk));
-#endif
     }
     else
     {

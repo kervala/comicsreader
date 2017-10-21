@@ -171,7 +171,7 @@ bool ScanTree::GetFilteredMask()
 
   wchar Filter[NM];
   // Convert path\dir*\ to *\dir filter to search for 'dir' in all 'path' subfolders.
-  unrar_wcscpy(Filter,L"*");
+  wcscpy(Filter,L"*");
   AddEndSlash(Filter,ASIZE(Filter));
   // SlashPos might point or not point to path separator for masks like 'dir*', '\dir*' or 'd:dir*'
   wchar *WildName=IsPathDiv(CurMask[SlashPos]) || IsDriveDiv(CurMask[SlashPos]) ? CurMask+SlashPos+1 : CurMask+SlashPos;
@@ -226,7 +226,7 @@ bool ScanTree::GetNextMask()
   SpecPathLength=Name-CurMask;
   Depth=0;
 
-  unrar_wcscpy(OrigCurMask,CurMask);
+  wcscpy(OrigCurMask,CurMask);
 
   return true;
 }
@@ -295,7 +295,11 @@ SCAN_CODE ScanTree::FindProc(FindData *FD)
           if (Cmd!=NULL && Cmd->ExclCheck(CurMask,false,true,true))
             RetCode=SCAN_NEXT;
           else
+          {
             ErrHandler.OpenErrorMsg(ErrArcName,CurMask);
+            // User asked to return RARX_NOFILES and not RARX_OPEN here.
+            ErrHandler.SetErrorCode(RARX_NOFILES);
+          }
         }
 
         // If we searched only for one file or directory in "fast find" 
@@ -346,16 +350,16 @@ SCAN_CODE ScanTree::FindProc(FindData *FD)
     if (Slash!=NULL)
     {
       wchar Mask[NM];
-      unrar_wcscpy(Mask,Slash);
+      wcscpy(Mask,Slash);
       if (Depth<SetAllMaskDepth)
-        unrar_wcscpy(Mask+1,PointToName(OrigCurMask));
+        wcscpy(Mask+1,PointToName(OrigCurMask));
       *Slash=0;
-      unrar_wcscpy(DirName,CurMask);
+      wcscpy(DirName,CurMask);
       wchar *PrevSlash=wcsrchr(CurMask,CPATHDIVIDER);
       if (PrevSlash==NULL)
-        unrar_wcscpy(CurMask,Mask+1);
+        wcscpy(CurMask,Mask+1);
       else
-        unrar_wcscpy(PrevSlash,Mask);
+        wcscpy(PrevSlash,Mask);
     }
     if (GetDirs==SCAN_GETDIRSTWICE &&
         FindFile::FastFind(DirName,FD,GetLinks) && FD->IsDir)
@@ -393,10 +397,10 @@ SCAN_CODE ScanTree::FindProc(FindData *FD)
     
     wchar Mask[NM];
 
-    unrar_wcscpy(Mask,FastFindFile ? MASKALL:PointToName(CurMask));
-    unrar_wcscpy(CurMask,FD->Name);
+    wcscpy(Mask,FastFindFile ? MASKALL:PointToName(CurMask));
+    wcscpy(CurMask,FD->Name);
 
-    if (unrar_wcslen(CurMask)+unrar_wcslen(Mask)+1>=NM || Depth>=MAXSCANDEPTH-1)
+    if (wcslen(CurMask)+wcslen(Mask)+1>=NM || Depth>=MAXSCANDEPTH-1)
     {
       uiMsg(UIERROR_PATHTOOLONG,CurMask,SPATHDIVIDER,Mask);
       return SCAN_ERROR;

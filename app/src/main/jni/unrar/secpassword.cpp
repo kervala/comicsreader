@@ -1,6 +1,6 @@
 #include "rar.hpp"
 
-#ifdef _WIN_ALL
+#if defined(_WIN_ALL)
 typedef BOOL (WINAPI *CRYPTPROTECTMEMORY)(LPVOID pData,DWORD cbData,DWORD dwFlags);
 typedef BOOL (WINAPI *CRYPTUNPROTECTMEMORY)(LPVOID pData,DWORD cbData,DWORD dwFlags);
 
@@ -38,6 +38,7 @@ class CryptLoader
         hCrypt = LoadSysLibrary(L"Crypt32.dll");
         if (hCrypt != NULL)
         {
+          // Available since Vista.
           pCryptProtectMemory = (CRYPTPROTECTMEMORY)GetProcAddress(hCrypt, "CryptProtectMemory");
           pCryptUnprotectMemory = (CRYPTUNPROTECTMEMORY)GetProcAddress(hCrypt, "CryptUnprotectMemory");
         }
@@ -78,6 +79,8 @@ void SecPassword::Clean()
 // So we use our own function for this purpose.
 void cleandata(void *data,size_t size)
 {
+  if (data==NULL || size==0)
+    return;
 #if defined(_WIN_ALL) && defined(_MSC_VER)
   SecureZeroMemory(data,size);
 #else
@@ -117,6 +120,8 @@ void SecPassword::Get(wchar *Psw,size_t MaxSize)
 }
 
 
+
+
 void SecPassword::Set(const wchar *Psw)
 {
   if (*Psw==0)
@@ -127,7 +132,7 @@ void SecPassword::Set(const wchar *Psw)
   else
   {
     PasswordSet=true;
-    Process(Psw,unrar_wcslen(Psw)+1,Password,ASIZE(Password),true);
+    Process(Psw,wcslen(Psw)+1,Password,ASIZE(Password),true);
   }
 }
 
@@ -136,7 +141,7 @@ size_t SecPassword::Length()
 {
   wchar Plain[MAXPASSWORD];
   Get(Plain,ASIZE(Plain));
-  size_t Length=unrar_wcslen(Plain);
+  size_t Length=wcslen(Plain);
   cleandata(Plain,ASIZE(Plain));
   return Length;
 }
@@ -151,7 +156,7 @@ bool SecPassword::operator == (SecPassword &psw)
   wchar Plain1[MAXPASSWORD],Plain2[MAXPASSWORD];
   Get(Plain1,ASIZE(Plain1));
   psw.Get(Plain2,ASIZE(Plain2));
-  bool Result=unrar_wcscmp(Plain1,Plain2)==0;
+  bool Result=wcscmp(Plain1,Plain2)==0;
   cleandata(Plain1,ASIZE(Plain1));
   cleandata(Plain2,ASIZE(Plain2));
   return Result;
@@ -160,7 +165,9 @@ bool SecPassword::operator == (SecPassword &psw)
 
 void SecHideData(void *Data,size_t DataSize,bool Encode,bool CrossProcess)
 {
-#ifdef _WIN_ALL
+  // CryptProtectMemory is not available in UWP and CryptProtectData
+  // increases data size not allowing in place conversion.
+#if defined(_WIN_ALL)
   // Try to utilize the secure Crypt[Un]ProtectMemory if possible.
   if (GlobalCryptLoader.pCryptProtectMemory==NULL)
     GlobalCryptLoader.Load();

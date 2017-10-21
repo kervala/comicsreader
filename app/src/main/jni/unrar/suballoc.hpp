@@ -61,7 +61,7 @@ class SubAllocator
     void* AllocUnitsRare(int indx);
     inline RARPPM_MEM_BLK* MBPtr(RARPPM_MEM_BLK *BasePtr,int Items);
 
-    unsigned long SubAllocatorSize;
+    long SubAllocatorSize;
     byte Indx2Units[N_INDEXES], Units2Indx[128], GlueCount;
     byte *HeapStart,*LoUnit, *HiUnit;
     struct RAR_NODE FreeList[N_INDEXES];
@@ -77,7 +77,7 @@ class SubAllocator
     inline void* ExpandUnits(void* ptr,int OldNU);
     inline void* ShrinkUnits(void* ptr,int OldNU,int NewNU);
     inline void  FreeUnits(void* ptr,int OldNU);
-    unsigned long GetAllocatedMemory() {return(SubAllocatorSize);};
+    long GetAllocatedMemory() {return(SubAllocatorSize);};
 
     byte *pText, *UnitsStart,*HeapEnd,*FakeUnitsStart;
 };
