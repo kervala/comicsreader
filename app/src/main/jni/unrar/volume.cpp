@@ -42,7 +42,7 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
 #endif
   bool FailedOpen=false,OldSchemeTested=false;
 
-#if !defined(SILENT)
+#if !defined(GUI) && !defined(SILENT)
   // In -vp mode we force the pause before next volume even if it is present
   // and even if we are on the hard disk. It is important when user does not
   // want to process partially downloaded volumes preliminary.
@@ -93,11 +93,13 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
       }
 #endif
 
+#ifndef GUI
       if (!Cmd->VolumePause && !IsRemovable(NextName))
       {
         FailedOpen=true;
         break;
       }
+#endif
 #ifndef SILENT
       if (Cmd->AllYes || !uiAskNextVolume(NextName,ASIZE(NextName)))
 #endif
@@ -137,12 +139,14 @@ bool MergeArchive(Archive &Arc,ComprDataIO *DataIO,bool ShowFileName,wchar Comma
     Arc.ConvertAttributes();
     Arc.Seek(Arc.NextBlockPos-Arc.FileHead.PackSize,SEEK_SET);
   }
+#ifndef GUI
   if (ShowFileName)
   {
     mprintf(St(MExtrPoints),Arc.FileHead.FileName);
     if (!Cmd->DisablePercentage)
       mprintf(L"     ");
   }
+#endif
   if (DataIO!=NULL)
   {
     if (HeaderType==HEAD_ENDARC)

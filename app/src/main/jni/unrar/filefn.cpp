@@ -74,11 +74,13 @@ bool CreatePath(const wchar *Path,bool SkipLastName)
       DirName[s-Path]=0;
 
       Success=MakeDir(DirName,true,DirAttr)==MKDIR_SUCCESS;
+#ifndef GUI
       if (Success)
       {
         mprintf(St(MCreatDir),DirName);
         mprintf(L" %s",St(MOk));
       }
+#endif
     }
   }
   if (!SkipLastName && !IsPathDiv(*PointToLastChar(Path)))
