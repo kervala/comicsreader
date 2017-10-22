@@ -99,4 +99,5 @@
   <string name="fullscreen_notice">Παρακαλώ αγγίξτε από πάνω προς τα κάτω για να εμφανίσετε το μενού επιλογών και να αφήσετε την λειτουργία πλήρους οθόνης.</string>
   <string name="quit">\'Εξοδος</string>
   <string name="thumbnail">Μικρογραφία</string>
+  <string name="unknown">άγνωστο</string>
 </resources>

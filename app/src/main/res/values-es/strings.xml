@@ -10,7 +10,7 @@
   <string name="about_build_date">Fecha de compilación: %s</string>
   <string name="licenses_waiting">Por favor espere mientras se actualizan las licencias…</string>
   <string name="album_downloading">Descargando \"%s\"…</string>
-  <string name="app_name">Comics Reader</string>
+  <string name="app_name">Lector de Comics</string>
   <string name="bookmark_help">Puedes indicar un directorio local empezando por un / (por ejemplo /Pictures o /Download), o una URL (ejemplo dominio.com/comics/index.xml). Si omites el prefijo http:// , se añadirá automáticamente si no empieza con un / . Ver \"Ayuda\" para más detalles sobre \"Álbumes remotos\".</string>
   <string name="bookmark_title">Título</string>
   <string name="bookmark_url">Directorio o URL</string>
@@ -86,6 +86,21 @@
   <string name="password">Clave</string>
   <string name="remember_password">Recordar clave</string>
   <string name="contributors_label">Colaboradores:</string>
+  <string name="contributors">
+    - Jules Blok (pedido natural de números de página e implementación de autorotación)\n
+    - Traducción de estonio: Rivo \"Eraser\" Zängov\n
+    - Traducción de gallego : Xesusmosquera\n
+    - Traducción de alemán: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - Traducción de griego: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - Traducción de italiano: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - Traducción de japonés: Naofumi\n
+    - Traducción de coreano: Jang \"palindrom615\"\n
+    - Traducción de polaco: Jan \"Shark103\" Bielak\n
+    - Traducción de portugués: Marcelo Ghelman\n
+    - Traducción de ruso: Anonymous, aiz1, deliium\n
+    - Traducción de español: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - Traducción de turco: ultrapeer, Mauron\n
+  </string>
   <string name="browser_album_title">Sin título</string>
   <string name="preference_edges_resistance_label">Resistencia bordes</string>
   <string name="preference_edges_resistance_summary">Resistencia antes de cambiar la página</string>
@@ -99,4 +114,7 @@
   <string name="fullscreen_notice">Por favor desplácese de arriba a abajo para ver el menú de opciones y salir del modo de pantalla completa.</string>
   <string name="quit">Salir</string>
   <string name="thumbnail">Miniatura</string>
+  <string name="unknown">desconocido</string>
+  <string name="preference_use_minimum_size_label">Utilice el tamaño mínimo</string>
+  <string name="preference_use_minimum_size_summary">No redimensione una página bajo un tamaño específico para una mejor lectura</string>
 </resources>

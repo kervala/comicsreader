@@ -60,16 +60,60 @@
   <string name="preference_clear_cache_thumbnails">Usuń miniaturki</string>
   <string name="preference_clear_cache_thumbnails_summary">Usuń wygenerowane lub pobrane miniatury</string>
   <string name="preference_clear_cache_thumbnails_toast">Wszystkie miniatuki zostały wyczyszczane </string>
+  <string name="preference_double_page_label">Tryb dwóch stron</string>
+  <string name="preference_double_page_summary">Wyświetl dwie strony jednocześnie na ekranie</string>
+  <string name="preference_fast_scroll_label">Szybkie przewijanie</string>
+  <string name="preference_fast_scroll_summary">Włącza \"kciuk\" który może być przeciągany w celu szybkiej przewijania listy</string>
+  <string name="preference_fit_to_screen_label">Dopasuj do ekranu</string>
+  <string name="preference_fit_to_screen_summary">Powiększ obraz jeśli jest mniejszy niż rozdzielczość ekranu</string>
   <string name="preference_full_screen_label">Pełen ekran</string>
+  <string name="preference_full_screen_summary">Schowaj belkę statusu jeśli to możliwe</string>
   <string name="preference_high_quality_label">32bity kolorów</string>
+  <string name="preference_high_quality_summary">Uwaga! To może spowodować zmniejszenie płynności i zająć więcej pamięci</string>
   <string name="preference_overlay_duration_label">Numer strony</string>
+  <string name="preference_overlay_duration_summary">Czas wyświetlania numeru strony</string>
+  <string name="preference_sample_label">Wymuszenie skalowania obrazu</string>
+  <string name="preference_sample_summary">Skala do zastosowania w trakcie ładowania celem zmniejszenia użycia pamięci</string>
   <string name="preference_zoom_label">Zoom</string>
+  <string name="preference_zoom_summary">Tryb skalowania stron</string>
   <string name="preference_category_misc">Różne </string>
+  <string name="preference_about">O ComicsReader</string>
+  <string name="preference_about_summary">Wersja i licencje zewnętrze</string>
   <string name="previous_page">Poprzednia strona</string>
   <string name="settings">Ustawienia</string>
   <string name="yes">Tak</string>
   <string name="username">Nazwa użytkownika</string>
   <string name="password">Hasło</string>
   <string name="remember_password">Zapamiętaj hasło</string>
+  <string name="contributors_label">Współtwórcy</string>
+  <string name="contributors">
+- Jules Blok (naturalna kolejność numerów stron oraz wdrożenie automatycznego obrotu) \ n
+- Tłumaczenie estoński: Rivo \"Eraser\" Zängov \ n
+- Tłumaczenie Galicyjski: Xesusmosquera \ n
+- Tłumaczenie na niemiecki: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin \ n
+- Tłumaczenie na język grecki: Γιάννης \"Evropi\" Ανθυμίδης, ilias345 \ n
+- Tłumaczenie na włoski: Silvia \"Kathjal\" Vittorio \"owlbrainiac\" \ n
+- Tłumaczenie na japoński: Naofumi \ n
+- Tłumaczenie na koreański: Jang \"palindrom615\" \ n
+- Tłumaczenie na polski: Jan \"Shark103\" Bielak \ n
+- Tłumaczenie na portugalski: Marcelo Ghelman \ n
+- Tłumaczenie na rosyjski: Anonymous, aiz1, deliium \ n
+- Tłumaczenie na hiszpański: Zufre, Jeffrey \"TeslaStern\" celisflenbers \ n
+- Tłumaczenie na turecki: ultrapeer, Mauron \ n</string>
   <string name="browser_album_title">Brak tytułu</string>
+  <string name="preference_edges_resistance_label">Opór krawędzi</string>
+  <string name="preference_edges_resistance_summary">Opór przed przełączeniem strony</string>
+  <string name="preference_page_transition_speed_label">Prędkość przejścia stron</string>
+  <string name="preference_page_transition_speed_summary">Prędkość animacji przy przewijaniu na następną/poprzednią stronę</string>
+  <string name="preference_reading_direction_label">Kierunek czytania z prawej do lewej</string>
+  <string name="preference_reading_direction_summary">Przewiń w lewo aby przełączyć na następną stronę</string>
+  <string name="preference_auto_rotate_label">Automatyczna orientacja ekranu</string>
+  <string name="preference_auto_rotate_summary">(Eksperymentalne) Zmiana orientacji ekranu celem lepszego wypełnienia ekranu zawartością</string>
+  <string name="no_data">Brak danych</string>
+  <string name="fullscreen_notice">Proszę przeciągnąć od góry do dołu aby wyświetlić menu i wyjść z trybu pełnoekranowego</string>
+  <string name="quit">Wyjście</string>
+  <string name="thumbnail">Miniaturka</string>
+  <string name="unknown">nieznane</string>
+  <string name="preference_use_minimum_size_label">Użyj najmniejszego rozmiaru</string>
+  <string name="preference_use_minimum_size_summary">Nie zmieniaj rozmiaru strony w przypadku specyficznego rozmiaru celem polepszenia czytelności</string>
 </resources>

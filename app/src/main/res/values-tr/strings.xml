@@ -86,6 +86,21 @@
   <string name="password">Parola</string>
   <string name="remember_password">Parolayı hatırla</string>
   <string name="contributors_label">İştirak edenler:</string>
+  <string name="contributors">
+- Jules Blok (sayfa numaralarının doğal sıralanması ve otomatik döndürme uygulaması)
+- Estonca tercüme: Rivo \"Eraser\" Zängov\n
+- Galiçyaca tercüme: Xesusmosquera\n
+- Almanca tercüme: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+- Yunanca tercüme: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+- İtalyanca tercüme: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+- Japonca tercüme: Naofumi\n
+- Korece tercüme: Jang \"palindrom615\"\n
+- Lehçe tercüme: Jan \"Shark103\" Bielak\n
+- Portekizce tercüme: Marcelo Ghelman\n
+- Rusça tercüme: Anonymous, aiz1, deliium\n
+- İspanyolca tercüme: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+- Türkçe tercüme: mauron\n
+</string>
   <string name="browser_album_title">Başlıksız</string>
   <string name="preference_edges_resistance_label">Kenarların direnci</string>
   <string name="preference_edges_resistance_summary">Sayfa çevrimi öncesi direnç</string>
@@ -99,4 +114,7 @@
   <string name="fullscreen_notice">Tam ekran kipinden çıkıp seçenekler menüsünü görüntülemek için yukarıdan aşağıya doğru kaydırın.</string>
   <string name="quit">Çık</string>
   <string name="thumbnail">Küçük resim</string>
+  <string name="unknown">bilinmiyor</string>
+  <string name="preference_use_minimum_size_label">Asgari boyutu kullan</string>
+  <string name="preference_use_minimum_size_summary">Daha iyi okunabilmesi için sayfayı belli bir boyutun altına küçültme</string>
 </resources>

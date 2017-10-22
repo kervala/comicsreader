@@ -30,7 +30,7 @@
   <string name="close">Close</string>
   <string name="confirm_delete_album">Do you want to delete this album?</string>
   <string name="confirm_delete_bookmark">Do you want to delete this bookmark?</string>
-  <string name="confirm_open_folder">This folder contains non images files. Do you want to open it as an album?</string>
+  <string name="confirm_open_folder">This folder contains files that are not images. Do you want to open it as an album?</string>
   <string name="cover">Cover</string>
   <string name="dialog_album_delete">Delete</string>
   <string name="dialog_album_size">Size: %1$d %2$s</string>
@@ -57,7 +57,7 @@
   <string name="preference_category_cache">Cache</string>
   <string name="preference_category_view">View</string>
   <string name="preference_clear_cache_albums">Clear albums</string>
-  <string name="preference_clear_cache_albums_summary">Delete all downloaded cached remote albums</string>
+  <string name="preference_clear_cache_albums_summary">Delete cache of all downloaded albums</string>
   <string name="preference_clear_cache_albums_toast">All downloaded albums have been cleared</string>
   <string name="preference_clear_cache_thumbnails">Clear thumbnails</string>
   <string name="preference_clear_cache_thumbnails_summary">Delete all generated or downloaded thumbnails</string>
@@ -65,7 +65,7 @@
   <string name="preference_double_page_label">Double page mode</string>
   <string name="preference_double_page_summary">Display two pages at once on the screen</string>
   <string name="preference_fast_scroll_label">Fast scroll</string>
-  <string name="preference_fast_scroll_summary">Enables the thumb that can be dragged to quickly scroll through the list</string>
+  <string name="preference_fast_scroll_summary">Show elevator in scroll field, enabling fast page navigation</string>
   <string name="preference_fit_to_screen_label">Fit to screen</string>
   <string name="preference_fit_to_screen_summary">Enlarge image if smaller than screen resolution</string>
   <string name="preference_full_screen_label">Fullscreen</string>
@@ -76,7 +76,7 @@
   <string name="preference_overlay_duration_summary">Duration to display the page number</string>
   <string name="preference_overlay_duration_default" translatable="false">5000</string>
   <string name="preference_sample_label">Forced image scale</string>
-  <string name="preference_sample_summary">Scale to apply at loading time on an image to save memory</string>
+  <string name="preference_sample_summary">Downscale images at loading time to save memory</string>
   <string name="preference_sample_default" translatable="false">0</string>
   <string name="preference_zoom_label">Zoom</string>
   <string name="preference_zoom_summary">Mode to scale pages</string>
@@ -98,10 +98,11 @@
     - German translation: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
     - Greek translation: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
     - Italian translation: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-    - Japanese translation: Naofumi\n
+    - Japanese translation: Naofumi, RACER\n
     - Korean translation: Jang \"palindrom615\"\n
+    - Norwegian translation: Allan Nordhøy\n
     - Polish translation: Jan \"Shark103\" Bielak\n
-    - Portuguese translation: Marcelo Ghelman\n
+    - Portuguese translation: Marcelo Ghelman, Lucas Elder Neves\n
     - Russian translation: Anonymous, aiz1, deliium\n
     - Spanish translation: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
     - Turkish translation: ultrapeer, Mauron\n
@@ -110,6 +111,9 @@
   <string name="preference_edges_resistance_label">Edges resistance</string>
   <string name="preference_edges_resistance_summary">Resistance before switching page</string>
   <string name="preference_edges_resistance_default" translatable="false">1</string>
+  <string name="preference_edges_width_label">Edges width</string>
+  <string name="preference_edges_width_summary">Width of the screen border which responds to page turn clicks</string>
+  <string name="preference_edges_width_default" translatable="false">4</string>
   <string name="preference_page_transition_speed_label">Page transition speed</string>
   <string name="preference_page_transition_speed_summary">Speed used for next/previous page transition animation</string>
   <string name="preference_page_transition_speed_default" translatable="false">2</string>

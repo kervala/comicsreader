@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="icon">Ikon</string>
+  <string name="about">Om</string>
+  <string name="about_license">Dette programmet er utgitt med GPLv3-lisens:</string>
+  <string name="about_translator">Norwegian translation by Allan Nordhøy</string>
+  <string name="about_unrar_version">UnRAR-versjon: %s</string>
+  <string name="about_version">Versjon: %s</string>
+  <string name="about_revision">Utgave: %s</string>
+  <string name="about_build_date">Bygg-dato: %s</string>
+  <string name="licenses_waiting">Vent mens lisensene oppdateres…</string>
+  <string name="album_downloading">Laster ned \"%s\"…</string>
+  <string name="app_name">Tegneserieleser</string>
+  <string name="bookmark_help">Du kan enten skrive inn en absolutt sti til ei mappe med / (som /Bilder eller /Nedlastinger), eller en nettadresse (som domene.no/tegneserier/index.xml). Hvis du unnlater http://-prefiks vil det bli lagt til automatisk såfremt adressen ikke begynner med en /. Se \"Hjelp\" for mer detaljer om \"Album annensteds hen\"</string>
+  <string name="bookmark_title">Tittel</string>
+  <string name="bookmark_url">Mappe eller nettadresse</string>
+  <string name="bookmarks">Bokmerker</string>
+  <string name="bookmarks_add">Legg til</string>
+  <string name="bookmarks_edit">Rediger</string>
+  <string name="bookmarks_help">Trykk lenge på et bokmerke for å endre eller slette det</string>
+  <string name="bookmarks_load">Last inn</string>
+  <string name="bookmarks_remove">Fjern</string>
+  <string name="bookmarks_title">Bokmerkebehandler</string>
+  <string name="browse">Utforsk</string>
+  <string name="browser_title">Filutforsker</string>
+  <string name="bytes">byte</string>
+  <string name="changelog">Endringslogg</string>
+  <string name="close">Lukk</string>
+  <string name="confirm_delete_album">Ønsker du å slette dette albumet?</string>
+  <string name="confirm_delete_bookmark">Ønsker du å slette dette bokmerket?</string>
+  <string name="confirm_open_folder">Denne mappa inneholder filer som ikke er bilder. Ønsker du å åpne den som et album?</string>
+  <string name="cover">Omslag</string>
+  <string name="dialog_album_delete">Slett</string>
+  <string name="dialog_album_size">Størrelse: %1$d %2$s</string>
+  <string name="dialog_album_title">Tittel</string>
+  <string name="dialog_confirm_title">Bekreft</string>
+  <string name="dialog_error_title">Feil</string>
+  <string name="dialog_progress_browser_message">Vent på innlasting…</string>
+  <string name="error_no_album_loaded">Ingen fil valgt. Bruk menyen for å velge ei fil.</string>
+  <string name="error_no_connection_available">Ingen internettilknytning tilgjengelig.</string>
+  <string name="error_no_external_storage">Finner ikke noe eksternt lagringsmedium</string>
+  <string name="error_no_room">Det er ikke plass til å laste ned dette albumet til eksternt lagringsmedium.</string>
+  <string name="error_out_of_memory">Fri for minne, senk bildekvalitet eller oppløsning i \"Innstillinger\" eller fortsett med gjeldende innstillinger på egen risiko.</string>
+  <string name="error_unable_to_write">Klarte ikke å skrive til eksternt lagringsmedium.</string>
+  <string name="external_storage">Eksternt lagringsmedium</string>
+  <string name="first_page">Første side</string>
+  <string name="help">Hjelp</string>
+  <string name="kbytes">KB</string>
+  <string name="last_page">Siste side</string>
+  <string name="mbytes">MB</string>
+  <string name="next_page">Neste side</string>
+  <string name="no">Nei</string>
+  <string name="pages">Gå til side</string>
+  <string name="preference_category_advanced">Avanserte innstillinger</string>
+  <string name="preference_category_cache">Hurtiglager</string>
+  <string name="preference_category_view">Vis</string>
+  <string name="preference_clear_cache_albums">Tøm album</string>
+  <string name="preference_clear_cache_albums_summary">Slett alle nedlastede hurtiglagrede album som kommer annensteds fra</string>
+  <string name="preference_clear_cache_albums_toast">Alle nedlastede album har blitt tømt</string>
+  <string name="preference_clear_cache_thumbnails">Tøm miniatyrbilder</string>
+  <string name="preference_clear_cache_thumbnails_summary">Slett alle opprettede eller nedlastede miniatyrbilder</string>
+  <string name="preference_clear_cache_thumbnails_toast">Alle miniatyrbilder har blitt tømt</string>
+  <string name="preference_double_page_label">Dobbeltsidemodus</string>
+  <string name="preference_double_page_summary">Vis to sider samtidig på en skjerm</string>
+  <string name="preference_fast_scroll_label">Rask rulling</string>
+  <string name="preference_fast_scroll_summary">Skrur på rullefeltsindikatoren, som kan dras for å raskt rulle gjennom listen</string>
+  <string name="preference_fit_to_screen_label">Tilpass til skjerm</string>
+  <string name="preference_fit_to_screen_summary">Forstørr bilder hvis de er mindre enn skjermoppløsningen</string>
+  <string name="preference_full_screen_label">Fullskjerm</string>
+  <string name="preference_full_screen_summary">Skjul statusfeltet hvis mulig</string>
+  <string name="preference_high_quality_label">32bit-farger</string>
+  <string name="preference_high_quality_summary">Advarsel! Dette kan gjøre utseende mer hakkete og bruke mer minne</string>
+  <string name="preference_overlay_duration_label">Sidenummer</string>
+  <string name="preference_overlay_duration_summary">Varighet for visning av sidenummer</string>
+  <string name="preference_sample_label">Påtvingt bildeskalering</string>
+  <string name="preference_sample_summary">Skaler bilder ved innlasting for å spare minne</string>
+  <string name="preference_zoom_label">Forstørr</string>
+  <string name="preference_zoom_summary">Modus for å skalere sider</string>
+  <string name="preference_category_misc">Ymse</string>
+  <string name="preference_about">Om Tegneserieleser</string>
+  <string name="preference_about_summary">Versjon og tredjepartslisenser</string>
+  <string name="previous_page">Forrige side</string>
+  <string name="settings">Innstillinger</string>
+  <string name="yes">Ja</string>
+  <string name="username">Brukernavn</string>
+  <string name="password">Passord</string>
+  <string name="remember_password">Husk passord</string>
+  <string name="contributors_label">Bidragsytere:</string>
+  <string name="contributors">
+    - Jules Blok (Naturlig siderekkefølge og automatisk sideretningsrotasjon)\n
+    - Oversettelser:\n
+    - Estisk ved Rivo \"Eraser\" Zängov\n
+    - Galisisk ved Xesusmosquera\n
+    - Tysk ved Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - Gresk ved Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - Italiensk ved Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - Japansk ved Naofumi\n
+    - Koreansk ved Jang \"palindrom615\"\n
+    - Norsk bokmål ved Allan Nordhøy\n
+    - Polsk ved Jan \"Shark103\" Bielak\n
+    - Portugisisk ved Marcelo Ghelman\n
+    - Russisk ved Anonymous, aiz1, deliium\n
+    - Spansk ved Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - Tyrkisk ved ultrapeer, Mauron\n
+</string>
+  <string name="browser_album_title">Ingen tittel</string>
+  <string name="preference_edges_resistance_label">Kantmotstand</string>
+  <string name="preference_edges_resistance_summary">Motstand for å bla til neste side</string>
+  <string name="preference_page_transition_speed_label">Hvor hurtig det blas til neste side</string>
+  <string name="preference_page_transition_speed_summary">Hastighet for animasjon brukt til å illustrere overgang til neste eller forrige side</string>
+  <string name="preference_reading_direction_label">Høyre til venstre leseretning</string>
+  <string name="preference_reading_direction_summary">Sveip til venstre for å bytte til neste side</string>
+  <string name="preference_auto_rotate_label">Automatisk sideretning</string>
+  <string name="preference_auto_rotate_summary">(Eksperimentelt) Endrer sideretningen for best tilpasning til hver side</string>
+  <string name="no_data">Ingen data</string>
+  <string name="fullscreen_notice">Rull fra toppen til bunnen for å vise menyvalgene og forlate fullskjermsmodus</string>
+  <string name="quit">Avslutt</string>
+  <string name="thumbnail">Miniatyrbilde</string>
+  <string name="unknown">ukjent</string>
+  <string name="preference_use_minimum_size_label">Bruk minimumsstørrelse</string>
+  <string name="preference_use_minimum_size_summary">Ikke endre størrelsen på en side under en gitt størrelse for bedret lesbarhet</string>
+</resources>

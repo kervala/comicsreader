@@ -89,6 +89,8 @@
   <string name="browser_album_title">Kein Titel</string>
   <string name="preference_edges_resistance_label">Kanten-Widerstand</string>
   <string name="preference_edges_resistance_summary">Widerstand vor dem Umblättern</string>
+  <string name="preference_edges_width_label">Kanten-Breite</string>
+  <string name="preference_edges_width_summary">Breite der Bildschirmkante die auf Umblättern reagiert</string>
   <string name="preference_page_transition_speed_label">Geschwindigkeit des Umblätterns</string>
   <string name="preference_page_transition_speed_summary">Geschwindigkeit der Übergangsanimation zu nächsten/vorherigen Seite</string>
   <string name="preference_reading_direction_label">Leserichtung von rechts nach links</string>

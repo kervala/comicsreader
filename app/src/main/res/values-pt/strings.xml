@@ -3,7 +3,7 @@
   <string name="icon">Ícone</string>
   <string name="about">Sobre</string>
   <string name="about_license">Esta aplicação é publicada sob a licença GPLv3:</string>
-  <string name="about_translator">Tradução para português por Marcelo Ghelman</string>
+  <string name="about_translator">Traduzido para português por Marcelo Ghelman</string>
   <string name="about_unrar_version">Versão do UnRAR: %s</string>
   <string name="about_version">Versão: %s</string>
   <string name="about_revision">Revisão: %s</string>
@@ -100,7 +100,7 @@
     - Tradução para russo: Anonymous, aiz1, deliium\n
     - Tradução para espanhol: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
     - Tradução para turco: ultrapeer, Mauron\n
-    </string>
+  </string>
   <string name="browser_album_title">Sem título</string>
   <string name="preference_edges_resistance_label">Resistência de bordas</string>
   <string name="preference_edges_resistance_summary">Resistência antes de mudar de página</string>
@@ -115,4 +115,6 @@
   <string name="quit">Sair</string>
   <string name="thumbnail">Miniatura</string>
   <string name="unknown">desconhecido</string>
+  <string name="preference_use_minimum_size_label">Usar tamanho mínimo</string>
+  <string name="preference_use_minimum_size_summary">Não redimensiona páginas de tamanho específico para melhor legibilidade</string>
 </resources>

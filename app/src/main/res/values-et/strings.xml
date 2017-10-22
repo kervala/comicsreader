@@ -3,16 +3,16 @@
   <string name="icon">Ikoon</string>
   <string name="about">Info</string>
   <string name="about_license">See rakendus on välja antud GPLv3 litsentsi alusel:</string>
-  <string name="about_translator">Estonian translation by Rivo \"Eraser\" Zängov</string>
+  <string name="about_translator">Eesti keelde tõlkis Rivo Zängov</string>
   <string name="about_unrar_version">UnRAR-i versioon: %s</string>
   <string name="about_version">Versioon: %s</string>
   <string name="about_revision">Versioon: %s</string>
   <string name="about_build_date">Järgu kuupäev: %s</string>
-  <string name="licenses_waiting">Palun oota, kuni litsentse uuendatakse</string>
+  <string name="licenses_waiting">Palun oota, kuni litsentse uuendatakse... </string>
   <string name="album_downloading">\"%s\" allalaadimine…</string>
   <string name="app_name">Koomiksite lugeja</string>
   <string name="bookmark_help">Sa võid sisestada kas täieliku kaustatee, mis algab kaldkriipsuga / (Näiteks /Pictures või /Download) või siis URL-i (nagu näiteks domain.com/comics/index.xml). Kui sa jätad ära eesliite http:// prefix, siis kaldkriipsu / puudumisel lisatakse see automaatselt. \"Võrgus olevate albumite\" kohta vaata lisainfot \"Abiinfost\".</string>
-  <string name="bookmark_title">Pealiri</string>
+  <string name="bookmark_title">Pealkiri</string>
   <string name="bookmark_url">Kaust või URL</string>
   <string name="bookmarks">Järjehoidjad</string>
   <string name="bookmarks_add">Lisa</string>
@@ -32,15 +32,15 @@
   <string name="cover">Kaanepilt</string>
   <string name="dialog_album_delete">Kustuta</string>
   <string name="dialog_album_size">Suurus: %1$d %2$s</string>
-  <string name="dialog_album_title">PealiriPealkiri</string>
+  <string name="dialog_album_title">Pealiri</string>
   <string name="dialog_confirm_title">Kinnita</string>
   <string name="dialog_error_title">Viga</string>
-  <string name="dialog_progress_browser_message">Palun oota, kuni laadimine käib…</string>
+  <string name="dialog_progress_browser_message">Palun oota, kuni laadimine käib...</string>
   <string name="error_no_album_loaded">Ühtegi faili pole valitud. Faili valimiseks kasuta menüüd.</string>
   <string name="error_no_connection_available">Internetiühendust pole.</string>
   <string name="error_no_external_storage">Välist mäluseadet ei leitud</string>
   <string name="error_no_room">Välisel mäluseadmel pole selle allalaadimise jaoks ruumi.</string>
-  <string name="error_out_of_memory">Mälu on täis. Palun vähenda Seadetes piltide kvaliteeti või resolutsiooni või siis jätka omal riisikol praeguste seadetega.</string>
+  <string name="error_out_of_memory">Mälu on täis. Palun vähenda seadetes piltide kvaliteeti või resolutsiooni või siis jätka omal vastutusel praeguste seadetega.</string>
   <string name="error_unable_to_write">Välisele mäluseadmele kirjutamine ebaõnnestus.</string>
   <string name="external_storage">Väline mäluseade</string>
   <string name="first_page">Esimene lehekülg</string>
@@ -54,7 +54,7 @@
   <string name="preference_category_advanced">Lisaseaded</string>
   <string name="preference_category_cache">Vahemälu</string>
   <string name="preference_category_view">Vaade</string>
-  <string name="preference_clear_cache_albums">Eemalda albumid</string>
+  <string name="preference_clear_cache_albums">Puhasta albumid</string>
   <string name="preference_clear_cache_albums_summary">Kustuta vahemälust kõik allalaetud võrgus olevad albumid</string>
   <string name="preference_clear_cache_albums_toast">Kõik allalaaditud albumid on kustutatud</string>
   <string name="preference_clear_cache_thumbnails">Eemalda pispildid</string>
@@ -86,6 +86,21 @@
   <string name="password">Parool</string>
   <string name="remember_password">Pea parooli meeles</string>
   <string name="contributors_label">Kaastöölised:</string>
+  <string name="contributors">
+    - Jules Blok (leheküljenumbrite loomulik järjestamine ja automaatse pööramise lisamine)\n
+    - Tõlge eesti keelde: Rivo \"Eraser\" Zängov\n
+    - Tõlge galeegi keelde: Xesusmosquera\n
+    - Tõlge saksakeelde: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - Tõlge kreeka keelde: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - Tõlge itaalia keelde: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - Tõlge jaapani keelde: Naofumi\n
+    - Tõlge korea keelde: Jang \"palindrom615\"\n
+    - Tõlge poola keelde: Jan \"Shark103\" Bielak\n
+    - Tõlge portugali keelde: Marcelo Ghelman\n
+    - Tõlge vene keelde: Anonymous, aiz1, deliium\n
+    - Tõlge hispaani a keelde: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - Tõlge tõrgi keelde: ultrapeer, Mauron\n
+  </string>
   <string name="browser_album_title">Pealkirja pole</string>
   <string name="preference_edges_resistance_label">Servade elastsus</string>
   <string name="preference_edges_resistance_summary">Elastsus lehekülge vahetamisel</string>
@@ -96,7 +111,10 @@
   <string name="preference_auto_rotate_label">Automaatne suuna muutmine</string>
   <string name="preference_auto_rotate_summary">(Katsetamisel) Ekraani suuna muutmised, et sobitada võimalult hästi ekraanile</string>
   <string name="no_data">Andmeid pole</string>
-  <string name="fullscreen_notice">Palu keri ülevalt allapoole, et näha menüüd ja lahkuda täisekraanirežiimst.</string>
+  <string name="fullscreen_notice">Palu keri ülevalt allapoole, et näha menüüd ja lahkuda täisekraanirežiimist.</string>
   <string name="quit">Välju</string>
   <string name="thumbnail">Pisipilt</string>
+  <string name="unknown">tundmatu</string>
+  <string name="preference_use_minimum_size_label">Kasuta väikseimat suurust</string>
+  <string name="preference_use_minimum_size_summary">Ära tee lehte väiksemaks, kui määratud suurus, et säilitada loetavus</string>
 </resources>

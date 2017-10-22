@@ -27,6 +27,12 @@
     <item>Moyenne</item>
     <item>Forte</item>
   </string-array>
+  <string-array name="preference_edges_width_names">
+    <item>Très petite</item>
+    <item>Petite</item>
+    <item>Moyenne</item>
+    <item>Large</item>
+  </string-array>
   <string-array name="preference_page_transition_speed_names">
     <item>Lente</item>
     <item>Moyenne</item>

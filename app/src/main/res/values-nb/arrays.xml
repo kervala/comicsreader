@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="preference_zoom_labels">
+    <item>Tilpass til bredde</item>
+    <item>Tilpass til høyde</item>
+    <item>Tilpass til avgrensninger</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_sample_labels">
+    <item>Automatisk</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_overlay_duration_names">
+    <item>Aldri</item>
+    <item>To sekunder</item>
+    <item>Fem sekunder</item>
+    <item>Ti sekunder</item>
+    <item>Uendelig</item>
+  </string-array>
+  <string-array name="preference_edges_resistance_names">
+    <item>Ingen</item>
+    <item>Svak</item>
+    <item>Middels</item>
+    <item>Sterk</item>
+  </string-array>
+  <string-array name="preference_page_transition_speed_names">
+    <item>Rask</item>
+    <item>Middels</item>
+    <item>Rask</item>
+  </string-array>
+  <string-array name="preference_device_orientation_names">
+    <item>Automatisk</item>
+    <item>Portrett</item>
+    <item>Landskap</item>
+  </string-array>
+</resources>

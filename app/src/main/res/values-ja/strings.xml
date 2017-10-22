@@ -114,4 +114,6 @@
   <string name="quit">終了</string>
   <string name="thumbnail">サムネイル</string>
   <string name="unknown">不明</string>
+  <string name="preference_use_minimum_size_label">最小サイズを使用する</string>
+  <string name="preference_use_minimum_size_summary">読みやすくするために、ページを特定のサイズより小さく変更しません</string>
 </resources>
