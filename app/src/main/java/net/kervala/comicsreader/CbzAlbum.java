@@ -21,17 +21,16 @@ package net.kervala.comicsreader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class CbzAlbum extends Album {
+class CbzAlbum extends Album {
 	private ZipFile mZip;
 
-	static final String cbzMimeType = "application/x-cbz";
-	static final String cbzExtension = "cbz";
+	private static final String cbzMimeType = "application/x-cbz";
+	private static final String cbzExtension = "cbz";
 
 	public String getExtension() {
 		return cbzExtension;
@@ -41,7 +40,7 @@ public class CbzAlbum extends Album {
 		return cbzMimeType;
 	}
 	
-	public static boolean isValid(String filename) {
+	static boolean isValid(String filename) {
 		File file = new File(filename);
 
 		boolean valid = false;
@@ -80,7 +79,7 @@ public class CbzAlbum extends Album {
 		return title;
 	}
 	
-	public static String getMimeType(String filename) {
+	static String getMimeType(String filename) {
 		return cbzMimeType;
 	}
 	

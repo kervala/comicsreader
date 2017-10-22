@@ -28,10 +28,10 @@ import java.util.List;
 import android.util.Log;
 
 public class RarFile {
-	protected String mName;
-	protected List<String> mEntries = new ArrayList<String>();
-	protected static String mVersion;
-	static protected boolean sLoaded = false;
+	private String mName;
+	private List<String> mEntries = new ArrayList<String>();
+	private static String mVersion;
+	private static boolean sLoaded = false;
 
 	// implemented by libunrar-jni.so
 	private static native String[] nativeGetEntries(String filename);
@@ -41,7 +41,7 @@ public class RarFile {
 	private static native void nativeInit();
 	private static native void nativeDestroy();
 
-	public static boolean isLoaded() {
+	static boolean isLoaded() {
 		return sLoaded;
 	}
 
@@ -94,7 +94,7 @@ public class RarFile {
 		return mEntries;
 	}
 
-	public byte [] getBytes(String entry) {
+	byte [] getBytes(String entry) {
 		if (!sLoaded) return null;
 
 		try {

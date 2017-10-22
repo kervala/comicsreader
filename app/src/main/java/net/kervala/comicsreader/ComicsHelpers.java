@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -40,7 +37,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-public class ComicsHelpers {
+class ComicsHelpers {
 	
 	static Bitmap resizeThumbnail(Bitmap bitmap) {
 		if (bitmap == null || bitmap.getWidth() == 0 || bitmap.getHeight() == 0) return null;
@@ -68,7 +65,7 @@ public class ComicsHelpers {
 		return croppedBitmap;
 	}
 
-	public static String md5(String str) {
+	static String md5(String str) {
 		try {
 			// Create MD5 Hash
 			final MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -125,7 +122,9 @@ public class ComicsHelpers {
 					is.close();
 				} else {
 					is.close();
-					f.delete();
+					if (!f.delete()) {
+						Log.e(ComicsParameters.APP_TAG, "Unable to delete file: " + f.getAbsolutePath());
+					}
 				}
 			} catch (FileNotFoundException e) {
 				Log.e(ComicsParameters.APP_TAG, f + " not found");
@@ -187,7 +186,7 @@ public class ComicsHelpers {
 			final InputStream input = new BufferedInputStream(urlConnection.getInputStream(), ComicsParameters.BUFFER_SIZE);
 			final OutputStream output = new FileOutputStream(f);
 
-			int count = 0;
+			int count;
 			byte data[] = new byte[ComicsParameters.BUFFER_SIZE];
 				
 			while ((count = input.read(data)) != -1) {
@@ -201,15 +200,6 @@ public class ComicsHelpers {
 			res = true;
 		} catch (FileNotFoundException e) {
 			Log.e(ComicsParameters.APP_TAG, "File " + url + " not found");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-		} catch (SocketTimeoutException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// no space left on device
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -225,7 +215,7 @@ public class ComicsHelpers {
 		FileInputStream input = null;
 		try {
 			input = new FileInputStream(file);
-			input.read(buffer);
+			int res = input.read(buffer);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return false;
@@ -252,8 +242,6 @@ public class ComicsHelpers {
 			input = new FileOutputStream(file);
 			input.write(buffer);
 			res = true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -266,7 +254,7 @@ public class ComicsHelpers {
 		return res;
 	}
 
-	public static byte [] inputStreamToBytes(InputStream input, int size) {
+	static byte [] inputStreamToBytes(InputStream input, int size) {
 		byte [] buffer = null;
 
 		if (input != null) {
@@ -298,7 +286,7 @@ public class ComicsHelpers {
 		return buffer;
 	}
 	
-	public static int findNearestPowerOfTwoScale(int srcSize, int dstSize) {
+	static int findNearestPowerOfTwoScale(int srcSize, int dstSize) {
 		int scale = 1;
 
 		while(srcSize / 2 >= Math.max(dstSize, ComicsParameters.MIN_SCALED_SIZE)) {

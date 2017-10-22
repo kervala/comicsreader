@@ -91,15 +91,15 @@ public class ComicsParameters {
 		++sReferences;
 	}
 
-	public static void release() {
+	static void release() {
 		--sReferences;
 
 		if (sReferences < 1) {
 			releaseBitmaps();
 		}
 	}
-	
-	public static void initPackageInfo(Context context) {
+
+	private static void initPackageInfo(Context context) {
 		// Try to load the a package matching the name of our own package
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA);
@@ -125,7 +125,7 @@ public class ComicsParameters {
 		}
 	}
 	
-	public static void initDensity(Context context) {
+	private static void initDensity(Context context) {
 		final WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 
 		final DisplayMetrics metrics = new DisplayMetrics();
@@ -160,7 +160,7 @@ public class ComicsParameters {
 		}
 	}
 
-	public static void initTablet() {
+	static void initTablet() {
 		// already defined
 		if (sDeviceType != null) return;
 
@@ -205,7 +205,7 @@ public class ComicsParameters {
 		sIsTablet = "tablet".equalsIgnoreCase(sDeviceType);
 	}
 
-	public static void loadBitmaps(Context context) {
+	private static void loadBitmaps(Context context) {
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inDensity = sBitmapDensity;
 		options.inTargetDensity = sScreenDensity;
@@ -236,7 +236,7 @@ public class ComicsParameters {
 		}
 	}
 	
-	public static void releaseBitmaps() {
+	private static void releaseBitmaps() {
 		if (sPlaceholderDrawable != null) {
 			sPlaceholderDrawable.getBitmap().recycle();
 			sPlaceholderDrawable = null;
@@ -252,12 +252,26 @@ public class ComicsParameters {
 			sFolderParentDrawable = null;
 		}
 	}
-	
-	static void initDirectories() {
-		sExternalDirectory = Environment.getExternalStorageDirectory();
-		sRootDirectory = new File("/");
 
-		sCacheDirectory = new File(sExternalDirectory, "/Android/data/" + sPackageName + "/cache");
+
+
+	private static boolean initDirectories(Context context) {
+		Activity act = (Activity) context;
+
+		sExternalDirectory = Environment.getExternalStorageDirectory();
+		sRootDirectory = Environment.getRootDirectory();
+
+		if (sExternalDirectory != null) {
+			if (!sExternalDirectory.canRead()) {
+				Log.e(ComicsParameters.APP_TAG, "Unable to read external storage");
+			}
+
+			if (!sExternalDirectory.canWrite()) {
+				Log.e(ComicsParameters.APP_TAG, "Unable to write external storage");
+			}
+		}
+
+		sCacheDirectory = act.getExternalCacheDir() != null ? act.getExternalCacheDir():new File(sExternalDirectory, "/Android/data/" + sPackageName + "/cache");
 
 		// create root cache directory
 		if (!sCacheDirectory.exists() && !sCacheDirectory.mkdirs()) {
@@ -284,9 +298,11 @@ public class ComicsParameters {
 		if (!sPagesDirectory.exists() && !sPagesDirectory.mkdirs()) {
 			Log.e(APP_TAG, "Unable to create " + sPagesDirectory + "directory");
 		}
+
+		return true;
 	}
 
-	public static int getDownloadedSize() {
+	static int getDownloadedSize() {
 		final File [] files = ComicsParameters.sCacheDirectory.listFiles();
 		
 		int size = 0;
@@ -300,7 +316,7 @@ public class ComicsParameters {
 		return size;
 	}
 	
-	public static void clearDownloadedAlbumsCache() {
+	static void clearDownloadedAlbumsCache() {
 		final File [] files = ComicsParameters.sCacheDirectory.listFiles();
 		if (files != null) {
 			for(File file: files) {
@@ -314,12 +330,12 @@ public class ComicsParameters {
 		}
 	}
 
-	public static void clearThumbnailsCache() {
+	static void clearThumbnailsCache() {
 		clearAllCoversCache();
 		clearAllPagesCache();
 	}
 
-	public static void clearAllCoversCache() {
+	private static void clearAllCoversCache() {
 		final File[] files = ComicsParameters.sCoversDirectory.listFiles();
 		if (files != null) {
 			for (File file : files) {
@@ -330,7 +346,7 @@ public class ComicsParameters {
 		}
 	}
 
-	public static void clearAllPagesCache() {
+	private static void clearAllPagesCache() {
 		// delete all albums pages thumbnails
 		final File[] dirs = ComicsParameters.sPagesDirectory.listFiles();
 		if (dirs != null) {
@@ -354,7 +370,7 @@ public class ComicsParameters {
 		}
 	}
 
-	public static void clearCurrentAlbumDirectory() {
+	static void clearCurrentAlbumDirectory() {
 		// delete all cached pages
 		File[] files = ComicsParameters.sCacheCurrentAlbumDirectory.listFiles();
 		if (files != null) {

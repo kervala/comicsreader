@@ -28,12 +28,12 @@ import java.util.List;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-public class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
+class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 	private File mDirectory;
 	private WeakReference<BrowserActivity> mActivity;
 	private ArrayList<ThumbnailItem> mItems;
 	
-	public BrowseLocalAlbumsTask(BrowserActivity activity, File directory) {
+	BrowseLocalAlbumsTask(BrowserActivity activity, File directory) {
 		mActivity = new WeakReference<>(activity);
 		mDirectory = directory;
 	}

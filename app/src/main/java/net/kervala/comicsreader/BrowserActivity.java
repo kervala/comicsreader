@@ -697,7 +697,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 			prefs.putString("last_title", mLastTitle);
 			prefs.putString("last_file", mLastFile);
 			prefs.putInt("last_version", mLastVersion);
-			prefs.commit();
+			prefs.apply();
 			return null;
 		}
 	}
@@ -705,7 +705,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 	private class RefreshTask extends AsyncTask<Void, Integer, Boolean> {
 		private boolean mSelect;
 		
-		public RefreshTask(boolean select) {
+		RefreshTask(boolean select) {
 			mSelect = select;
 		}
 		

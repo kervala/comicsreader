@@ -146,10 +146,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			setBackgroundDrawable.invoke(mActionBar, new ColorDrawable(Resources.getSystem().getColor(android.R.color.background_dark)));
 
 			return true;
-		} catch (NoSuchMethodException e) {
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
 		}
 
 		mActionBar = null;
@@ -170,9 +167,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			} else {
 				mActionBarHide.invoke(mActionBar);
 			}
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 		}
 	}
 
@@ -185,10 +180,8 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		try {
 			mActionBarSetTitle.invoke(mActionBar, title);
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-		} 
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+		}
 	}
 
 	public void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {

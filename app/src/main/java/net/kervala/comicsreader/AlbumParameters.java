@@ -23,21 +23,22 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class AlbumParameters {
-	static public boolean highQuality = false;
-	static public boolean fitToScreen = true;
-	static public int scale = 1;
-	static public boolean rightToLeft = false;
-	static public boolean doublePage = false;
-	static public boolean fullScreen = false;
-	static public int zoom = 0;
-	static public int overlayDuration = 5000;
-	static public int edgesResistance = 1;
-	static public int pageTransitionSpeed = 2;
-	static public boolean autoRotate = false;
-	static public boolean useMinimumSize = false;
+class AlbumParameters {
+	static boolean highQuality = false;
+	static boolean fitToScreen = true;
+	static int scale = 1;
+	static boolean rightToLeft = false;
+	static boolean doublePage = false;
+	static boolean fullScreen = false;
+	static int zoom = 0;
+	static int overlayDuration = 5000;
+	static int edgesResistance = 1;
+	static int edgesWidth = 1;
+	static int pageTransitionSpeed = 2;
+	static boolean autoRotate = false;
+	static boolean useMinimumSize = false;
 	
-	static public boolean getAlbumPreferences(Context context) {
+	static boolean getAlbumPreferences(Context context) {
 		boolean oldHighQuality = highQuality;
 		boolean oldfitToScreen = fitToScreen;
 		int oldScale = scale;

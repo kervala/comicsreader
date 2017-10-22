@@ -23,7 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.TextView;
 
-public class ThumbnailItem implements Comparable<ThumbnailItem> {
+class ThumbnailItem implements Comparable<ThumbnailItem> {
 	// thumbnail status
 	static final int STATUS_NONE = 0;
 	static final int STATUS_UPDATED = 1;
@@ -34,17 +34,17 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 
 	public int index = -1;
 	
-	protected Bitmap mThumb;
-	protected int mThumbSize = 0;
-	protected String mText;
-	protected int mStatus = STATUS_NONE;
-	protected int mThumbPosition;
+	Bitmap mThumb;
+	private int mThumbSize = 0;
+	String mText;
+	int mStatus = STATUS_NONE;
+	int mThumbPosition;
 
 	static int sUsedMemory = 0;
-	static int sMaxThumbSize = 0;
+	private static int sMaxThumbSize = 0;
 	static final int MAX_USED_MEMORY = 10000000;
 
-	public synchronized void recycle() {
+	synchronized void recycle() {
 		if (mThumb != null) {
 			sUsedMemory -= mThumbSize;
 			mThumb.recycle();
@@ -62,11 +62,11 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 		return null;
 	}
 
-	public synchronized Bitmap getThumb() {
+	synchronized Bitmap getThumb() {
 		return mThumb;
 	}
 	
-	public synchronized BitmapDrawable getDrawable() {
+	synchronized BitmapDrawable getDrawable() {
 		if (mThumb == null || mStatus < STATUS_UPDATED) return getDefaultDrawable();
 
 		final BitmapDrawable drawable = new BitmapDrawable(null, mThumb);
@@ -76,11 +76,11 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 		return drawable;
 	}
 
-	public String getText() {
+	String getText() {
 		return mText;
 	}
 	
-	public synchronized boolean update() {
+	synchronized boolean update() {
 		// don't update if already done
 		if (mStatus >= STATUS_UPDATED) return true;
 
@@ -96,11 +96,11 @@ public class ThumbnailItem implements Comparable<ThumbnailItem> {
 		return true;
 	}
 
-	public int getStatus() {
+	int getStatus() {
 		return mStatus;
 	}
 
-	public boolean updateView(TextView view) {
+	boolean updateView(TextView view) {
 		if (view == null) {
 			return false;
 		}
