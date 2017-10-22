@@ -37,6 +37,7 @@ public class AlbumPage {
 	protected String mFilename;
 	protected String mCacheFilename;
 	protected File mBufferCacheFile;
+	protected final Object mBitmapSizeMutex = new Object();
 
 	static boolean sAbortLoading = false;
 	
@@ -261,7 +262,7 @@ public class AlbumPage {
 
 		boolean res = false;
 		
-		synchronized(bitmapSize) {
+		synchronized(mBitmapSizeMutex) {
 			// compute new size based on aspect ratio and scales
 			updateBitmapDstSize(width, height);
 
@@ -370,7 +371,7 @@ public class AlbumPage {
 	public void resetSize() {
 		if (bitmapSize == null) return;
 		
-		synchronized(bitmapSize) {
+		synchronized(mBitmapSizeMutex) {
 			bitmapSize.dstWidth = -1;
 			bitmapSize.dstHeight = -1;
 			bitmapSize.dstScale = 0;
