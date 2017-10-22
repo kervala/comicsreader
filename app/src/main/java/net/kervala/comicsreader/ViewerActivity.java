@@ -312,6 +312,8 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			return dialog;
 
 		case DIALOG_FULLSCREEN:
+			// TODO: only display this warning first time
+			// or Toast.makeText(getBaseContext(), R.string.fullscreen_notice, Toast.LENGTH_SHORT).show();
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.fullscreen_notice);
 			return builder.create();
@@ -583,7 +585,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		Intent intent = getIntent();
 
 		int requestCode = 0;
-		
+
 		if (intent != null) {
 			final Bundle b = intent.getExtras();
 
