@@ -404,7 +404,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			mFirstTouchPosY = posY;
 		} else {
 			// width of borders to change page without fling
-			int zoneWidth = ComicsParameters.sScreenWidth >> 4;
+			int zoneWidth = ComicsParameters.sScreenWidth >> AlbumParameters.edgesWidth;
 
 			if (posX < zoneWidth) {
 				scrollToPreviousPage();
@@ -499,7 +499,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		if (!mProcessTouch) {
 			// width of borders to change page without fling
-			int zoneWidth = ComicsParameters.sScreenWidth >> 4;
+			int zoneWidth = ComicsParameters.sScreenWidth >> AlbumParameters.edgesWidth;
 
 			if (posX < zoneWidth) {
 				scrollToPreviousPage();

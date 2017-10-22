@@ -57,6 +57,7 @@ public class AlbumParameters {
 		fitToScreen = prefs.getBoolean("preference_fit_to_screen", true);
 		overlayDuration = Integer.parseInt(prefs.getString("preference_overlay_duration", "5000"));
 		edgesResistance = Integer.parseInt(prefs.getString("preference_edges_resistance", "1"));
+		edgesWidth = Integer.parseInt(prefs.getString("preference_edges_width", "1"));
 		pageTransitionSpeed = Integer.parseInt(prefs.getString("preference_page_transition_speed", "2"));
 		rightToLeft = prefs.getBoolean("preference_reading_direction", false);
 		autoRotate = prefs.getBoolean("preference_auto_rotate", false);
