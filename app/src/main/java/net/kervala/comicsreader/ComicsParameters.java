@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -84,7 +85,7 @@ public class ComicsParameters {
 	public static void init(Context context) {
 		if (sReferences < 1) {
 			initPackageInfo(context);
-			initDirectories();
+			initDirectories(context);
 			initDensity(context);
 			loadBitmaps(context);
 		}
