@@ -275,14 +275,14 @@ public class ComicsParameters {
 
 		// create root cache directory
 		if (!sCacheDirectory.exists() && !sCacheDirectory.mkdirs()) {
-			Log.e(APP_TAG, "Unable to create " + sCacheDirectory + "directory");
+			Log.e(APP_TAG, "Unable to create " + sCacheDirectory + " directory");
 		}
 		
 		sCacheCurrentAlbumDirectory = new File(sCacheDirectory, "current");
 
 		// create current album cache directory
 		if (!sCacheCurrentAlbumDirectory.exists() && !sCacheCurrentAlbumDirectory.mkdirs()) {
-			Log.e(APP_TAG, "Unable to create " + sCacheCurrentAlbumDirectory + "directory");
+			Log.e(APP_TAG, "Unable to create " + sCacheCurrentAlbumDirectory + " directory");
 		}
 
 		sCoversDirectory = new File(sCacheDirectory, "covers");
