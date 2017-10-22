@@ -141,7 +141,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		if (mAdapter != null) {
 			mAdapter.refresh();
 		}

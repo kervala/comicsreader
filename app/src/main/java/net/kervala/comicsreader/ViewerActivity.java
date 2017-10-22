@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 import net.kervala.comicsreader.AlbumThread.AlbumPageCallback;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -65,19 +66,19 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 	static final int REQUEST_PREFERENCES = 0;
 	static final int REQUEST_BOOKMARK = 2;
-	
+
 	static final int RESULT_FILE = RESULT_FIRST_USER;
 	static final int RESULT_URL = RESULT_FILE+1;
 	static final int RESULT_QUIT = RESULT_URL+1;
-	
+
 	protected ErrorDialog mErrorDialog;
 	protected String mError;
 	protected String mText;
 	protected String mTitle;
-	
+
 	private FullScrollView mScrollView;
 	private FullImageView mImageView;
-	
+
 	private AlbumThread mAlbumThread;
 
 	private int mMinPixelsBeforeSwitch = 0;
@@ -94,7 +95,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	private Method mActionBarHide;
 	private Method mActionBarSetTitle;
 	private boolean mFullScreen = false;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,7 +108,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		mScroller = new Scroller(this, new DecelerateInterpolator(1.0f));
 		mOverlay = new Overlay(this);
-		
+
 		mScrollView = (FullScrollView) findViewById(R.id.scrollview);
 		mImageView = (FullImageView) findViewById(R.id.imageview);
 
@@ -126,7 +127,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			mAlbumThread.open(intent.getData());
 		}
 	}
-	
+
 	public boolean initActionBar() {
 		try {
 			// call getActionBar to get a pointer on ActionBar
@@ -172,7 +173,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	}
 
 	public boolean getActionBarVisible() {
-		return mActionBarVisible;		
+		return mActionBarVisible;
 	}
 
 	public void setActionBarTitle(String title) {
@@ -217,7 +218,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		super.onResume();
 
 		mScrollView.setSizeChangedListener(this);
-		
+
 		if (mAlbumThread != null && mAlbumThread.isValid() && mImageView != null) {
 			// refresh current page only if not already loaded
 			mAlbumThread.updateCurrentPage(false);
@@ -231,7 +232,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			ComicsParameters.sFullScreenNoticeDisplayed = true;
 		}
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -252,7 +253,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			mAlbumThread.exit();
 			mAlbumThread = null;
 		}
-		
+
 		// reset current open album
 		ComicsParameters.sCurrentOpenAlbum = null;
 
@@ -273,7 +274,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			break;
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -282,7 +283,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		case DIALOG_ERROR:
 			mErrorDialog = new ErrorDialog(this);
 			return mErrorDialog;
-			
+
 		case DIALOG_TEXT:
 			return new TextDialog(this);
 
@@ -294,12 +295,12 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			}
 
 			return dialog;
-			
+
 		case DIALOG_FULLSCREEN:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.fullscreen_notice);
 			return builder.create();
-					
+
 		default:
 			return super.onCreateDialog(id);
 		}
@@ -334,7 +335,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			break;
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onSearchRequested() {
@@ -408,7 +409,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 				mProcessTouch = true;
 			}
 		}
-		
+
 		// make sure FullScrollView only receive touch events if scrollable
 		return !mScrollView.canScroll();
 	}
@@ -424,7 +425,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		// horizontal fling
 		if (absFullDeltaX > (absFullDeltaY << 2)) {
 			int resistance = AlbumParameters.edgesResistance;
-			
+
 			if ((resistance < 1) || (absFullDeltaX > (mMinPixelsBeforeSwitch >> 2) * resistance)) {
 				int x = mImageView.getOffset() + mScrollView.getScrollX();
 				int w = mScrollView.getWidth();
@@ -456,7 +457,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 				if (mScrollView.getScrollY() == 0 && fullDeltaY > 0) {
 					if (fullDeltaY > deltaMin) {
 						setActionBarVisible(true);
-						
+
 						// in immersive mode, we can't display ActionBar anymore, so we need to leave it temporarily
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 							mImageView.setFullScreen(false);
@@ -474,9 +475,9 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 			// negation since the screen moves in a direction opposite to that of the touch
 			int deltaX = -(posX - mPrevTouchPosX);
-			
+
 			mImageView.setOffset(deltaX);
-			
+
 			return true;
 		}
 
@@ -539,7 +540,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		mScroller.startScroll(offset, mScrollView.getScrollY(), dx, 0, Math.abs(dx) << 7 >> AlbumParameters.pageTransitionSpeed);
 		mAlbumThread.updatePageScrolling(CURRENT_PAGE);
 	}
-	
+
 	public void scrollToNextPage() {
 		if (!mAlbumThread.isLastPage()) {
 			final int offset = mImageView.getOffset() + mScrollView.getScrollX();
@@ -549,11 +550,11 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			mAlbumThread.updatePageScrolling(NEXT_PAGE);
 		}
 	}
-	
+
 	public void changePage(int page) {
 		mAlbumThread.changePage(page);
 	}
-	
+
 	public void showPageNumber(int page, int pages, int duration) {
 		++page;
 
@@ -565,12 +566,12 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	boolean openIntentFolder(Intent i) {
 		// check if current Intent was started from BrowserActivity
 		Intent intent = getIntent();
-		
+
 		int requestCode = 0;
 		
 		if (intent != null) {
 			final Bundle b = intent.getExtras();
-			
+
 			if (b != null) requestCode = b.getInt("requestCode");
 		}
 
@@ -581,10 +582,10 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			setResult(RESULT_URL, i);
 			finish();
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean openLastFolder() {
 		final Intent intent = getIntent();
 
@@ -594,7 +595,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 		if (requestCode != BrowserActivity.REQUEST_VIEWER) {
 			startActivity(new Intent(this, BrowserActivity.class));
 		} else {
-			Album album = mAlbumThread.album; 
+			Album album = mAlbumThread.album;
 
 			// avoid some unexpected crash
 			if (album != null) {
@@ -604,10 +605,10 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 			setResult(RESULT_FILE, intent);
 			finish();
 		}
-		
+
 		return true;
 	}
-	
+
 	public int getPageWidth() {
 		return mImageView.getBitmapWidth();
 	}
@@ -623,7 +624,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	public void onUpdatePreviousPage(Bitmap bitmap) {
 		mImageView.setPreviousBitmap(bitmap);
 	}
-	
+
 	public void onUpdateCurrentPage(Bitmap bitmap) {
 		mImageView.setOffset(0);
 
@@ -744,7 +745,7 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return super.onPrepareOptionsMenu(menu);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

@@ -82,7 +82,7 @@ class CbzAlbum extends Album {
 	static String getMimeType(String filename) {
 		return cbzMimeType;
 	}
-	
+
 	boolean loadFiles() {
 		try {
 			// open ZIP file
