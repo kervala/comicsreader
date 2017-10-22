@@ -27,6 +27,7 @@ import java.util.List;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 	private File mDirectory;
@@ -80,6 +81,8 @@ class BrowseLocalAlbumsTask extends AsyncTask<Void, Integer, String> {
 			Collections.sort(files);
 			
 			mItems.addAll(files);
+		} else {
+			Log.w(ComicsParameters.APP_TAG, "Warning! listFiles returned null for " + mDirectory.getAbsolutePath());
 		}
 
 		if(!mDirectory.getAbsolutePath().equalsIgnoreCase(ComicsParameters.sRootDirectory.getAbsolutePath())) {
