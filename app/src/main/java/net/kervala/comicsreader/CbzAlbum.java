@@ -19,6 +19,8 @@
 
 package net.kervala.comicsreader;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,6 +59,7 @@ class CbzAlbum extends Album {
 
 				ifs.close();
 			} catch (IOException e) {
+				Log.w(ComicsParameters.APP_TAG, "Unable to read ZIP file: " + filename);
 			}
 		}
 
