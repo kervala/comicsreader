@@ -423,12 +423,12 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 	public boolean browseFolder(String url) {
 		boolean usingDefaultDirectory = false;
 
-		if (url == null) {
+		if (url == null || url.isEmpty()) {
 			usingDefaultDirectory = true;
 
 			url = getDefaultDirectory();
 
-			if (url == null) {
+			if (url == null || url.isEmpty()) {
 				displayError(getString(R.string.error_no_external_storage));
 				return false;
 			}
