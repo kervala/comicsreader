@@ -115,8 +115,6 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 
 		mHandler = new Handler(this);
 
-		ComicsParameters.init(this);
-		
 		setContentView(R.layout.browser);
 
 		final GridView g = (GridView) findViewById(R.id.grid);
@@ -125,8 +123,21 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 
 		mAuthenticator = new ComicsAuthenticator(mHandler);
 		Authenticator.setDefault(mAuthenticator);
-		
-		new LoadPreferencesTask().execute();
+
+		boolean canInit = ComicsHelpers.hasReadExternalStoragePermission(this);
+
+		if (canInit) {
+			ComicsParameters.init(this);
+
+			new LoadPreferencesTask().execute();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (!ComicsHelpers.restartApplicationIfNeededReadExternalStoragePermission(requestCode, permissions, grantResults, this)) {
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
 	}
 
 	@Override

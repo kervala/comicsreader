@@ -32,9 +32,15 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Log;
 
 class ComicsHelpers {
@@ -295,5 +301,55 @@ class ComicsHelpers {
 		}
 		
 		return scale;
+	}
+
+	static boolean hasReadExternalStoragePermission(Activity activity) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+
+			// under Android 6+ request read external storage permissions
+			if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+				if (activity.shouldShowRequestPermissionRationale(permission)) {
+					// TODO: display a message box
+					activity.requestPermissions(new String[]{permission}, ComicsParameters.REQUEST_READ_EXTERNAL_PERMISSION);
+				} else {
+					activity.requestPermissions(new String[]{permission}, ComicsParameters.REQUEST_READ_EXTERNAL_PERMISSION);
+				}
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	static boolean restartApplicationIfNeededReadExternalStoragePermission(int requestCode, String permissions[], int[] grantResults, Activity activity) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (requestCode == ComicsParameters.REQUEST_READ_EXTERNAL_PERMISSION && permissions.length > 0 && permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					Log.i(ComicsParameters.APP_TAG, "Permission " + permissions[0] + " granted, we need to restart application to apply them");
+
+					// restart application
+					// PendingIntent pi = PendingIntent.getActivity(activity, 0, activity.getIntent(), PendingIntent.FLAG_CANCEL_CURRENT);
+					// AlarmManager am = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+					// am.set(AlarmManager.RTC, System.currentTimeMillis() + 500, pi);
+					PackageManager packageManager = activity.getPackageManager();
+					Intent intent = packageManager.getLaunchIntentForPackage(activity.getPackageName());
+					ComponentName componentName = intent.getComponent();
+					Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+					activity.startActivity(mainIntent);
+
+					// Stop now
+					System.exit(0);
+				} else {
+					Log.e(ComicsParameters.APP_TAG, "Permission REQUEST_WRITE_EXTERNAL_PERMISSION Denied");
+				}
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 }

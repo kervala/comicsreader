@@ -48,6 +48,7 @@ public class ComicsParameters {
 	static final int MIN_SCALED_SIZE = 256;
 	static final int THUMBNAIL_HEIGHT = 96;
 	static final int TIME_OUT = 5000;
+	static final int REQUEST_READ_EXTERNAL_PERMISSION = 1;
 
 	static BitmapDrawable sPlaceholderDrawable;
 	static BitmapDrawable sFolderChildDrawable;

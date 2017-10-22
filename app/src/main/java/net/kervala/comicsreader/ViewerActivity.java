@@ -100,8 +100,6 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		ComicsParameters.init(this);
-		
 		initActionBar();
 
 		setContentView(R.layout.viewer);
@@ -120,6 +118,23 @@ public class ViewerActivity extends Activity implements OnTouchListener, FullScr
 
 		mAlbumThread.loadPreferences(true);
 
+		boolean canInit = ComicsHelpers.hasReadExternalStoragePermission(this);
+
+		if (canInit) {
+			ComicsParameters.init(this);
+
+			openLastPage();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (!ComicsHelpers.restartApplicationIfNeededReadExternalStoragePermission(requestCode, permissions, grantResults, this)) {
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
+
+	public void openLastPage() {
 		Intent intent = getIntent();
 
 		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
