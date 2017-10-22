@@ -19,9 +19,10 @@
 -->
 <resources>
     <!-- Hide shadow at the top -->
-    <style name="Theme.Viewer" parent="@android:style/Theme.NoTitleBar">
+    <style name="Theme.Viewer" parent="@android:style/Theme.Material">
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
-    <style name="Theme" parent="@android:style/Theme" />
+    <style name="Theme" parent="@android:style/Theme.Material" />
 </resources>
