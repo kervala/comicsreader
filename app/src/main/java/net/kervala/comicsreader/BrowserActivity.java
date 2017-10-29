@@ -440,7 +440,7 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		
 		boolean ok = false;
 
-		if ("http".equals(scheme)) {
+		if ("http".equals(scheme) || "https".equals(scheme)) {
 			// check for an internet connection
 			if (isConnected()) {
 				new BrowseRemoteAlbumsTask(this, url).execute();

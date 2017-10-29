@@ -109,7 +109,7 @@ class BookmarksHelper extends SQLiteOpenHelper {
 
 	boolean setBookmark(int id, String name, String url) {
 		// fix remote path
-		if (!url.startsWith("/") && !url.startsWith("http://")) {
+		if (!url.startsWith("/") && !url.startsWith("http://") && !url.startsWith("https://")) {
 			url = "http://" + url;
 		}
 
