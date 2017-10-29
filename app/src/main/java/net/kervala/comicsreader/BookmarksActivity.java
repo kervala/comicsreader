@@ -20,6 +20,7 @@
 package net.kervala.comicsreader;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -74,11 +75,28 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		super.onDestroy();
 		
 		mHelper.closeDatabase();
-		
+
+		closeCursor();
+	}
+
+	void closeCursor() {
 		if (mCursor != null) {
 			stopManagingCursor(mCursor);
 			mCursor.close();
 		}
+	}
+
+	void setCursor(Cursor cursor) {
+		closeCursor();
+
+		final String [] fields = new String[] { "name", "url" };
+
+		ListAdapter adapter = new SimpleCursorAdapter(this, R.layout.bookmarks_item, cursor, fields, new int[] { R.id.bookmarks_item_name, R.id.bookmarks_item_url });
+		setListAdapter(adapter);
+
+		mCursor = cursor;
+
+		startManagingCursor(mCursor);
 	}
 
 	@Override
@@ -137,9 +155,13 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		
 		return super.onCreateDialog(id);
 	}
-	
+
+	BookmarksHelper getHelper() {
+		return mHelper;
+	}
+
 	private void fillData() {
-		new GetBookmarkTask().execute();
+		new GetBookmarkTask(this).execute();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -204,7 +226,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		switch(msg.what) {
 			case BrowserActivity.ACTION_BOOKMARK:
 			{
-				new SetBookmarkTask(bundle.getInt("id"), bundle.getString("title"), bundle.getString("url")).execute();
+				new SetBookmarkTask(bundle.getInt("id"), bundle.getString("title"), bundle.getString("url"), this).execute();
 				
 				return true;
 			}
@@ -212,7 +234,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 			case BrowserActivity.ACTION_CONFIRM_YES:
 			{
 				if (mCursor.moveToPosition(mPosition)) {
-					new DeleteBookmarkTask().execute(mCursor.getInt(0));
+					new DeleteBookmarkTask(this).execute(mCursor.getInt(0));
 					
 					return true;
 				}
@@ -232,66 +254,67 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 		displayBookmark();
 	}
 	
-	private class GetBookmarkTask extends AsyncTask<Void, Void, Cursor> {
+	private static class GetBookmarkTask extends AsyncTask<Void, Void, Cursor> {
+		WeakReference<BookmarksActivity> mActivity;
+
+		GetBookmarkTask(BookmarksActivity activity) {
+			mActivity = new WeakReference<>(activity);
+		}
+
 		@Override
 		protected Cursor doInBackground(Void... params) {
-			return mHelper.getBookmarkCursor();
+			return mActivity.get().getHelper().getBookmarkCursor();
 		}
 
 		@SuppressWarnings("deprecation")
 		@Override
 		protected void onPostExecute(Cursor cursor) {
-			if (mCursor != null) {
-				stopManagingCursor(mCursor);
-				mCursor.close();
-			}
-
-			final String [] fields = new String[] { "name", "url" };
-
-			ListAdapter adapter = new SimpleCursorAdapter(BookmarksActivity.this, R.layout.bookmarks_item, cursor, fields, new int[] { R.id.bookmarks_item_name, R.id.bookmarks_item_url });
-			setListAdapter(adapter);
-
-			mCursor = cursor;
-
-			startManagingCursor(mCursor);
+			mActivity.get().setCursor(cursor);
 		}
 	}
 
-	private class SetBookmarkTask extends AsyncTask<String, Integer, Boolean> {
+	private static class SetBookmarkTask extends AsyncTask<String, Integer, Boolean> {
 		private int mId;
 		private String mTitle;
 		private String mUrl;
+		private WeakReference<BookmarksActivity> mActivity;
 		
-		public SetBookmarkTask(int id, String title, String url) {
+		SetBookmarkTask(int id, String title, String url, BookmarksActivity activity) {
 			mId = id;
 			mTitle = title;
 			mUrl = url;
+			mActivity = new WeakReference<>(activity);
 		}
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			return mHelper.setBookmark(mId, mTitle, mUrl);
+			return mActivity.get().getHelper().setBookmark(mId, mTitle, mUrl);
 		}
 
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				fillData();
+				mActivity.get().fillData();
 			}
 		}
 	}
 
-	private class DeleteBookmarkTask extends AsyncTask<Integer, Integer, Boolean> {
-		@Override
-		protected Boolean doInBackground(Integer... params) {
-			return mHelper.deleteBookmark(params[0]);
+	private static class DeleteBookmarkTask extends AsyncTask<Integer, Integer, Boolean> {
+		WeakReference<BookmarksActivity> mActivity;
+
+		DeleteBookmarkTask(BookmarksActivity activity) {
+			mActivity = new WeakReference<>(activity);
 		}
 
+		@Override
+		protected Boolean doInBackground(Integer... params) {
+			return mActivity.get().getHelper().deleteBookmark(params[0]);
+		}
 
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				fillData();
+				mActivity.get().fillData();
 			}
 		}
 	}
