@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+
 android {
     compileSdkVersion 25
 
@@ -63,13 +64,16 @@ android {
         }
     }
 }
+
 // create a file "version.txt" in "app" folder with current version
 task generateVersion doLast {
     file('build/version.txt').text = android.defaultConfig.versionName
 }
+
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn generateVersion
 }
+
 def getHgRevision() {
     def os = new ByteArrayOutputStream()
     exec {
@@ -79,6 +83,7 @@ def getHgRevision() {
 
     return os.toString()
 }
+
 static def getDate() {
     def date = new Date()
     def formattedDate = date.format('yyyy-MM-dd HH:mm:ss')
