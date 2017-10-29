@@ -152,13 +152,7 @@ public class BookmarksActivity extends ListActivity implements Callback, OnClick
 			mBookmarkDialog.setUrl("");
 			return true;
 		} else if (mCursor.moveToPosition(mPosition)) {
-			final String scheme = "http://";
 			String url = mCursor.getString(2);
-
-			if (url.startsWith(scheme)) {
-				// fix remote path
-				url = url.substring(scheme.length());
-			}
 
 			mBookmarkDialog.setId(mCursor.getInt(0));
 			mBookmarkDialog.setTitle(mCursor.getString(1));
