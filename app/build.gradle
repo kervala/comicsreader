@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.1'
 
     signingConfigs {
         release {
@@ -65,7 +64,7 @@ android {
     }
 }
 // create a file "version.txt" in "app" folder with current version
-task generateVersion() << {
+task generateVersion doLast {
     file('build/version.txt').text = android.defaultConfig.versionName
 }
 tasks.withType(JavaCompile) {
