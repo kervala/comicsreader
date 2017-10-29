@@ -16,7 +16,7 @@ android {
         applicationId 'net.kervala.comicsreader'
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 29
+        versionCode 30
         versionName "2.3." + getHgRevision()
         signingConfig signingConfigs.release
 
