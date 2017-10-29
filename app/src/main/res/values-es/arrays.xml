@@ -27,6 +27,12 @@
     <item>Medio</item>
     <item>Fuerte</item>
   </string-array>
+  <string-array name="preference_edges_width_names">
+    <item>Minúsculo pequeño</item>
+    <item>Pequeño</item>
+    <item>Mediano</item>
+    <item>Ancho</item>
+  </string-array>
   <string-array name="preference_page_transition_speed_names">
     <item>Lento</item>
     <item>Medio</item>

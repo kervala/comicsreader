@@ -55,7 +55,7 @@
   <string name="preference_category_cache">Cache</string>
   <string name="preference_category_view">Affichage</string>
   <string name="preference_clear_cache_albums">Supprimer les albums</string>
-  <string name="preference_clear_cache_albums_summary">Supprimer tous les albums distants téléchargés mis en cache</string>
+  <string name="preference_clear_cache_albums_summary">Supprimer le cache de tous les albums téléchargés</string>
   <string name="preference_clear_cache_albums_toast">Tous les albums téléchargés ont été supprimés</string>
   <string name="preference_clear_cache_thumbnails">Supprimer les miniatures</string>
   <string name="preference_clear_cache_thumbnails_summary">Supprimer toutes les miniatures générées ou téléchargées</string>
@@ -63,7 +63,7 @@
   <string name="preference_double_page_label">Mode double page</string>
   <string name="preference_double_page_summary">Affiche deux pages à la fois sur l\'écran</string>
   <string name="preference_fast_scroll_label">Défilement rapide</string>
-  <string name="preference_fast_scroll_summary">Active le repère qui peut être utilisé pour se déplacer rapidement dans la liste</string>
+  <string name="preference_fast_scroll_summary">Montrer le repère dans la zone de défilement, activant la navigation rapide dans les pages</string>
   <string name="preference_fit_to_screen_label">Adapter à l\'écran</string>
   <string name="preference_fit_to_screen_summary">Agrandit l\'image si plus petite que la résolution d\'écran</string>
   <string name="preference_full_screen_label">Plein écran</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">Numéro de la page</string>
   <string name="preference_overlay_duration_summary">Durée d\'affichage du numéro de la page</string>
   <string name="preference_sample_label">Échelle d\'image forcée</string>
-  <string name="preference_sample_summary">Échelle à appliquer au moment du chargement d\'une image afin de gagner de la mémoire</string>
+  <string name="preference_sample_summary">Rapetisse les images au chargement pour économiser de la mémoire</string>
   <string name="preference_zoom_label">Redimensionnement</string>
   <string name="preference_zoom_summary">Mode de redimensionnement des pages</string>
   <string name="preference_category_misc">Divers</string>
@@ -87,24 +87,26 @@
   <string name="remember_password">Se souvenir du mot de passe</string>
   <string name="contributors_label">Contributeurs :</string>
   <string name="contributors">
-    - Jules Blok (implémentation de l\'ordre naturel des pages et rotation automatique)\n
-    - Traduction estonienne : Rivo \"Eraser\" Zängov\n
-    - Traduction galicienne : Xesusmosquera\n
-    - Traduction allemande : Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
-    - Traduction grecque : Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
-    - Traduction italienne : Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-    - Traduction japonaise : Naofumi, RACER\n
-    - Traduction coréenne : Jang \"palindrom615\"\n
-    - Traduction norvégienne : Allan Nordhøy\n
-    - Traduction polonaise : Jan \"Shark103\" Bielak\n
-    - Traduction portugaise : Marcelo Ghelman, Lucas Elder Neves\n
-    - Traduction russe : Anonyme, aiz1, deliium\n
-    - Traduction espagnole : Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
-    - Traduction turque : ultrapeer, Mauron\n
-	</string>
+ - Jules Blok (implémentation de l\'ordre naturel des pages et rotation automatique)\n
+ - Traduction estonienne : Rivo \"Eraser\" Zängov\n
+ - Traduction galicienne : Xesusmosquera\n
+ - Traduction allemande : Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+ - Traduction grecque : Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+ - Traduction italienne : Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+ - Traduction japonaise : Naofumi, RACER\n
+ - Traduction coréenne : Jang \"palindrom615\"\n
+ - Traduction norvégienne : Allan Nordhøy\n
+ - Traduction polonaise : Jan \"Shark103\" Bielak\n
+ - Traduction portugaise : Marcelo Ghelman, Lucas Elder Neves\n
+ - Traduction russe : Anonyme, aiz1, deliium\n
+ - Traduction espagnole : Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+ - Traduction turque : ultrapeer, Mauron\n
+</string>
   <string name="browser_album_title">Aucun titre</string>
   <string name="preference_edges_resistance_label">Résistance aux bords</string>
   <string name="preference_edges_resistance_summary">Résistance avant de changer de page</string>
+  <string name="preference_edges_width_label">Largeur des bords</string>
+  <string name="preference_edges_width_summary">Largeur des bords de l\'écran qui répondent aux clics pour tourner les pages</string>
   <string name="preference_page_transition_speed_label">Vitesse de transition de page</string>
   <string name="preference_page_transition_speed_summary">Vitesse de l\'animation de transition pour la page suivante/précédente</string>
   <string name="preference_reading_direction_label">Sens de lecture de droite à gauche</string>

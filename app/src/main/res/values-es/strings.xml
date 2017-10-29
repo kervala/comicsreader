@@ -28,7 +28,7 @@
   <string name="close">Cerrar</string>
   <string name="confirm_delete_album">¿Quieres borrar este álbum?</string>
   <string name="confirm_delete_bookmark">¿Quieres borrar este favorito?</string>
-  <string name="confirm_open_folder">Este fichero contiene archivos de imágenes. ¿Quieres abrirlo como un álbum?</string>
+  <string name="confirm_open_folder">Esta carpeta contiene archivos que no son imágenes. ¿Quiere abrirla como un álbum?</string>
   <string name="cover">Cubierta</string>
   <string name="dialog_album_delete">Borrar</string>
   <string name="dialog_album_size">Tamaño: %1$d %2$s</string>
@@ -55,7 +55,7 @@
   <string name="preference_category_cache">Caché</string>
   <string name="preference_category_view">Vista</string>
   <string name="preference_clear_cache_albums">Borrar álbumes</string>
-  <string name="preference_clear_cache_albums_summary">Borrar todos los álbumes remotos descargados en la caché</string>
+  <string name="preference_clear_cache_albums_summary">Eliminar caché de todos los álbumes descargados</string>
   <string name="preference_clear_cache_albums_toast">Todos los álbumes descargados se han borrado</string>
   <string name="preference_clear_cache_thumbnails">Borrar miniaturas</string>
   <string name="preference_clear_cache_thumbnails_summary">Borrar todas las miniaturas descargadas o generadas</string>
@@ -63,7 +63,7 @@
   <string name="preference_double_page_label">Modo de doble página</string>
   <string name="preference_double_page_summary">Mostrar dos páginas a la vez en pantalla</string>
   <string name="preference_fast_scroll_label">Desplazamiento rápido</string>
-  <string name="preference_fast_scroll_summary">Permite deslizar el pulgar para desplazarse rápido en la lista</string>
+  <string name="preference_fast_scroll_summary">Mostrar el elevador en el campo de desplazamiento, lo que permite navegar rápidamente por la página</string>
   <string name="preference_fit_to_screen_label">Ajustar a pantalla</string>
   <string name="preference_fit_to_screen_summary">Agrandar la imagen si es menor que la resolución de la pantalla</string>
   <string name="preference_full_screen_label">Pantalla completa</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">Número de página</string>
   <string name="preference_overlay_duration_summary">Tiempo a mostrar el número de página</string>
   <string name="preference_sample_label">Escala de imagen forzada</string>
-  <string name="preference_sample_summary">Escala a aplicar al cargar una imagen para ahorrar memoria</string>
+  <string name="preference_sample_summary">Reducir las imágenes en el tiempo de carga para ahorrar memoria</string>
   <string name="preference_zoom_label">Zoom</string>
   <string name="preference_zoom_summary">Modo de escalar páginas</string>
   <string name="preference_category_misc">Varios</string>
@@ -87,23 +87,26 @@
   <string name="remember_password">Recordar clave</string>
   <string name="contributors_label">Colaboradores:</string>
   <string name="contributors">
-    - Jules Blok (pedido natural de números de página e implementación de autorotación)\n
-    - Traducción de estonio: Rivo \"Eraser\" Zängov\n
-    - Traducción de gallego : Xesusmosquera\n
-    - Traducción de alemán: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
-    - Traducción de griego: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
-    - Traducción de italiano: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-    - Traducción de japonés: Naofumi\n
-    - Traducción de coreano: Jang \"palindrom615\"\n
-    - Traducción de polaco: Jan \"Shark103\" Bielak\n
-    - Traducción de portugués: Marcelo Ghelman\n
-    - Traducción de ruso: Anonymous, aiz1, deliium\n
-    - Traducción de español: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
-    - Traducción de turco: ultrapeer, Mauron\n
+    - Jules Blok (ordenamiento natural de números de página e implementación de rotación automática)\n
+    - Traducción al estonio: Rivo «Borrador» Zängov\n
+    - Traducción al gallego: Xesusmosquera\n
+    - Traducción al alemán: Christian «diseminación» Basler, Stefan «smfcomix» Freund, Creepers Swankin\n
+    - Traducción al griego: Γιάννης «Evropi» Ανθυμίδης, ilias345\n
+    - Traducción al italiano: Silvia «Kathjal», Vittorio «owlbrainiac»\n
+    - Traducción al japonés: Naofumi, RACER\n
+    - Traducción al coreano: Jang »palindrom615»\n
+    - Traducción al noruego: Allan Nordhøy\n
+    - Traducción al polaco: Jan «Shark103» Bielak\n
+    - Traducción al portugués: Marcelo Ghelman, Lucas Elder Neves\n
+    - Traducción al ruso: Anonymous, aiz1, deliium\n
+    - Traducción al español: Zufre, Jeffrey «TeslaStern», celisflenbers\n
+    - Traducción al turco: ultrapeer, Mauron\n
   </string>
   <string name="browser_album_title">Sin título</string>
   <string name="preference_edges_resistance_label">Resistencia bordes</string>
   <string name="preference_edges_resistance_summary">Resistencia antes de cambiar la página</string>
+  <string name="preference_edges_width_label">Ancho de los bordes</string>
+  <string name="preference_edges_width_summary">Ancho del borde de la pantalla que responde a los clics de cambio de página</string>
   <string name="preference_page_transition_speed_label">Velocidad de cambio de página</string>
   <string name="preference_page_transition_speed_summary">Velocidad usada para la animación de paso a página previa/siguiente</string>
   <string name="preference_reading_direction_label">Dirección de lectura de derecha a izquierda</string>

@@ -27,6 +27,12 @@
     <item>Middels</item>
     <item>Sterk</item>
   </string-array>
+  <string-array name="preference_edges_width_names">
+    <item>Veldig liten</item>
+    <item>Liten</item>
+    <item>Middels</item>
+    <item>Bred</item>
+  </string-array>
   <string-array name="preference_page_transition_speed_names">
     <item>Rask</item>
     <item>Middels</item>

@@ -28,7 +28,7 @@
   <string name="close">Fechar</string>
   <string name="confirm_delete_album">Quer apagar este álbum?</string>
   <string name="confirm_delete_bookmark">Quer apagar este favorito?</string>
-  <string name="confirm_open_folder">Esta pasta contém arquivos que não são de imagens. Quer abrir como um álbum?</string>
+  <string name="confirm_open_folder">Esta pasta contém arquivos que não são imagens. Quer abrir como um álbum?</string>
   <string name="cover">Capa</string>
   <string name="dialog_album_delete">Apagar</string>
   <string name="dialog_album_size">Tamanho: %1$d %2$s</string>
@@ -55,7 +55,7 @@
   <string name="preference_category_cache">Cache</string>
   <string name="preference_category_view">Visualização</string>
   <string name="preference_clear_cache_albums">Limpar álbuns</string>
-  <string name="preference_clear_cache_albums_summary">Apaga do cache todos os álbuns remotos baixados</string>
+  <string name="preference_clear_cache_albums_summary">Apaga o cache de todos os álbuns baixados</string>
   <string name="preference_clear_cache_albums_toast">Todos os álbuns baixados foram limpos</string>
   <string name="preference_clear_cache_thumbnails">Limpar miniaturas</string>
   <string name="preference_clear_cache_thumbnails_summary">Limpa todas as miniaturas geradas ou baixadas</string>
@@ -63,7 +63,7 @@
   <string name="preference_double_page_label">Modo de página dupla</string>
   <string name="preference_double_page_summary">Mostra duas página ao mesmo tempo na tela</string>
   <string name="preference_fast_scroll_label">Rolagem rápida</string>
-  <string name="preference_fast_scroll_summary">Habilita a miniatura que pode ser arrastada para percorrer rapidamente a lista</string>
+  <string name="preference_fast_scroll_summary">Mostra elevador no campo de rolagem, habilitando navegação rápida de páginas</string>
   <string name="preference_fit_to_screen_label">Ajustar à tela</string>
   <string name="preference_fit_to_screen_summary">Aumenta a imagem se for menor que a resolução da tela</string>
   <string name="preference_full_screen_label">Tela cheia</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">Número da página</string>
   <string name="preference_overlay_duration_summary">Duração de exibição do número da página</string>
   <string name="preference_sample_label">Escala de imagem forçada</string>
-  <string name="preference_sample_summary">Escala a aplicar a uma imagem quando carregar para economizar memória</string>
+  <string name="preference_sample_summary">Reduzir imagens ao baixar para economizar memória</string>
   <string name="preference_zoom_label">Zoom</string>
   <string name="preference_zoom_summary">Modo de escalar páginas</string>
   <string name="preference_category_misc">Outros</string>
@@ -87,16 +87,17 @@
   <string name="remember_password">Lembrar senha</string>
   <string name="contributors_label">Contribuidores:</string>
   <string name="contributors">
-    - Jules Blok (ordenação natural de números de páginas e implementação de rotação automática)\n
+    - Jules Blok (implementação de ordenação natural de números de páginas e rotação automática)\n
     - Tradução para estoniano: Rivo \"Eraser\" Zängov\n
     - Tradução para galego: Xesusmosquera\n
     - Tradução para alemão: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
     - Tradução para grego: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
     - Tradução para italiano: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-    - Tradução para japonês: Naofumi\n
+    - Tradução para japonês: Naofumi, RACER\n
     - Tradução para coreano: Jang \"palindrom615\"\n
+    - Tradução para norueguês: Allan Nordhøy\n
     - Tradução para polonês: Jan \"Shark103\" Bielak\n
-    - Tradução para português: Marcelo Ghelman\n
+    - Tradução para português: Marcelo Ghelman, Lucas Elder Neves\n
     - Tradução para russo: Anonymous, aiz1, deliium\n
     - Tradução para espanhol: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
     - Tradução para turco: ultrapeer, Mauron\n
@@ -104,6 +105,8 @@
   <string name="browser_album_title">Sem título</string>
   <string name="preference_edges_resistance_label">Resistência de bordas</string>
   <string name="preference_edges_resistance_summary">Resistência antes de mudar de página</string>
+  <string name="preference_edges_width_label">Largura das bordas</string>
+  <string name="preference_edges_width_summary">Largura da borda da tela que responde a cliques de mudança de página</string>
   <string name="preference_page_transition_speed_label">Velocidade de transição de página</string>
   <string name="preference_page_transition_speed_summary">Velocidade usada para animação de transição de página anterior/próxima</string>
   <string name="preference_reading_direction_label">Sentido de leitura da direita para esquerda</string>

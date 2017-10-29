@@ -55,7 +55,7 @@
   <string name="preference_category_cache">Hurtiglager</string>
   <string name="preference_category_view">Vis</string>
   <string name="preference_clear_cache_albums">Tøm album</string>
-  <string name="preference_clear_cache_albums_summary">Slett alle nedlastede hurtiglagrede album som kommer annensteds fra</string>
+  <string name="preference_clear_cache_albums_summary">Slett alle nedlastede hurtiglagrede album</string>
   <string name="preference_clear_cache_albums_toast">Alle nedlastede album har blitt tømt</string>
   <string name="preference_clear_cache_thumbnails">Tøm miniatyrbilder</string>
   <string name="preference_clear_cache_thumbnails_summary">Slett alle opprettede eller nedlastede miniatyrbilder</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">Sidenummer</string>
   <string name="preference_overlay_duration_summary">Varighet for visning av sidenummer</string>
   <string name="preference_sample_label">Påtvingt bildeskalering</string>
-  <string name="preference_sample_summary">Skaler bilder ved innlasting for å spare minne</string>
+  <string name="preference_sample_summary">Skaler ned bilder ved innlasting for å spare minne</string>
   <string name="preference_zoom_label">Forstørr</string>
   <string name="preference_zoom_summary">Modus for å skalere sider</string>
   <string name="preference_category_misc">Ymse</string>
@@ -101,8 +101,7 @@
     - Portugisisk ved Marcelo Ghelman\n
     - Russisk ved Anonymous, aiz1, deliium\n
     - Spansk ved Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
-    - Tyrkisk ved ultrapeer, Mauron\n
-</string>
+    - Tyrkisk ved ultrapeer, Mauron\n</string>
   <string name="browser_album_title">Ingen tittel</string>
   <string name="preference_edges_resistance_label">Kantmotstand</string>
   <string name="preference_edges_resistance_summary">Motstand for å bla til neste side</string>
