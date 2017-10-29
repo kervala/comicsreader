@@ -1,0 +1,73 @@
+#!/bin/sh
+
+CURRENTDIR=$(pwd)
+DOWNLOADDIR=$CURRENTDIR/archives
+TMPDIR=$CURRENTDIR/tmp
+
+mkdir -p $DOWNLOADDIR
+
+./gradlew assembleRelease
+
+RET=$?
+
+if [ $RET -ne 0 ]
+then
+  echo "Error $RET while calling gradle"
+  exit 1
+fi
+
+if [ ! -e "app/build/version.txt" ]
+then
+  echo "version.txt not found"
+  exit 1
+fi
+
+VERSION=$(cat app/build/version.txt)
+
+echo "Comicsreader version $VERSION"
+
+VERSIONMAJ=$(echo $VERSION | cut -d"." -f1,2)
+
+DEST=$DOWNLOADDIR/comicsreader-$VERSION.apk
+DESTSRC=$DOWNLOADDIR/comicsreader-$VERSION-src.zip
+
+cp app/build/outputs/apk/release/app-release.apk $DEST
+
+if [ -n "$DEBEMAIL" ]
+then
+  echo "" | mail -s "ComicsReader $VERSION" -A $DEST $DEBEMAIL
+fi
+
+rm -rf $TMPDIR
+
+# copy sources
+echo "Exporting HG to tmp..."
+hg archive $TMPDIR
+
+cd $TMPDIR
+
+# delete all useless files
+echo "Removing useless files..."
+rm -f ant.properties makebuild
+
+# compress files
+echo "Compressing sources..."
+zip -9 -r $DESTSRC *
+
+if [ -e $DESTSRC ] && [ -e $DEST ]
+then
+  echo "Uploading files to Redmine..."
+  redmineuploader comicsreader $VERSIONMAJ $DEST $DESTSRC
+
+  RET=$?
+
+  if [ $RET -eq 0 ]
+  then
+    echo "Done."
+    rm -rf $TMPDIR
+  else
+    echo "Error while uploading files to Redmine"
+  fi
+else
+  echo "$DEST or $DESTSRC doesn't exist"
+fi
