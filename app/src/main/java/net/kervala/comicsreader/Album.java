@@ -36,30 +36,30 @@ import android.util.Log;
 
 public class Album {
 
-	public String title;
-	public String filename;
-	public int numPages = 0;
-	public int currentPageNumber = 0;
-	public int maxImagesInMemory = 0;
+	String title;
+	String filename;
+	int numPages = 0;
+	int currentPageNumber = 0;
+	int maxImagesInMemory = 0;
 
-	protected List<String> mFiles = new ArrayList<String>();
-	protected AlbumPage mPages[];
-	protected String mCurrentPageFilename;
-	protected File mCachePagesDir;
-	protected File mCacheThumbnailsDir;
+	List<String> mFiles = new ArrayList<String>();
+	private AlbumPage mPages[];
+	String mCurrentPageFilename;
+	private File mCachePagesDir;
+	private File mCacheThumbnailsDir;
 	
-	protected int mFirstBufferPageNumber = 65536;
-	protected int mLastBufferPageNumber = 0;
-	protected boolean mAlwaysFull = false;
+	private int mFirstBufferPageNumber = 65536;
+	private int mLastBufferPageNumber = 0;
+	boolean mAlwaysFull = false;
 	
-	final static String undefinedExtension = "";
-	final static String undefinedMimeType = "";
+	private final static String undefinedExtension = "";
+	private final static String undefinedMimeType = "";
 
-	static final int ALBUM_TYPE_NONE = 0;
-	static final int ALBUM_TYPE_CBZ = 1;
-	static final int ALBUM_TYPE_CBR = 2;
-	static final int ALBUM_TYPE_CBT = 3;
-	static final int ALBUM_TYPE_FOLDER = 4;
+	private static final int ALBUM_TYPE_NONE = 0;
+	private static final int ALBUM_TYPE_CBZ = 1;
+	private static final int ALBUM_TYPE_CBR = 2;
+	private static final int ALBUM_TYPE_CBT = 3;
+	private static final int ALBUM_TYPE_FOLDER = 4;
 
 	static final int ZOOM_NONE = 0;
 	static final int ZOOM_FIT_WIDTH = 1;
@@ -69,11 +69,11 @@ public class Album {
 	static final int ZOOM_50 = 5;
 	static final int ZOOM_25 = 6;
 	
-	static final int MINIMUM_READABLE_WIDTH = 900;
-	static final int MINIMUM_READABLE_HEIGHT = (int)(MINIMUM_READABLE_WIDTH * 1.40f);
+	private static final int MINIMUM_READABLE_WIDTH = 900;
+	private static final int MINIMUM_READABLE_HEIGHT = (int)(MINIMUM_READABLE_WIDTH * 1.40f);
 
-	public int maxBitmapsInMemory = 3;
-	public int maxBuffersInMemory = 6;
+	private int maxBitmapsInMemory = 3;
+	private int maxBuffersInMemory = 6;
 
 	static Album createInstance(String filename) {
 		if (CbzAlbum.isValid(filename)) {
@@ -95,7 +95,7 @@ public class Album {
 		return new Album();
 	}
 
-	static Uri getUriFromFilename(String filename) {
+	private static Uri getUriFromFilename(String filename) {
 		return Uri.parse(filename.replace("#", "%23"));
 	}
 
@@ -107,7 +107,7 @@ public class Album {
 		return uri.getFragment();
 	}
 
-	static int getType(String uriString) {
+	private static int getType(String uriString) {
 		Uri uri = Album.getUriFromFilename(uriString);
 
 		String filename = Album.getFilenameFromUri(uri);
@@ -172,9 +172,8 @@ public class Album {
 		if (CbtAlbum.isValid(filename)) return true;
 
 		// file is an image or a folder containing images
-		if (FolderAlbum.isValid(filename)) return true;
+		return FolderAlbum.isValid(filename);
 
-		return false;
 	}
 	
 	static boolean isFilenameValid(String uriString) {
@@ -198,12 +197,11 @@ public class Album {
 		if (CbtAlbum.isValid(filename)) return true;
 
 		// file is an image or a folder containing images
-		if (FolderAlbum.isValid(filename)) return true;
+		return FolderAlbum.isValid(filename);
 
-		return false;
 	}
 
-	public static boolean askConfirm(String filename) {
+	static boolean askConfirm(String filename) {
 		// file is a cbz
 		if (CbzAlbum.askConfirm(filename)) return true;
 
@@ -214,9 +212,8 @@ public class Album {
 		if (CbtAlbum.askConfirm(filename)) return true;
 
 		// file is an image or a folder containing images
-		if (FolderAlbum.askConfirm(filename)) return true;
-		
-		return false;
+		return FolderAlbum.askConfirm(filename);
+
 	}
 	
 	static String getTitle(String filename) {
@@ -232,7 +229,7 @@ public class Album {
 		return null;
 	}
 	
-	static String getExtension(String filename) {
+	private static String getExtension(String filename) {
 		if (filename == null) return "";
 
 		int pos = filename.lastIndexOf(".");
@@ -242,21 +239,21 @@ public class Album {
 		return filename.toLowerCase(Locale.US).substring(pos+1);
 	}
 
-	public static boolean isValidJpegImage(String filename) {
+	static boolean isValidJpegImage(String filename) {
 		String ext = Album.getExtension(filename);
 
 		return "jpg".equals(ext) || "jpeg".equals(ext) || "jpe".equals(ext);
 	}
 
-	public static boolean isValidPngImage(String filename) {
+	static boolean isValidPngImage(String filename) {
 		return "png".equals(Album.getExtension(filename));
 	}
 
-	public static boolean isValidGifImage(String filename) {
+	private static boolean isValidGifImage(String filename) {
 		return "gif".equals(Album.getExtension(filename));
 	}
 	
-	public static boolean isValidImage(String filename) {
+	static boolean isValidImage(String filename) {
 		return !(filename == null || filename.length() < 4 || filename.startsWith(".") || filename.contains("/.")) &&
 				(isValidJpegImage(filename) || isValidPngImage(filename) || isValidGifImage(filename));
 	}
@@ -305,7 +302,9 @@ public class Album {
 		
 		if (full) {
 			mCachePagesDir = new File(ComicsParameters.sPagesDirectory, ComicsHelpers.md5(filename));
-			mCachePagesDir.mkdirs();
+			if (!mCachePagesDir.mkdirs()) {
+				Log.w(ComicsParameters.APP_TAG, "Unable to create directory " + mCachePagesDir.getAbsolutePath());
+			}
 
 			checkMaxImagesInMemory();
 		}
@@ -329,7 +328,7 @@ public class Album {
 		}
 	}
 	
-	public void checkMaxImagesInMemory() {
+	private void checkMaxImagesInMemory() {
 		maxImagesInMemory = 3; 
 
 /*
@@ -381,7 +380,7 @@ public class Album {
 */
 	}
 	
-	public Bitmap createPageThumbnail(int page) {
+	Bitmap createPageThumbnail(int page) {
 		if (page < 0 || page >= mPages.length) return null;
 
 		File f = new File(mCachePagesDir, String.valueOf(page) + ".png");
@@ -411,7 +410,7 @@ public class Album {
 		return ComicsHelpers.resizeThumbnail(bitmap);
 	}
 
-	public Bitmap getPageThumbnailFromCache(int page) {
+	Bitmap getPageThumbnailFromCache(int page) {
 		return ComicsHelpers.loadThumbnail(new File(mCachePagesDir, String.valueOf(page) + ".png"));
 	}
 
@@ -421,12 +420,16 @@ public class Album {
 
 		if (files != null) {
 			for (File f : files) {
-				f.delete();
+				if (!f.delete()) {
+					Log.w(ComicsParameters.APP_TAG, "Unable to delete file " + f.getAbsolutePath());
+				}
 			}
 		}
 
 		// delete directory
-		mCacheThumbnailsDir.delete();
+		if (!mCacheThumbnailsDir.delete()) {
+			Log.w(ComicsParameters.APP_TAG, "Unable to delete directory " + mCacheThumbnailsDir.getAbsolutePath());
+		}
 	}
 
 	public void clearPagesCache() {
@@ -435,12 +438,16 @@ public class Album {
 
 		if (files != null) {
 			for (File f : files) {
-				f.delete();
+				if (!f.delete()) {
+					Log.w(ComicsParameters.APP_TAG, "Unable to delete file " + f.getAbsolutePath());
+				}
 			}
 		}
 
 		// delete directory
-		mCachePagesDir.delete();
+		if (!mCachePagesDir.delete()) {
+			Log.w(ComicsParameters.APP_TAG, "Unable to delete directory " + mCachePagesDir.getAbsolutePath());
+		}
 	}
 
 	public void close() {
@@ -461,7 +468,7 @@ public class Album {
 		return null;
 	}
 	
-	public boolean updateDoublePage(int page, int width, int height) {
+	private boolean updateDoublePage(int page, int width, int height) {
 		if (page < 0 || (page+1 >= numPages)) return false;
 
 		if (!updateBuffer(page) || !updateBuffer(page+1)) return false;
@@ -547,7 +554,7 @@ public class Album {
 		return false;
 	}
 	
-	public boolean updatePage(int page) {
+	boolean updatePage(int page) {
 		if (BuildConfig.DEBUG) {
 			Log.d(ComicsParameters.APP_TAG, "updatePage " + String.valueOf(page));
 		}
@@ -642,7 +649,7 @@ public class Album {
 		return true;
 	}
 
-	protected void updateBuffers(int current, int next, int previous) {
+	void updateBuffers(int current, int next, int previous) {
 		// TODO: make different algorithms depending on free memory
 
 		// recycle all unused pages
@@ -678,7 +685,9 @@ public class Album {
 		if (end < 0) end = 0;
 
 		for(int i = start; i <= end; ++i) {
-			mPages[i].saveBufferToCache();
+			if (!mPages[i].saveBufferToCache()) {
+				Log.w(ComicsParameters.APP_TAG, "Unable to save buffer of page " + i + " to cache");
+			}
 		}
 		
 		// load new buffers to speed up loading
@@ -701,7 +710,7 @@ public class Album {
 		AlbumPage.sAbortLoading = false;
 	}
 
-	protected boolean updateBuffer(int page) {
+	private boolean updateBuffer(int page) {
 		if (!mPages[page].loadBufferFromCache()) {
 			 byte[] data = getBytes(page);
 
@@ -721,43 +730,41 @@ public class Album {
 		return true;
 	}
 
-	public boolean updateThumbnail(int page) {
-		if (page < 0 || page >= mPages.length) return false;
+	boolean updateThumbnail(int page) {
+		return !(page < 0 || page >= mPages.length) && updateBuffer(page) && mPages[page].updateThumbnail();
 
-		return updateBuffer(page) && mPages[page].updateThumbnail();
 	}
 	
-	public boolean hasPageBitmap(int page) {
-		if (page < 0 || page >= mPages.length) return false;
+	boolean hasPageBitmap(int page) {
+		return !(page < 0 || page >= mPages.length) && mPages[page].bitmap != null;
 
-		return mPages[page].bitmap != null;
 	}
 	
-	public Bitmap getPageThumbnail(int page) {
+	Bitmap getPageThumbnail(int page) {
 		if (page < 0 || page >= mPages.length) return null;
 
 		return mPages[page].thumbnail;
 	}
 
-	public Bitmap getPageBitmap(int page) {
+	Bitmap getPageBitmap(int page) {
 		if (page < 0 || page >= mPages.length) return null;
 
 		return mPages[page].bitmap;
 	}
 
-	public int getPageWidth(int page) {
+	int getPageWidth(int page) {
 		if (page < 0 || page >= mPages.length) return 0;
 
 		return mPages[page].bitmapSize.dstWidth;
 	}
 
-	public int getPageHeight(int page) {
+	int getPageHeight(int page) {
 		if (page < 0 || page >= mPages.length) return 0;
 
 		return mPages[page].bitmapSize.dstHeight;
 	}
 	
-	public void updatePagesSizes() {
+	void updatePagesSizes() {
 		Log.d(ComicsParameters.APP_TAG, "updatePagesSizes");
 		
 		for(int i = 0; i < numPages; ++i) {
@@ -770,7 +777,7 @@ public class Album {
 		}
 	}
 	
-	public int getMemoryUsed() {
+	private int getMemoryUsed() {
 		int size = 0;
 
 		for(int i = mFirstBufferPageNumber; i <= mLastBufferPageNumber; ++i) {

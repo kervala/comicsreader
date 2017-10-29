@@ -25,7 +25,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class BookmarksHelper extends SQLiteOpenHelper {
+class BookmarksHelper extends SQLiteOpenHelper {
 	private static final String sTable = "bookmark";
 	private static final String sAlterDb = "ALTER TABLE %s RENAME TO %s_old;";
 	private static final String sCreateDb = "CREATE TABLE %s (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, url TEXT, category INTEGER);";
@@ -38,13 +38,13 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 	private String mExternalStorage;
 	private SQLiteDatabase mDb;
 
-	public BookmarksHelper(Context context) {
+	BookmarksHelper(Context context) {
 		super(context, "bookmarks.db", null, 5);
 
 		mExternalStorage = context.getString(R.string.external_storage);
 	}
 	
-	public void openDatabase(boolean readOnly) {
+	private void openDatabase(boolean readOnly) {
 		if (mDb != null) {
 			if (mDb.isReadOnly()) {
 				if (!readOnly) {
@@ -70,7 +70,7 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 		}
 	}
 	
-	public void closeDatabase() {
+	void closeDatabase() {
 		if (mDb != null) {
 			mDb.close();
 		}
@@ -107,7 +107,7 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public boolean setBookmark(int id, String name, String url) {
+	boolean setBookmark(int id, String name, String url) {
 		// fix remote path
 		if (!url.startsWith("/") && !url.startsWith("http://")) {
 			url = "http://" + url;
@@ -127,13 +127,13 @@ public class BookmarksHelper extends SQLiteOpenHelper {
 		return mDb.update(sTable, values, "_id = ?", new String[] {Integer.toString(id)}) > 0;
 	}
 
-	public boolean deleteBookmark(int id) {
+	boolean deleteBookmark(int id) {
 		openDatabase(false);
 
 		return mDb.delete(sTable, "_id=?", new String[] {Integer.toString(id)}) == 1;
 	}
 
-	public Cursor getBookmarkCursor() {
+	Cursor getBookmarkCursor() {
 		openDatabase(true);
 
 		return mDb.query(sTable, null, null, null, null, null, "category, name");

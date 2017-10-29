@@ -44,15 +44,15 @@ public class PagesDialog extends Dialog implements OnItemClickListener, Callback
 	private final Handler mHandler;
 	private Gallery mGallery;
 
-	public PagesDialog(ViewerActivity activity) {
+	PagesDialog(ViewerActivity activity) {
 		super(activity);
 		
-		mActivity = new WeakReference<ViewerActivity>(activity);
+		mActivity = new WeakReference<>(activity);
 		mHandler = new Handler(this);
 	}
 
 	public void setAlbum(Album album) {
-		mAlbum = new WeakReference<Album>(album);
+		mAlbum = new WeakReference<>(album);
 	}
 
 	public void setPage(int page) {
@@ -65,13 +65,17 @@ public class PagesDialog extends Dialog implements OnItemClickListener, Callback
 
 		Window window = getWindow();
 
-		window.requestFeature(Window.FEATURE_NO_TITLE);
+		if (window != null) {
+			window.requestFeature(Window.FEATURE_NO_TITLE);
+		}
 
 		setContentView(R.layout.pages);
 
 		mGallery = (Gallery)findViewById(R.id.gallery);
-		
-		window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+		if (window != null) {
+			window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		}
 
 		setCanceledOnTouchOutside(true);
 	}
@@ -86,10 +90,10 @@ public class PagesDialog extends Dialog implements OnItemClickListener, Callback
 		t.setText(mAlbum.get().title);
 
 		// create pages list
-		final ArrayList<ThumbnailItem> items = new ArrayList<ThumbnailItem>();
+		final ArrayList<ThumbnailItem> items = new ArrayList<>();
 
 		for(int i = 0, len = mAlbum.get().numPages; i < len; ++i) {
-			items.add(new PagesItem(getContext(), i, mAlbum.get()));
+			items.add(new PagesItem(i, mAlbum.get()));
 		}
 
 		mAdapter = new ThumbnailAdapter(getContext(), mHandler, items, R.layout.pages_item);

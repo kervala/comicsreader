@@ -48,53 +48,184 @@ public class AlbumThread extends HandlerThread {
 	private Handler mLoaderHandler;
 	private WeakReference<AlbumPageCallback> mCallback;
 
-	static final int TIME_CHECK_INTERVAL = 16; // milliseconds
-	static final int DELAY_WINDOW_CHANGED = 1000; // ms
+	private static final int TIME_CHECK_INTERVAL = 16; // milliseconds
+	private static final int DELAY_WINDOW_CHANGED = 1000; // ms
 
-	static final int LOADER_OPEN = 1;
-	static final int LOADER_UPDATE_PAGE = 2;
-	static final int LOADER_UPDATE_BUFFERS = 3;
-	static final int LOADER_LOAD_PREFERENCES = 4;
-	static final int LOADER_SAVE_CURRENT_ALBUM = 5;
+	private static final int LOADER_OPEN = 1;
+	private static final int LOADER_UPDATE_PAGE = 2;
+	private static final int LOADER_UPDATE_BUFFERS = 3;
+	private static final int LOADER_LOAD_PREFERENCES = 4;
+	private static final int LOADER_SAVE_CURRENT_ALBUM = 5;
 
-	static final int VIEWER_CHANGE_PAGE = 10;
-	static final int VIEWER_UPDATE_PAGE = 11;
-	static final int VIEWER_WINDOW_CHANGED = 12;
-	static final int VIEWER_SCROLL_PAGE = 13;
-	static final int VIEWER_OPEN_BEGIN = 14;
-	static final int VIEWER_OPEN_END = 15;
-	static final int VIEWER_ERROR = 16;
+	private static final int VIEWER_CHANGE_PAGE = 10;
+	private static final int VIEWER_UPDATE_PAGE = 11;
+	private static final int VIEWER_WINDOW_CHANGED = 12;
+	private static final int VIEWER_SCROLL_PAGE = 13;
+	private static final int VIEWER_OPEN_BEGIN = 14;
+	private static final int VIEWER_OPEN_END = 15;
+	private static final int VIEWER_ERROR = 16;
 
 	public interface AlbumPageCallback {
-		public int getPageWidth();
-		public int getPageHeight();
+		int getPageWidth();
+		int getPageHeight();
 
-		public void onUpdateNextPage(Bitmap bitmap);
-		public void onUpdatePreviousPage(Bitmap bitmap);
-		public void onUpdateCurrentPage(Bitmap bitmap);
+		void onUpdateNextPage(Bitmap bitmap);
+		void onUpdatePreviousPage(Bitmap bitmap);
+		void onUpdateCurrentPage(Bitmap bitmap);
 
-		public void onPageChanged(int current, int next);
+		void onPageChanged(int current, int next);
 
-		public boolean onReset();
-		public void onError(int error);
-		public void onWindowChanged(boolean highQuality, boolean fullScreen);
-		public void onPageScrolled(int direction);
+		boolean onReset();
+		void onError(int error);
+		void onWindowChanged(boolean highQuality, boolean fullScreen);
+		void onPageScrolled(int direction);
 
-		public void onOpenBegin();
-		public void onOpenEnd();
+		void onOpenBegin();
+		void onOpenEnd();
 
-		public Context getContext();
+		Context getContext();
 	}
 
-	public AlbumThread() {
+	AlbumThread() {
 		super("ComicsReader", Process.THREAD_PRIORITY_MORE_FAVORABLE /* Process.THREAD_PRIORITY_BACKGROUND */);
 
-		mMainHandler = new Handler(Looper.getMainLooper(), mMainCallback);
+		Callback mainCallback = new Callback() {
+			public boolean handleMessage(Message msg) {
+				if (mLoaderHandler == null || album == null) {
+					// Looper stopped, we consider all terminating tasks invalid
+					return false;
+				}
+
+				switch (msg.what) {
+					case VIEWER_CHANGE_PAGE: {
+						Bundle b = msg.getData();
+						int page = b.getInt("page");
+
+						if (page == -1) {
+							page = album.currentPageNumber;
+						}
+
+						// wait until album is loaded
+						if (page >= album.numPages) {
+							page = album.numPages - 1;
+						} else if (page < 0) {
+							page = 0;
+						}
+
+						if (AlbumParameters.doublePage) {
+							if (page > 0) {
+								page -= 1 - (page % 2);
+							} else {
+								page = 0;
+							}
+						}
+
+						// we really change page
+						if (page != mCurrentPage) {
+							mPreviousPage = mCurrentPage;
+							mCurrentPage = page;
+
+							mCallback.get().onPageChanged(mCurrentPage, mPreviousPage);
+
+							if (album.hasPageBitmap(page)) {
+								mWidth = album.getPageWidth(page);
+								mHeight = album.getPageHeight(page);
+
+								final Bitmap bitmap = album.getPageBitmap(page);
+
+								mCallback.get().onUpdateCurrentPage(bitmap);
+							} else {
+//						AlbumPage.sAbortLoading = true;
+
+								// request page loading
+								msg = mLoaderHandler.obtainMessage(LOADER_UPDATE_PAGE);
+								msg.getData().putInt("page", page);
+								mLoaderHandler.sendMessage(msg);
+							}
+						}
+
+						return true;
+					}
+					case VIEWER_UPDATE_PAGE: {
+						Bundle b = msg.getData();
+						int page = b.getInt("page");
+						int count = b.getInt("count", 0);
+						boolean force = b.getBoolean("force", false);
+
+						if (force) {
+							album.updatePagesSizes();
+						}
+
+						final Bitmap bitmap = album.getPageBitmap(page);
+
+						// display the right image if already in memory or a blank page
+						if (page == getCurrentPage()) {
+							mCallback.get().onUpdateCurrentPage(bitmap);
+						} else if (page == getNextPage()) {
+							mCallback.get().onUpdateNextPage(bitmap);
+						} else if (page == getPreviousPage()) {
+							mCallback.get().onUpdatePreviousPage(bitmap);
+						}
+
+						// if image not yet in memory, load it
+						if (bitmap == null) {
+//					AlbumPage.sAbortLoading = true;
+
+							// request page loading
+							msg = mLoaderHandler.obtainMessage(LOADER_UPDATE_PAGE);
+							msg.getData().putInt("page", page);
+							msg.getData().putInt("count", ++count);
+							mLoaderHandler.sendMessage(msg);
+						}
+
+						return true;
+					}
+					case VIEWER_WINDOW_CHANGED: {
+						mCallback.get().onWindowChanged(AlbumParameters.highQuality, AlbumParameters.fullScreen);
+
+						return true;
+					}
+					case VIEWER_SCROLL_PAGE: {
+						Bundle bundle = msg.getData();
+						int direction = bundle.getInt("direction");
+
+						mCallback.get().onPageScrolled(direction);
+
+						return true;
+					}
+					case VIEWER_OPEN_BEGIN: {
+						mCallback.get().onOpenBegin();
+
+						return true;
+					}
+					case VIEWER_OPEN_END: {
+						mCallback.get().onOpenEnd();
+
+						return true;
+					}
+					case VIEWER_ERROR: {
+						Bundle bundle = msg.getData();
+						int error = bundle.getInt("error");
+
+						mCallback.get().onError(error);
+
+						return true;
+					}
+					default:
+						Log.e("ComicsReader", "Message " + String.valueOf(msg.what) + " ot handled in main handler");
+						break;
+				}
+
+				return false;
+			}
+		};
+
+		mMainHandler = new Handler(Looper.getMainLooper(), mainCallback);
 		
 		start();
 	}
 
-	public void setAlbumPageCallback(AlbumPageCallback callback) {
+	void setAlbumPageCallback(AlbumPageCallback callback) {
 		mCallback = new WeakReference<>(callback);
 	}
 
@@ -126,6 +257,7 @@ public class AlbumThread extends HandlerThread {
 				try {
 					wait();
 				} catch (InterruptedException e) {
+					Log.d(ComicsParameters.APP_TAG, "Loaded thread interrupted");
 				}
 			}
 		}
@@ -133,7 +265,7 @@ public class AlbumThread extends HandlerThread {
 		return true;
 	}
 
-	public Uri getAlbumUri() {
+	Uri getAlbumUri() {
 		if (album == null) return null;
 
 		if (album.filename == null) return null;
@@ -141,23 +273,23 @@ public class AlbumThread extends HandlerThread {
 		return Uri.parse(Uri.fromFile(new File(album.filename)).toString() + "#" + String.valueOf(mCurrentPage));
 	}
 
-	public boolean isValid() {
+	boolean isValid() {
 		return album != null && album.numPages > 0;
 	}
 
-	public int getPageWidth() {
+	int getPageWidth() {
 		return Math.max(mWidth, ComicsParameters.sScreenWidth);
 	}
 
-	public int getPageHeight() {
+	int getPageHeight() {
 		return Math.max(mHeight, ComicsParameters.sScreenHeight);
 	}
 
-	public int getCurrentPage() {
+	int getCurrentPage() {
 		return mCurrentPage;
 	}
 
-	public int getNextPage() {
+	private int getNextPage() {
 		if (AlbumParameters.rightToLeft) {
 			if (mCurrentPage == 1) return 0;
 
@@ -173,7 +305,7 @@ public class AlbumThread extends HandlerThread {
 		return nextPage > getLastPage() ? -1:nextPage;
 	}
 
-	public int getPreviousPage() {
+	private int getPreviousPage() {
 		if (AlbumParameters.rightToLeft) {
 			if (mCurrentPage == 0 && getFirstPage() > 0) return 1;
 
@@ -189,7 +321,7 @@ public class AlbumThread extends HandlerThread {
 		return previousPage < getFirstPage() ? -1:previousPage;
 	}
 
-	public int getLastPage() {
+	private int getLastPage() {
 		if (AlbumParameters.rightToLeft || album == null) return 0;
 
 		int page = album.numPages - 1;
@@ -200,7 +332,7 @@ public class AlbumThread extends HandlerThread {
 
 	}
 
-	public int getFirstPage() {
+	private int getFirstPage() {
 		if (!AlbumParameters.rightToLeft || album == null) return 0;
 
 		int page = album.numPages - 1;
@@ -210,11 +342,11 @@ public class AlbumThread extends HandlerThread {
 		return page;
 	}
 
-	public boolean isFirstPage() {
+	boolean isFirstPage() {
 		return getCurrentPage() == getFirstPage();
 	}
 	
-	public boolean isLastPage() {
+	boolean isLastPage() {
 		return getCurrentPage() == getLastPage();
 	}
 
@@ -242,7 +374,7 @@ public class AlbumThread extends HandlerThread {
 	 * go to specified page
 	 * @param page the page
 	 */
-	public void changePage(int page) {
+	void changePage(int page) {
 		if (!isLoaderReady()) return;
 
 //		AlbumPage.sAbortLoading = true;
@@ -255,14 +387,14 @@ public class AlbumThread extends HandlerThread {
 	/*
 	 * go to next page
 	 */
-	public void nextPage() {
+	void nextPage() {
 		changePage(getNextPage());
 	}
 
 	/*
 	 * go to previous page
 	 */
-	public void previousPage() {
+	void previousPage() {
 		changePage(getPreviousPage());
 	}
 
@@ -280,7 +412,7 @@ public class AlbumThread extends HandlerThread {
 		changePage(getFirstPage());
 	}
 
-	public void updatePreviousPage(boolean force) {
+	void updatePreviousPage(boolean force) {
 		if (album != null) {
 			if (!isLoaderReady()) return;
 			
@@ -303,7 +435,7 @@ public class AlbumThread extends HandlerThread {
 		}
 	}
 
-	public void updateNextPage(boolean force) {
+	void updateNextPage(boolean force) {
 		if (album != null) {
 			if (!isLoaderReady()) return;
 
@@ -326,7 +458,7 @@ public class AlbumThread extends HandlerThread {
 		}
 	}
 
-	public void updateCurrentPage(boolean force) {
+	void updateCurrentPage(boolean force) {
 		if (!isLoaderReady()) return;
 		
 		if (mCurrentPage < 0 || mCurrentPage >= album.numPages) return;
@@ -339,7 +471,7 @@ public class AlbumThread extends HandlerThread {
 		mMainHandler.sendMessage(msg);
 	}
 	
-	public void updateBuffers(int current, int next, int previous) {
+	void updateBuffers(int current, int next, int previous) {
 		if (!isLoaderReady()) return;
 		
 		Message msg = mLoaderHandler.obtainMessage(LOADER_UPDATE_BUFFERS);
@@ -349,7 +481,7 @@ public class AlbumThread extends HandlerThread {
 		mLoaderHandler.sendMessage(msg);
 	}
 
-	public void loadPreferences(boolean force) {
+	void loadPreferences(boolean force) {
 		if (!isLoaderReady()) return;
 
 		// cancel previously page loading
@@ -360,11 +492,11 @@ public class AlbumThread extends HandlerThread {
 		mLoaderHandler.sendMessage(msg);
 	}
 
-	public void updateWindow() {
+	void updateWindow() {
 		mMainHandler.sendEmptyMessageDelayed(VIEWER_WINDOW_CHANGED, DELAY_WINDOW_CHANGED);
 	}
 
-	public void saveCurrentAlbum() {
+	void saveCurrentAlbum() {
 		if (!isLoaderReady()) return;
 
 		mLoaderHandler.sendEmptyMessage(LOADER_SAVE_CURRENT_ALBUM);
@@ -374,7 +506,7 @@ public class AlbumThread extends HandlerThread {
 	 * Main actions
 	 */
 
-	public void updatePageScrolling(int direction) {
+	void updatePageScrolling(int direction) {
 		mMainHandler.removeMessages(VIEWER_SCROLL_PAGE);
 
 		final Message msg = mMainHandler.obtainMessage(VIEWER_SCROLL_PAGE);
@@ -406,6 +538,7 @@ public class AlbumThread extends HandlerThread {
 					try {
 						page = Integer.valueOf(strPage);
 					} catch(NumberFormatException e) {
+						Log.w(ComicsParameters.APP_TAG, "Unable to convert " + strPage + " to number");
 					}
 				}
 
@@ -459,6 +592,7 @@ public class AlbumThread extends HandlerThread {
 					mMainHandler.sendMessage(msg);
 				} else {
 					// TODO: create an error message
+					Log.w(ComicsParameters.APP_TAG, "Unable to update page " + page);
 				}
 				break;
 			}
@@ -487,7 +621,7 @@ public class AlbumThread extends HandlerThread {
 				final SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mCallback.get().getContext()).edit();
 				editor.putString("last_file", getAlbumUri().toString());
 //				Log.d("ComicsReader", "Save " + getAlbumUri().toString());
-				editor.commit();
+				editor.apply();
 				break;
 			}
 			default:
@@ -498,135 +632,4 @@ public class AlbumThread extends HandlerThread {
 		}
 	};
 
-	private Callback mMainCallback = new Callback() {
-		public boolean handleMessage(Message msg) {
-			if (mLoaderHandler == null || album == null) {
-				// Looper stopped, we consider all terminating tasks invalid
-				return false;
-			}
-
-			switch (msg.what) {
-			case VIEWER_CHANGE_PAGE: {
-				Bundle b = msg.getData();
-				int page = b.getInt("page");
-
-				if (page == -1) {
-					page = album.currentPageNumber;
-				}
-
-				// wait until album is loaded
-				if (page >= album.numPages) {
-					page = album.numPages - 1;
-				} else if (page < 0) {
-					page = 0;
-				}
-
-				if (AlbumParameters.doublePage) {
-					if (page > 0) {
-						page -= 1 - (page % 2);
-					} else {
-						page = 0;
-					}
-				}
-
-				// we really change page
-				if (page != mCurrentPage) {
-					mPreviousPage = mCurrentPage;
-					mCurrentPage = page;
-					
-					mCallback.get().onPageChanged(mCurrentPage, mPreviousPage);
-
-					if (album.hasPageBitmap(page)) {
-						mWidth = album.getPageWidth(page);
-						mHeight = album.getPageHeight(page);
-						
-						final Bitmap bitmap = album.getPageBitmap(page);
-
-						mCallback.get().onUpdateCurrentPage(bitmap);
-					} else {
-//						AlbumPage.sAbortLoading = true;
-
-						// request page loading
-						msg = mLoaderHandler.obtainMessage(LOADER_UPDATE_PAGE);
-						msg.getData().putInt("page", page);
-						mLoaderHandler.sendMessage(msg);
-					}
-				}
-
-				return true;
-			}
-			case VIEWER_UPDATE_PAGE: {
-				Bundle b = msg.getData();
-				int page = b.getInt("page");
-				int count = b.getInt("count", 0);
-				boolean force = b.getBoolean("force", false);
-				
-				if (force) {
-					album.updatePagesSizes();
-				}
-				
-				final Bitmap bitmap = album.getPageBitmap(page);
-				
-				// display the right image if already in memory or a blank page
-				if (page == getCurrentPage()) {
-					mCallback.get().onUpdateCurrentPage(bitmap);
-				} else if (page == getNextPage()) {
-					mCallback.get().onUpdateNextPage(bitmap);
-				} else if (page == getPreviousPage()) {
-					mCallback.get().onUpdatePreviousPage(bitmap);
-				} else {
-				}
-				
-				// if image not yet in memory, load it
-				if (bitmap == null) {
-//					AlbumPage.sAbortLoading = true;
-
-					// request page loading
-					msg = mLoaderHandler.obtainMessage(LOADER_UPDATE_PAGE);
-					msg.getData().putInt("page", page);
-					msg.getData().putInt("count", ++count);
-					mLoaderHandler.sendMessage(msg);
-				}
-				
-				return true;
-			}
-			case VIEWER_WINDOW_CHANGED: {
-				mCallback.get().onWindowChanged(AlbumParameters.highQuality, AlbumParameters.fullScreen);
-
-				return true;
-			}
-			case VIEWER_SCROLL_PAGE: {
-				Bundle bundle = msg.getData();
-				int direction = bundle.getInt("direction");
-
-				mCallback.get().onPageScrolled(direction);
-
-				return true;
-			}
-			case VIEWER_OPEN_BEGIN: {
-				mCallback.get().onOpenBegin();
-
-				return true;
-			}
-			case VIEWER_OPEN_END: {
-				mCallback.get().onOpenEnd();
-
-				return true;
-			}
-			case VIEWER_ERROR: {
-				Bundle bundle = msg.getData();
-				int error = bundle.getInt("error");
-
-				mCallback.get().onError(error);
-
-				return true;
-			}
-			default:
-				Log.e("ComicsReader", "Message " + String.valueOf(msg.what) + " ot handled in main handler");
-				break;
-			}
-			
-			return false;
-		}
-	};
 }

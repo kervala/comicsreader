@@ -32,7 +32,7 @@ public class AlbumDialog extends Dialog implements android.view.View.OnClickList
 	private BrowserItem mItem;
 	private LinearLayout mLayout;
 	
-	public AlbumDialog(Context context) {
+	AlbumDialog(Context context) {
 		super(context);
 	}
 

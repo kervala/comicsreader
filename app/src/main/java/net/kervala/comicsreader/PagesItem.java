@@ -21,13 +21,12 @@ package net.kervala.comicsreader;
 
 import java.lang.ref.WeakReference;
 
-import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 
 public class PagesItem extends ThumbnailItem {
 	private final WeakReference<Album> mAlbum;
 
-	public PagesItem(Context context, int index, Album album) {
+	PagesItem(int index, Album album) {
 		this.index = index;
 		mAlbum = new WeakReference<>(album);
 		mText = String.valueOf(index+1);

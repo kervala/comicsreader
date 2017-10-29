@@ -43,7 +43,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 	private final WeakReference<BrowserActivity> mActivity;
 	private ArrayList<ThumbnailItem> mItems;
 
-	public BrowseRemoteAlbumsTask(BrowserActivity activity, String url) {
+	BrowseRemoteAlbumsTask(BrowserActivity activity, String url) {
 		mActivity = new WeakReference<>(activity);
 		mUrl = url;
 	}
@@ -54,7 +54,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 		mActivity.get().showDialog(BrowserActivity.DIALOG_WAIT);
 	}
 	
-	private boolean parseJson(String json) {
+	private String parseJson(String json) {
 		try {
 			mItems = new ArrayList<>();
 			
@@ -99,13 +99,13 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return e.toString();
 		}
 		
-		return true;
+		return null;
 	}
 	
-	private boolean parseXml(String xml) {
+	private String parseXml(String xml) {
 		try {
 			final AlbumsIndexHandler handler = new AlbumsIndexHandler();
 			
@@ -113,19 +113,18 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 
 			mItems = handler.getItems();
 		} catch (SAXException e) {
-//			error = e.toString();
 			e.printStackTrace();
-			return false;
+			return e.toString();
 		}
 		
-		return true;
+		return null;
 	}
 	
 	@Override
 	protected String doInBackground(String... params) {
 		String error = null;
 
-		URL url = null;
+		URL url;
 		
 		try {
 			// open a stream on URL
@@ -133,12 +132,14 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 		} catch (MalformedURLException e) {
 			error = e.toString();
 			e.printStackTrace();
+
+			return error;
 		}
 
-		boolean retry = false;
+		boolean retry;
 		HttpURLConnection urlConnection = null;
 		int resCode = 0;
-			
+
 		do {
 			// create the new connection
 			ComicsAuthenticator.sInstance.reset();
@@ -189,7 +190,7 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 			// download the file
 			is = new BufferedInputStream(urlConnection.getInputStream(), ComicsParameters.BUFFER_SIZE);
 			
-			int count = 0;
+			int count;
 			byte data[] = new byte[ComicsParameters.BUFFER_SIZE];
 
 			while ((count = is.read(data)) != -1) {
@@ -209,18 +210,16 @@ public class BrowseRemoteAlbumsTask extends AsyncTask<String, Integer, String> {
 				}
 			}
 
-			if (urlConnection != null) {
-				urlConnection.disconnect();
-			}
+			urlConnection.disconnect();
 		}
 
 		if (bytes != null) {
 			final String text = new String(bytes.toByteArray());
 		
 			if (text.contains("<albums>")) {
-				parseXml(text);
+				error = parseXml(text);
 			} else if (text.contains("\"albums\":")){
-				parseJson(text);
+				error = parseJson(text);
 			} else {
 				Log.e("ComicsReader", "Error");
 			}

@@ -26,18 +26,18 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class AlbumPage {
-	public Bitmap bitmap;
-	public Bitmap thumbnail;
-	public byte [] buffer;
-	public Size bitmapSize;
-	public Size cachedBitmapSize;
-	public Size thumbnailSize;
+	Bitmap bitmap;
+	Bitmap thumbnail;
+	byte [] buffer;
+	Size bitmapSize;
+	Size cachedBitmapSize;
+	Size thumbnailSize;
 
-	protected int mPage;
-	protected String mFilename;
-	protected String mCacheFilename;
-	protected File mBufferCacheFile;
-	protected final Object mBitmapSizeMutex = new Object();
+	private int mPage;
+	private String mFilename;
+	private String mCacheFilename;
+	private File mBufferCacheFile;
+	private final Object mBitmapSizeMutex = new Object();
 
 	static boolean sAbortLoading = false;
 	
@@ -51,7 +51,7 @@ public class AlbumPage {
 		boolean fitToScreen = false;
 	}
 	
-	public AlbumPage(int page, String filename) {
+	AlbumPage(int page, String filename) {
 		mPage = page;
 		mFilename = filename;
 	}
@@ -91,7 +91,7 @@ public class AlbumPage {
 	 * @param scale Scale to apply on page size
 	 * @return Bitmap representing this page
 	 */
-	public Bitmap getPageRaw(int scale) {
+	Bitmap getPageRaw(int scale) {
 		if (buffer == null) return null;
 
 		if (sAbortLoading) {
@@ -164,7 +164,7 @@ public class AlbumPage {
 		return b;
 	}
 
-	public void updateBitmapDstSize(int width, int height) {
+	void updateBitmapDstSize(int width, int height) {
 		if (bitmapSize == null) return;
 	
 		// use some parameters from Album
@@ -247,7 +247,7 @@ public class AlbumPage {
 		bitmapSize.fitToScreen = fitToScreen;
 	}
 
-	public void updateThumbnailDstSize() {
+	private void updateThumbnailDstSize() {
 		if (thumbnailSize.dstWidth > 0) return;
 
 		thumbnailSize.dstHeight = ComicsParameters.THUMBNAIL_HEIGHT;
@@ -257,7 +257,7 @@ public class AlbumPage {
 		thumbnailSize.dstWidth = thumbnailSize.dstHeight * thumbnailSize.srcWidth / thumbnailSize.srcHeight;
 	}
 
-	public boolean updateBitmap(int width, int height) {
+	boolean updateBitmap(int width, int height) {
 		if (!updateSrcSize()) return false;
 
 		boolean res = false;
@@ -297,7 +297,7 @@ public class AlbumPage {
 		return res;
 	}
 
-	public boolean updateThumbnail() {
+	boolean updateThumbnail() {
 		if (thumbnail != null) return true;
 		
 		if (!updateSrcSize()) return false;
@@ -335,7 +335,7 @@ public class AlbumPage {
 		return res;
 	}
 
-	public boolean updateSrcSize() {
+	boolean updateSrcSize() {
 		// size already loaded
 		if (bitmapSize != null) return true;
 		
@@ -368,7 +368,7 @@ public class AlbumPage {
 		return true;
 	}
 	
-	public void resetSize() {
+	void resetSize() {
 		if (bitmapSize == null) return;
 		
 		synchronized(mBitmapSizeMutex) {
@@ -379,7 +379,7 @@ public class AlbumPage {
 		}
 	}
 	
-	public void updateCacheFilename() {
+	private void updateCacheFilename() {
 		if (mCacheFilename == null && mFilename != null) {
 			mCacheFilename = ComicsHelpers.md5(mFilename);
 
@@ -388,7 +388,7 @@ public class AlbumPage {
 	}
 
 	
-	public boolean loadBufferFromCache() {
+	boolean loadBufferFromCache() {
 		if (buffer != null) return true;
 
 		updateCacheFilename();
@@ -405,7 +405,7 @@ public class AlbumPage {
 		return ComicsHelpers.loadFileToBuffer(mBufferCacheFile, buffer);
 	}
 	
-	public boolean saveBufferToCache() {
+	boolean saveBufferToCache() {
 		if (buffer == null) return false;
 		
 		updateCacheFilename();
@@ -421,19 +421,15 @@ public class AlbumPage {
 		return res;
 	}
 
-	public boolean deleteCache() {
+	private void deleteCache() {
 		updateCacheFilename();
 
-		boolean res = true;
-
-		if (mBufferCacheFile.exists()) {
-			res = mBufferCacheFile.delete();
+		if (mBufferCacheFile.exists() && !mBufferCacheFile.delete()) {
+			Log.w(ComicsParameters.APP_TAG, "Unable to delete file " + mBufferCacheFile.getAbsolutePath());
 		}
-
-		return res;
 	}
 
-	public int getMemoryUsed() {
+	int getMemoryUsed() {
 		int size = 0;
 
 		if (buffer != null) size += buffer.length;

@@ -36,11 +36,10 @@ public class BookmarkDialog extends Dialog implements View.OnClickListener {
 	private EditText mTitleEdit;
 	private EditText mUrlEdit;
 	private Button mOkButton;
-	private Button mCancelButton;
 	private WeakReference<Handler> mHandler;
 	private int mId;
 
-	public BookmarkDialog(Context context, Handler handler) {
+	BookmarkDialog(Context context, Handler handler) {
 		super(context);
 		
 		mHandler = new WeakReference<>(handler);
@@ -48,12 +47,16 @@ public class BookmarkDialog extends Dialog implements View.OnClickListener {
 		Window window = getWindow();
 		
 		// must be called before setContentView
-		window.requestFeature(Window.FEATURE_NO_TITLE);
-		
+		if (window != null) {
+			window.requestFeature(Window.FEATURE_NO_TITLE);
+		}
+
 		setContentView(R.layout.dialog_bookmark);
 
 		// must be called after setContentView
-		window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); 
+		if (window != null) {
+			window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		}
 		
 		mTitleEdit = (EditText)findViewById(R.id.bookmark_title);
 		mUrlEdit = (EditText)findViewById(R.id.bookmark_url);
@@ -61,8 +64,8 @@ public class BookmarkDialog extends Dialog implements View.OnClickListener {
 		mOkButton = (Button)findViewById(R.id.ok);
 		mOkButton.setOnClickListener(this);
 
-		mCancelButton = (Button)findViewById(R.id.cancel);
-		mCancelButton.setOnClickListener(this);
+		Button cancelButton = (Button) findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(this);
 	}
 	
 	public void setTitle(String title) {
