@@ -46,10 +46,6 @@ hg archive $TMPDIR
 
 cd $TMPDIR
 
-# delete all useless files
-echo "Removing useless files..."
-rm -f ant.properties makebuild
-
 # compress files
 echo "Compressing sources..."
 zip -9 -r $DESTSRC *
