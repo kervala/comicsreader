@@ -39,6 +39,7 @@ import android.util.Log;
 public class AlbumThread extends HandlerThread {
 	public Album album;
 
+	private final Object mAlbumMutex = new Object();
 	private int mCurrentPage = -1;
 	private int mPreviousPage = -1;
 	private int mWidth = 0;
@@ -549,7 +550,7 @@ public class AlbumThread extends HandlerThread {
 					mLoadingPage = false;
 
 					if (album != null) {
-						synchronized (album) {
+						synchronized (mAlbumMutex) {
 							album.close();
 						}
 					}
@@ -560,7 +561,7 @@ public class AlbumThread extends HandlerThread {
 					// create an album depending on file type
 					album = Album.createInstance(filename);
 
-					synchronized (album) {
+					synchronized (mAlbumMutex) {
 						if (album.open(filename, true)) {
 							ComicsParameters.sCurrentOpenAlbum = album.filename;
 						} else {
