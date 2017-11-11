@@ -108,9 +108,15 @@ public class Album {
 	}
 
 	private static int getType(String uriString) {
-		Uri uri = Album.getUriFromFilename(uriString);
+		String filename;
 
-		String filename = Album.getFilenameFromUri(uri);
+		if (uriString.startsWith("/")) {
+			filename = uriString;
+		} else {
+			Uri uri = Album.getUriFromFilename(uriString);
+
+			filename = Album.getFilenameFromUri(uri);
+		}
 
 		// file is a cbz
 		if (CbzAlbum.isValid(filename)) {
@@ -154,9 +160,15 @@ public class Album {
 	static boolean isUrlValid(String uriString) {
 		if (uriString == null) return false;
 
-		Uri uri = Uri.parse(uriString);
-		
-		String filename = Album.getFilenameFromUri(uri);
+		String filename;
+
+		if (!uriString.startsWith("/")) {
+			Uri uri = Uri.parse(uriString);
+
+			filename = Album.getFilenameFromUri(uri);
+		} else {
+			filename = uriString;
+		}
 
 		if (filename == null) return false;
 
@@ -179,9 +191,15 @@ public class Album {
 	static boolean isFilenameValid(String uriString) {
 		if (uriString == null) return false;
 
-		Uri uri = Album.getUriFromFilename(uriString);
-		
-		String filename = Album.getFilenameFromUri(uri);
+		String filename;
+
+		if (!uriString.startsWith("/")) {
+			Uri uri = Album.getUriFromFilename(uriString);
+
+			filename = Album.getFilenameFromUri(uri);
+		} else {
+			filename = uriString;
+		}
 
 		if (filename == null) return false;
 
@@ -302,7 +320,7 @@ public class Album {
 		
 		if (full) {
 			mCachePagesDir = new File(ComicsParameters.sPagesDirectory, ComicsHelpers.md5(filename));
-			if (!mCachePagesDir.mkdirs()) {
+			if (!mCachePagesDir.exists() && !mCachePagesDir.mkdirs()) {
 				Log.w(ComicsParameters.APP_TAG, "Unable to create directory " + mCachePagesDir.getAbsolutePath());
 			}
 

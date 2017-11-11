@@ -455,7 +455,11 @@ public class BrowserActivity extends Activity implements OnItemClickListener, On
 		}
 
 		if (!ok && (scheme == null || "file".equals(scheme) || "".equals(scheme))) {
-			url = Album.getFilenameFromUri(uri);
+			if (!url.startsWith("/")) {
+				// only convert URI to path if using a scheme
+				url = Album.getFilenameFromUri(uri);
+			}
+
 			File f = new File(url);
 
 			if (!f.exists() || !f.isDirectory()) {
