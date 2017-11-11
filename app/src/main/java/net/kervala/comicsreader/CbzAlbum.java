@@ -59,7 +59,7 @@ class CbzAlbum extends Album {
 
 				ifs.close();
 			} catch (IOException e) {
-				Log.w(ComicsParameters.APP_TAG, "Unable to read ZIP file: " + filename);
+				Log.w(ComicsParameters.APP_TAG, "Unable to read ZIP file: " + filename + " Exception: " + e.toString());
 			}
 		}
 
