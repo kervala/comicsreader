@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 28
 
     signingConfigs {
         release {
@@ -14,20 +14,20 @@ android {
 
     defaultConfig {
         applicationId 'net.kervala.comicsreader'
-        minSdkVersion 9
-        targetSdkVersion 25
-        versionCode 31
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 32
         versionName "2.3." + getHgRevision()
         signingConfig signingConfigs.release
 
         externalNativeBuild {
             cmake {
-                arguments "-DANDROID_STL_FORCE_FEATURES=TRUE", "-DANDROID_PLATFORM=android-9"
+                arguments "-DANDROID_STL_FORCE_FEATURES=TRUE", "-DANDROID_PLATFORM=android-16", "-DANDROID_STL=c++_static", "-DCMAKE_VERBOSE_MAKEFILE=ON"
             }
         }
 
         ndk {
-            abiFilters 'x86', 'armeabi-v7a'
+            abiFilters 'armeabi-v7a', 'x86'
         }
     }
 
@@ -56,6 +56,8 @@ android {
         abortOnError false
     }
 
+    flavorDimensions "product"
+
     productFlavors {
     }
     externalNativeBuild {
@@ -78,7 +80,7 @@ def getHgRevision() {
     def os = new ByteArrayOutputStream()
     exec {
         commandLine 'hg', 'tip', '--template', '{rev}'
-        standardOutput = os;
+        standardOutput = os
     }
 
     return os.toString()
