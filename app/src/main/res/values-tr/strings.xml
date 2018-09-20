@@ -28,7 +28,7 @@
   <string name="close">Kapat</string>
   <string name="confirm_delete_album">Bu albümü silmek istediğinizden emin misiniz?</string>
   <string name="confirm_delete_bookmark">Bu favoriyi silmek istediğinizden emin misiniz?</string>
-  <string name="confirm_open_folder">Bu klasör resim olmayan dosyalar içeriyor. Albüm olarak açmak ister misiniz?</string>
+  <string name="confirm_open_folder">Bu klasör resim olmayan dosyalar içermektedir. Albüm olarak açmak ister misiniz?</string>
   <string name="cover">Kapak</string>
   <string name="dialog_album_delete">Sil</string>
   <string name="dialog_album_size">Boyut: %1$d %2$s</string>
@@ -55,7 +55,7 @@
   <string name="preference_category_cache">Arabellek</string>
   <string name="preference_category_view">Görünüm</string>
   <string name="preference_clear_cache_albums">Albümleri sil</string>
-  <string name="preference_clear_cache_albums_summary">İndirilip ara belleğe alınan tüm albümleri sil</string>
+  <string name="preference_clear_cache_albums_summary">Tüm indirilmiş albümlerin arabelleğini sil</string>
   <string name="preference_clear_cache_albums_toast">İndirilen tüm albümler silindi</string>
   <string name="preference_clear_cache_thumbnails">Minyatürleri sil</string>
   <string name="preference_clear_cache_thumbnails_summary">İndirilen ya da oluşturulan tüm minyatürleri sil</string>
@@ -63,7 +63,7 @@
   <string name="preference_double_page_label">Çift sayfa kipi</string>
   <string name="preference_double_page_summary">İki sayfayı aynı anda ekranda gösterir</string>
   <string name="preference_fast_scroll_label">Hızlı kaydırma</string>
-  <string name="preference_fast_scroll_summary">Listede hızlı gezinmek için işareti etkinleştirir</string>
+  <string name="preference_fast_scroll_summary">Sayfada hızlı gezinmeyi etkinleştirmek için kaydırma alanında asansörü göster</string>
   <string name="preference_fit_to_screen_label">Ekrana uygula</string>
   <string name="preference_fit_to_screen_summary">Ekranın çözünürlüğünden küçükse resmi genişletir</string>
   <string name="preference_full_screen_label">Tam ekran</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">Sayfa sayısı</string>
   <string name="preference_overlay_duration_summary">Sayfa sayısının gösterilme süresi</string>
   <string name="preference_sample_label">Zorlanan boyutlandırma ölçeği</string>
-  <string name="preference_sample_summary">Bellek tasarruf etmek için yüklendiğinde bir resme uygulanacak yeniden boyutlandırma ölçeği</string>
+  <string name="preference_sample_summary">Hafızadan tasarruf etmek için yükleme sırasında resimleri aşağı ölçekle</string>
   <string name="preference_zoom_label">Yeniden boyutlandırma</string>
   <string name="preference_zoom_summary">Sayfaların yeniden boyutlandırma kipi</string>
   <string name="preference_category_misc">Diğer</string>
@@ -93,17 +93,19 @@
 - Almanca tercüme: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
 - Yunanca tercüme: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
 - İtalyanca tercüme: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-- Japonca tercüme: Naofumi\n
+- Japonca tercüme: Naofumi, RACER\n
 - Korece tercüme: Jang \"palindrom615\"\n
 - Lehçe tercüme: Jan \"Shark103\" Bielak\n
-- Portekizce tercüme: Marcelo Ghelman\n
+- Portekizce tercüme: Marcelo Ghelman, Lucas Elder Neves\n
 - Rusça tercüme: Anonymous, aiz1, deliium\n
 - İspanyolca tercüme: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
-- Türkçe tercüme: mauron\n
+- Türkçe tercüme: ultrapeer, mauron\n
 </string>
   <string name="browser_album_title">Başlıksız</string>
   <string name="preference_edges_resistance_label">Kenarların direnci</string>
   <string name="preference_edges_resistance_summary">Sayfa çevrimi öncesi direnç</string>
+  <string name="preference_edges_width_label">Kenar genişliği</string>
+  <string name="preference_edges_width_summary">Sayfa çevirme tıklamalarına cevap veren ekran kenarlarının genişliği</string>
   <string name="preference_page_transition_speed_label">Sayfa çevirme hızı</string>
   <string name="preference_page_transition_speed_summary">Sonraki/önceki sayfaya geçiş animasyonu hızı</string>
   <string name="preference_reading_direction_label">Sağdan sola okuma yönü</string>

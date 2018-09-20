@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="preference_zoom_labels">
+    <item>Dopasuj do szerokości</item>
+    <item>Dopasuj do wysokości</item>
+    <item>Fit all</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_sample_labels">
+    <item>Auto</item>
+    <item>100%</item>
+    <item>50%</item>
+    <item>25%</item>
+  </string-array>
+  <string-array name="preference_overlay_duration_names">
+    <item>Nigdy</item>
+    <item>2 sekundy</item>
+    <item>5 sekund</item>
+    <item>10 sekund</item>
+    <item>Nieśkończenie</item>
+  </string-array>
+  <string-array name="preference_edges_resistance_names">
+    <item>Brak</item>
+    <item>Słabo</item>
+    <item>Średnie</item>
+    <item>Mocno</item>
+  </string-array>
+  <string-array name="preference_page_transition_speed_names">
+    <item>Powoli</item>
+    <item>Średnio</item>
+    <item>Szybko</item>
+  </string-array>
+  <string-array name="preference_device_orientation_names">
+    <item>Automatycznie</item>
+    <item>Portretowo</item>
+    <item>Krajobrazowo</item>
+  </string-array>
+</resources>

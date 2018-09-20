@@ -55,7 +55,7 @@
   <string name="preference_category_cache">キャッシュ</string>
   <string name="preference_category_view">表示</string>
   <string name="preference_clear_cache_albums">アルバムをクリア</string>
-  <string name="preference_clear_cache_albums_summary">ダウンロードしてキャッシュされたリモートアルバムをすべて削除します</string>
+  <string name="preference_clear_cache_albums_summary">ダウンロードされたアルバムのキャッシュをすべて削除します</string>
   <string name="preference_clear_cache_albums_toast">ダウンロードしたアルバムをすべてクリアしました</string>
   <string name="preference_clear_cache_thumbnails">サムネイルをクリア</string>
   <string name="preference_clear_cache_thumbnails_summary">生成またはダウンロードされたサムネイルをすべて削除します</string>
@@ -63,7 +63,7 @@
   <string name="preference_double_page_label">ダブル ページ モード</string>
   <string name="preference_double_page_summary">画面上で一度に 2 ページ表示します</string>
   <string name="preference_fast_scroll_label">高速スクロール</string>
-  <string name="preference_fast_scroll_summary">指でドラッグすると、クイックにリストをスクロールすることができます</string>
+  <string name="preference_fast_scroll_summary">スクロールフィールドにエレベーターを表示します。素早いページの移動ができます</string>
   <string name="preference_fit_to_screen_label">画面に合わせる</string>
   <string name="preference_fit_to_screen_summary">画面の解像度より画像が小さい場合は拡大します</string>
   <string name="preference_full_screen_label">全画面</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">ページ</string>
   <string name="preference_overlay_duration_summary">ページ数を表示する持続時間</string>
   <string name="preference_sample_label">強制的に画像をスケールする</string>
-  <string name="preference_sample_summary">メモリを節約するために、画像をロード時にスケールを調整します</string>
+  <string name="preference_sample_summary">メモリを節約するために、画像の読み込み時にダウンスケールします</string>
   <string name="preference_zoom_label">ズーム</string>
   <string name="preference_zoom_summary">ページをスケール調整するモード</string>
   <string name="preference_category_misc">その他</string>
@@ -87,22 +87,26 @@
   <string name="remember_password">パスワードを保存する</string>
   <string name="contributors_label">貢献者:</string>
   <string name="contributors">
-- Jules Blok (自然な順序のページ番号と自動回転の実装)\n
-- エストニア語翻訳: Rivo \"Eraser\" Zängov\n
-- ガリシア語翻訳: Xesusmosquera\n
-- ドイツ語翻訳: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
-- ギリシャ語翻訳: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
-- イタリア語翻訳: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-- 日本語翻訳: Naofumi\n
-- 韓国語翻訳: Jang \"palindrom615\"\n
-- ポーランド語翻訳: Jan \"Shark103\" Bielak\n
-- ポルトガル語翻訳: Marcelo Ghelman\n
-- ロシア語翻訳: 匿名, aiz1, deliium\n
-- スペイン語翻訳: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
-- トルコ語翻訳: ultrapeer, Mauron</string>
+    - Jules Blok (自然な順序のページ番号と自動回転の実装)\n
+    - エストニア語翻訳: Rivo \"Eraser\" Zängov\n
+    - ガリシア語翻訳: Xesusmosquera\n
+    - ドイツ語翻訳: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - ギリシャ語翻訳: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - イタリア語翻訳: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - 日本語翻訳: Naofumi, RACER\n
+    - 韓国語翻訳: Jang \"palindrom615\"\n
+    - ノルウェー語翻訳: Allan Nordhøy\n
+    - ポーランド語翻訳: Jan \"Shark103\" Bielak\n
+    - ポルトガル語翻訳: Marcelo Ghelman, Lucas Elder Neves\n
+    - ロシア語翻訳: Anonymous, aiz1, deliium\n
+    - スペイン語翻訳: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - トルコ語翻訳: ultrapeer, Mauron\n
+  </string>
   <string name="browser_album_title">タイトルはありません</string>
   <string name="preference_edges_resistance_label">エッジの抵抗</string>
   <string name="preference_edges_resistance_summary">ページを切り替える前に抵抗します</string>
+  <string name="preference_edges_width_label">エッジの幅</string>
+  <string name="preference_edges_width_summary">ページめくりのクリックに反応する、画面の枠の幅</string>
   <string name="preference_page_transition_speed_label">ページ遷移スピード</string>
   <string name="preference_page_transition_speed_summary">次/前のページに遷移するアニメーションに使用するスピード</string>
   <string name="preference_reading_direction_label">読む方向を右から左に</string>

@@ -27,6 +27,12 @@
     <item>Orta</item>
     <item>Yüksek</item>
   </string-array>
+  <string-array name="preference_edges_width_names">
+    <item>Çok küçük</item>
+    <item>Küçük</item>
+    <item>Orta </item>
+    <item>Geniş</item>
+  </string-array>
   <string-array name="preference_page_transition_speed_names">
     <item>Yavaş</item>
     <item>Orta</item>

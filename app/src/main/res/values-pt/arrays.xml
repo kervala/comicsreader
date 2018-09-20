@@ -1,46 +1,46 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="preference_zoom_labels">
-    <item>Mahuta laiusele</item>
-    <item>Mahuta kõrgusele</item>
-    <item>Mahuta ekraanile</item>
+    <item>Ajustar à largura</item>
+    <item>Ajustar à altura</item>
+    <item>Ajustar ambos</item>
     <item>100%</item>
     <item>50%</item>
     <item>25%</item>
   </string-array>
   <string-array name="preference_sample_labels">
-    <item>Automaatne</item>
+    <item>Auto</item>
     <item>100%</item>
     <item>50%</item>
     <item>25%</item>
   </string-array>
   <string-array name="preference_overlay_duration_names">
-    <item>Mitte kunagi</item>
-    <item>2 sekundit</item>
-    <item>5 sekundit</item>
-    <item>10 sekundit</item>
-    <item>Piiramatult</item>
+    <item>Nunca</item>
+    <item>2 segundos</item>
+    <item>5 segundos</item>
+    <item>10 segundos</item>
+    <item>Indefinido</item>
   </string-array>
   <string-array name="preference_edges_resistance_names">
-    <item>Pole</item>
-    <item>Nõrk</item>
-    <item>Keskmine</item>
-    <item>Tugev</item>
+    <item>Nenhum</item>
+    <item>Fraco</item>
+    <item>Médio</item>
+    <item>Forte</item>
   </string-array>
   <string-array name="preference_edges_width_names">
-    <item>Väga väike</item>
-    <item>Väike</item>
-    <item>Keskmine</item>
-    <item>Lai</item>
+    <item>Minúsculo</item>
+    <item>Pequeno</item>
+    <item>Médio</item>
+    <item>Largo</item>
   </string-array>
   <string-array name="preference_page_transition_speed_names">
-    <item>Aeglane</item>
-    <item>Keskmine</item>
-    <item>Kiire</item>
+    <item>Lento</item>
+    <item>Médio</item>
+    <item>Rápido</item>
   </string-array>
   <string-array name="preference_device_orientation_names">
-    <item>Automaatne</item>
-    <item>Püsti</item>
-    <item>Pikali</item>
+    <item>Automático</item>
+    <item>Retrato</item>
+    <item>Paisagem</item>
   </string-array>
 </resources>

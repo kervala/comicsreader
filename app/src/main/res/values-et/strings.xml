@@ -28,7 +28,7 @@
   <string name="close">Sulge</string>
   <string name="confirm_delete_album">Kas sa soovid seda albumit kustutada?</string>
   <string name="confirm_delete_bookmark">Kas sa soovid seda järjehoidjat kustutada?</string>
-  <string name="confirm_open_folder">Selles kaustas on failid, mis pole pildid. Kas sa soovid seda albumina avada?</string>
+  <string name="confirm_open_folder">Selles kaustas on faile, mis pole pildid. Kas sa soovid avada seda albumina?</string>
   <string name="cover">Kaanepilt</string>
   <string name="dialog_album_delete">Kustuta</string>
   <string name="dialog_album_size">Suurus: %1$d %2$s</string>
@@ -55,7 +55,7 @@
   <string name="preference_category_cache">Vahemälu</string>
   <string name="preference_category_view">Vaade</string>
   <string name="preference_clear_cache_albums">Puhasta albumid</string>
-  <string name="preference_clear_cache_albums_summary">Kustuta vahemälust kõik allalaetud võrgus olevad albumid</string>
+  <string name="preference_clear_cache_albums_summary">Kustuta kõik allalaaditud albumid vahemälust</string>
   <string name="preference_clear_cache_albums_toast">Kõik allalaaditud albumid on kustutatud</string>
   <string name="preference_clear_cache_thumbnails">Eemalda pispildid</string>
   <string name="preference_clear_cache_thumbnails_summary">Kustuta kõik loodud või allalaaditud pisipildid</string>
@@ -63,7 +63,7 @@
   <string name="preference_double_page_label">Kaheleheline režiim</string>
   <string name="preference_double_page_summary">Näita ekraanil korraga kahte lehekülge</string>
   <string name="preference_fast_scroll_label">Kiire kerimine</string>
-  <string name="preference_fast_scroll_summary">Näitab pisipilti, mida lohistades saab kiiresti läbi nimekirja sirvida</string>
+  <string name="preference_fast_scroll_summary">Näita kerimise indikaatorit kiiremaks kerimiseks</string>
   <string name="preference_fit_to_screen_label">Mahuta ekraanile</string>
   <string name="preference_fit_to_screen_summary">Suurenda pilti, kui see on väiksem, kui ekraani resolutsioon</string>
   <string name="preference_full_screen_label">Täisekraanil</string>
@@ -73,7 +73,7 @@
   <string name="preference_overlay_duration_label">Lehekülje number</string>
   <string name="preference_overlay_duration_summary">Kui kaua lehekülje numbrit näidatakse</string>
   <string name="preference_sample_label">Pildi suuruse jõuga muutmine</string>
-  <string name="preference_sample_summary">Muuda suurust, et vähendada piltide laadimise aegasid ja vähendada mälukasutust</string>
+  <string name="preference_sample_summary">Muuda pilte väiksemaks, et kiirendada laadimisaegasid ja säästa raha</string>
   <string name="preference_zoom_label">Suurendamine</string>
   <string name="preference_zoom_summary">Piltide suurendamise režiim</string>
   <string name="preference_category_misc">Varia</string>
@@ -87,23 +87,26 @@
   <string name="remember_password">Pea parooli meeles</string>
   <string name="contributors_label">Kaastöölised:</string>
   <string name="contributors">
-    - Jules Blok (leheküljenumbrite loomulik järjestamine ja automaatse pööramise lisamine)\n
-    - Tõlge eesti keelde: Rivo \"Eraser\" Zängov\n
-    - Tõlge galeegi keelde: Xesusmosquera\n
-    - Tõlge saksakeelde: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
-    - Tõlge kreeka keelde: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
-    - Tõlge itaalia keelde: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
-    - Tõlge jaapani keelde: Naofumi\n
-    - Tõlge korea keelde: Jang \"palindrom615\"\n
-    - Tõlge poola keelde: Jan \"Shark103\" Bielak\n
-    - Tõlge portugali keelde: Marcelo Ghelman\n
-    - Tõlge vene keelde: Anonymous, aiz1, deliium\n
-    - Tõlge hispaani a keelde: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
-    - Tõlge tõrgi keelde: ultrapeer, Mauron\n
+    - Jules Blok (leheküljenumbrite loomulik järjestus ja automaatse pööramise lisamine)\n
+    - Eesti tõlge: Rivo Zängov \"Eraser\"\n
+    - Galeegi tõlge: Xesusmosquera\n
+    - Saksa tõlge: Christian \"dissem\" Basler, Stefan \"smfcomix\" Freund, Creepers Swankin\n
+    - Kreeka tõlge: Γιάννης \"Evropi\" Ανθυμίδης, ilias345\n
+    - Itaalia tõlge: Silvia \"Kathjal\", Vittorio \"owlbrainiac\"\n
+    - Jaapani tõlge: Naofumi, RACER\n
+    - Korea tõlge: Jang \"palindrom615\"\n
+    - Norra tõlge: Allan Nordhøy\n
+    - Poola tõlge: Jan \"Shark103\" Bielak\n
+    - Portugali tõlge: Marcelo Ghelman, Lucas Elder Neves\n
+    - Vene tõlge: Anonymous, aiz1, deliium\n
+    - Hispaania tõlge: Zufre, Jeffrey \"TeslaStern\", celisflenbers\n
+    - Türgi tõlge: ultrapeer, Mauron\n
   </string>
   <string name="browser_album_title">Pealkirja pole</string>
   <string name="preference_edges_resistance_label">Servade elastsus</string>
   <string name="preference_edges_resistance_summary">Elastsus lehekülge vahetamisel</string>
+  <string name="preference_edges_width_label">Servade laius</string>
+  <string name="preference_edges_width_summary">Servade laius, millele vajutamisel pööratakse lehekülge</string>
   <string name="preference_page_transition_speed_label">Lehekülje ülemineku kiirus</string>
   <string name="preference_page_transition_speed_summary">Järgmisele/eelmisele leheküljele ülemineku efekti kiirus</string>
   <string name="preference_reading_direction_label">Paremalt vasakule lugemise suund</string>

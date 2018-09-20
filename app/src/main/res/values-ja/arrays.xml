@@ -1,46 +1,46 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="preference_zoom_labels">
-    <item>Mahuta laiusele</item>
-    <item>Mahuta kõrgusele</item>
-    <item>Mahuta ekraanile</item>
+    <item>幅に合わせる</item>
+    <item>高さに合わせる</item>
+    <item>すべてに合わせる</item>
     <item>100%</item>
     <item>50%</item>
     <item>25%</item>
   </string-array>
   <string-array name="preference_sample_labels">
-    <item>Automaatne</item>
+    <item>自動</item>
     <item>100%</item>
     <item>50%</item>
     <item>25%</item>
   </string-array>
   <string-array name="preference_overlay_duration_names">
-    <item>Mitte kunagi</item>
-    <item>2 sekundit</item>
-    <item>5 sekundit</item>
-    <item>10 sekundit</item>
-    <item>Piiramatult</item>
+    <item>なし</item>
+    <item>2 秒</item>
+    <item>5 秒</item>
+    <item>10 秒</item>
+    <item>不特定</item>
   </string-array>
   <string-array name="preference_edges_resistance_names">
-    <item>Pole</item>
-    <item>Nõrk</item>
-    <item>Keskmine</item>
-    <item>Tugev</item>
+    <item>なし</item>
+    <item>弱</item>
+    <item>中</item>
+    <item>強</item>
   </string-array>
   <string-array name="preference_edges_width_names">
-    <item>Väga väike</item>
-    <item>Väike</item>
-    <item>Keskmine</item>
-    <item>Lai</item>
+    <item>小さめ</item>
+    <item>小</item>
+    <item>中</item>
+    <item>広い</item>
   </string-array>
   <string-array name="preference_page_transition_speed_names">
-    <item>Aeglane</item>
-    <item>Keskmine</item>
-    <item>Kiire</item>
+    <item>遅い</item>
+    <item>中</item>
+    <item>速い</item>
   </string-array>
   <string-array name="preference_device_orientation_names">
-    <item>Automaatne</item>
-    <item>Püsti</item>
-    <item>Pikali</item>
+    <item>自動</item>
+    <item>縦向き</item>
+    <item>横向き</item>
   </string-array>
 </resources>
